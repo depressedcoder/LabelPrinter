@@ -26,8 +26,34 @@ namespace LabelPrinter.ViewModel
 
         public int HowManyCoppies { get; set; }
         public bool IsAutomaticCuttingDevice { get; set; }
-        public int LabelWidth { get; set; } = 305;
-        public int LabelHeight { get; set; } = 200;
+        //public int LabelWidth { get; set; } = 305;
+        private int _labelWidth = 315;
+        public int LabelWidth
+        {
+            get { return _labelWidth; }
+            set
+            {
+                if (value != _labelWidth)
+                {
+                    _labelWidth = value;
+                    RaisePropertyChanged("LabelWidth");
+                }
+            }
+        }
+        //public int LabelHeight { get; set; } = 200;
+        private int _labelHeight = 435;
+        public int LabelHeight
+        {
+            get { return _labelHeight; }
+            set
+            {
+                if (value != _labelHeight)
+                {
+                    _labelHeight = value;
+                    RaisePropertyChanged("LabelHeight");
+                }
+            }
+        }
         public int DistanceFromLeft { get; set; }
         public int CodeSize { get; set; }
         public int HeightOfCode { get; set; }
@@ -53,6 +79,10 @@ namespace LabelPrinter.ViewModel
             Row13 = new LabelRow();
             Row14 = new LabelRow();
             Row15 = new LabelRow();
+
+            Row1.Text = "NORSEL AG77";
+            Row2.Text = "<BAR120021++>";
+            Row2.IsBold = true;
 
             SaveButtonCommand = new RelayCommand(SaveCommand);
             NewButtonCommand = new RelayCommand(NewCommand);

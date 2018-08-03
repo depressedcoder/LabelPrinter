@@ -162,6 +162,7 @@
     <Content Include="EZio32.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Images\white.jpg" />
     <Resource Include="Images\Norsel.bmp" />
     <Resource Include="Images\ProfileImage.jpg" />
   </ItemGroup>

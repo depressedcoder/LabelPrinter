@@ -42,8 +42,7 @@
             </Grid.RowDefinitions>
 
             <TextBlock Text="Label Width:" Grid.Column="0" Grid.Row="0" Margin="5"/>
-            <TextBox  Grid.Column="1" Grid.Row="0" Margin="5" Text="{Binding LabelWidth, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-</TextBox>
+            <TextBox  Grid.Column="1" Grid.Row="0" Margin="5" Text="{Binding LabelWidth, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
             <TextBlock Text="mm" Grid.Row="0" Grid.Column="2" Margin="5"/>
 
             <TextBlock Text="Label Height:" Grid.Row="1" Grid.Column="0" Margin="5"/>
@@ -85,8 +84,8 @@
             </Grid.RowDefinitions>
             <TextBlock Text="Char Width" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="30.443,0,30.443,0.992"/>
 
-            <ComboBox x:Name="CharWidthComboBox0" Cursor="Hand" ItemsSource="{Binding Row1.CharWidths}" SelectedItem="{Binding Row1.SelectedCharWidth}" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" Width="60" Margin="37.648,0,37.649,0" FontSize="10" Height="17.768" VerticalAlignment="Top"/>
-            <ComboBox x:Name="CharWidthComboBox1" Cursor="Hand" ItemsSource="{Binding Row2.CharWidths}" SelectedItem="{Binding Row2.SelectedCharWidth}" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" Width="60" Margin="37.648,0.577,37.649,2" FontSize="10"/>
+            <ComboBox x:Name="CharWidthComboBox0" Cursor="Hand" ItemsSource="{Binding Row1.CharWidths,Mode=TwoWay}" SelectedItem="{Binding Row1.SelectedCharWidth}" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" Width="60" Margin="37.648,0,37.649,0" FontSize="10" Height="17.768" VerticalAlignment="Top"/>
+            <ComboBox x:Name="CharWidthComboBox1" Cursor="Hand" ItemsSource="{Binding Row2.CharWidths,Mode=TwoWay}" SelectedItem="{Binding Row2.SelectedCharWidth}" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" Width="60" Margin="37.648,0.577,37.649,2" FontSize="10"/>
             <ComboBox x:Name="CharWidthComboBox2" Cursor="Hand" ItemsSource="{Binding Row3.CharWidths}" SelectedItem="{Binding Row3.SelectedCharWidth}" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Top" Width="60" Margin="37.648,2,37.649,0" FontSize="10"/>
             <ComboBox x:Name="CharWidthComboBox3" Cursor="Hand" ItemsSource="{Binding Row4.CharWidths}" SelectedItem="{Binding Row4.SelectedCharWidth}" Grid.Row="4" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Top" Width="60" Margin="37.648,1.998,37.649,0" FontSize="10"/>
             <ComboBox x:Name="CharWidthComboBox4" Cursor="Hand" ItemsSource="{Binding Row5.CharWidths}" SelectedItem="{Binding Row5.SelectedCharWidth}" Grid.Row="5" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Top" Width="60" Margin="37.648,2,37.649,0" FontSize="10"/>
@@ -219,13 +218,63 @@
             </Grid>
 
         </Grid>
-        
-        <Image x:Name="Image" 
-               Grid.Column="2" Grid.Row="1"
-                   Source="Images/Norsel.bmp" 
+        <Canvas Grid.Column="2" Grid.Row="1">
+            
+            <Image x:Name="Image" Canvas.Left="0" Canvas.Top="0"
+                   Source="Images/Norsel.Bmp" 
+                   Stretch="Fill"
                    Height="{Binding LabelHeight,Mode=TwoWay}"  
                    Width="{Binding LabelWidth,Mode=TwoWay}"
-               VerticalAlignment="Top"/>
+               VerticalAlignment="Top">
+                <Image.RenderTransform>
+                    <TranslateTransform X="0" Y="0"></TranslateTransform>
+                </Image.RenderTransform>
+            </Image>
+            <TextBlock Canvas.Left="0" Canvas.Top="0" Text="{Binding Row1.Text}" FontSize="{Binding Row1.SelectedCharWidth}">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Row1.IsBold}"
+                                 Value="True">
+                                <Setter Property="FontWeight" Value="Bold"/>
+                            </DataTrigger>
+                            <!--<DataTrigger Binding="{Binding Row1.IsHigh}"
+                                 Value="True">
+                                <Setter Property="TextDecorations" Value="Underline"/>
+                            </DataTrigger>-->
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+            
+            <!--<TextBlock Canvas.Left="0" Canvas.Top="0" 
+        FontSize="{Binding Row1.SelectedCharWidth}" Margin="5" Foreground="Black" FontFamily="Verdana" 
+        Text="{Binding Row1.Text,Mode=TwoWay}" FontWeight="ExtraBold">
+            </TextBlock>-->
+            
+            <!--<CheckBox Name="BoldField" Margin="5" FontWeight="Bold">Bold</CheckBox>
+            <Label Name="text" Grid.Row="3" Grid.ColumnSpan="3" 
+    FontWeight="{Binding ElementName=BoldField, Path=IsChecked, Converter={StaticResource custom}}" />-->
+            
+            <!--<TextBlock Canvas.Left="0" Canvas.Top="25" 
+        FontSize="{Binding Row2.SelectedCharWidth}" Margin="5" Foreground="Black" FontFamily="Verdana" 
+        Text="{Binding Row2.Text,Mode=TwoWay}"   FontWeight="ExtraBold">
+            </TextBlock>-->
+
+            <TextBlock Canvas.Left="0" Canvas.Top="25" Text="{Binding Row2.Text}" FontSize="{Binding Row2.SelectedCharWidth}">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Row2.IsBold}"
+                                 Value="True">
+                                <Setter Property="FontWeight" Value="Bold"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+
+        </Canvas>
         
         <Grid Grid.Column="0" Grid.Row="2">
             <Button x:Name="ButtonNew" Content="New" Command="{Binding NewButtonCommand}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="120" Margin="10"/>
@@ -239,5 +288,6 @@
             <Button x:Name="ButtonPrintJob" Content="Print Jobs" Command="{Binding PrintJobsButtonCommand}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="120" Margin="10"/>
             <Button x:Name="ButtonExit" Content="Exit" Command="{Binding ExitButtonCommand}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="120" Margin="10"/>
         </Grid>
+        
     </Grid>
 </Window>
