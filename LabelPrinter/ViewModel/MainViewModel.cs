@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Security.Cryptography.X509Certificates;
 using System.Windows;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -24,41 +25,104 @@ namespace LabelPrinter.ViewModel
     public class MainViewModel : ViewModelBase
     {
 
-        public int HowManyCoppies { get; set; }
-        public bool IsAutomaticCuttingDevice { get; set; }
-        //public int LabelWidth { get; set; } = 305;
-        private int _labelWidth = 315;
-        public int LabelWidth
+        private int _howManyCopies;
+        public int HowManyCoppies
         {
-            get { return _labelWidth; }
+            get { return _howManyCopies; }
             set
             {
-                if (value != _labelWidth)
+                _howManyCopies = value; 
+                RaisePropertyChanged("HowManyCoppies");
+            }
+        }
+
+        private bool _isAutomaticCuttingDevice;
+        public bool IsAutomaticCuttingDevice
+        {
+            get { return _isAutomaticCuttingDevice; }
+            set
+            {
+                _isAutomaticCuttingDevice = value;
+                RaisePropertyChanged("IsAutomaticCuttingDevice");
+            }
+        }
+
+        //public int LabelWidth { get; set; } = 305;
+        private int labelWidth = 315;
+        public int LabelWidth
+        {
+            get { return labelWidth; }
+            set
+            {
+                if (value != labelWidth)
                 {
-                    _labelWidth = value;
+                    labelWidth = value;
                     RaisePropertyChanged("LabelWidth");
                 }
             }
         }
         //public int LabelHeight { get; set; } = 200;
-        private int _labelHeight = 435;
+        private int labelHeight = 435;
         public int LabelHeight
         {
-            get { return _labelHeight; }
+            get { return labelHeight; }
             set
             {
-                if (value != _labelHeight)
+                if (value != labelHeight)
                 {
-                    _labelHeight = value;
+                    labelHeight = value;
                     RaisePropertyChanged("LabelHeight");
                 }
             }
         }
-        public int DistanceFromLeft { get; set; }
-        public int CodeSize { get; set; }
-        public int HeightOfCode { get; set; }
+
+        private int _distanceFromLeft;
+        public int DistanceFromLeft
+        {
+            get { return _distanceFromLeft; }
+            set
+            {
+                _distanceFromLeft = value;
+                RaisePropertyChanged("DistanceFromLeft");
+            }
+        }
+
+        private int _codeSize ;
+
+        public int CodeSize
+        {
+            get { return _codeSize; }
+            set
+            {
+                _codeSize = value;
+                RaisePropertyChanged("CodeSize");
+            }
+        }
+
+        private int _heightOfCode;
+        public int HeightOfCode
+        {
+            get { return _heightOfCode; }
+            set
+            {
+                _heightOfCode = value;
+                RaisePropertyChanged("HeightOfCode");
+            }
+        }
+
         public List<string> BarCode { get; set; } = new List<string> { "2/5 Interleaved", "Code128", "Code39", "DataMatrix", "EAN-13", "EAN-8" };
-        public string SelectedBarCode { get; set; }
+        private string _selectedBarCode;
+
+        public string SelectedBarCode
+        {
+            get { return _selectedBarCode; }
+            set
+            {
+                _selectedBarCode = value;
+                RaisePropertyChanged("SelectedBarCode");
+            }
+        }
+
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
@@ -82,7 +146,35 @@ namespace LabelPrinter.ViewModel
 
             Row1.Text = "NORSEL AG77";
             Row2.Text = "<BAR120021++>";
-            Row2.IsBold = true;
+            Row3.Text = "120001++";
+            Row4.Text = "'''";
+            Row5.Text = "jhjhj";
+            Row6.Text = "jh";
+            Row7.Text = "jh";
+            Row8.Text = "jhjh";
+            Row9.Text = "jhjh";
+            Row10.Text = "jhjh";
+            Row11.Text = "jhjj";
+            Row12.Text = "jh";
+            Row13.Text = "kj";
+            Row14.Text = "jhj";
+            Row15.Text = "hj";
+
+            Row1.SelectedCharWidth = 15;
+            Row2.SelectedCharWidth = 15;
+            Row3.SelectedCharWidth = 15;
+            Row4.SelectedCharWidth = 15;
+            Row5.SelectedCharWidth = 18;
+            Row6.SelectedCharWidth = 18;
+            Row7.SelectedCharWidth = 18;
+            Row8.SelectedCharWidth = 15;
+            Row9.SelectedCharWidth = 15;
+            Row10.SelectedCharWidth = 15;
+            Row11.SelectedCharWidth = 18;
+            Row12.SelectedCharWidth = 15;
+            Row13.SelectedCharWidth = 18;
+            Row14.SelectedCharWidth = 15;
+            Row15.SelectedCharWidth = 18;
 
             SaveButtonCommand = new RelayCommand(SaveCommand);
             NewButtonCommand = new RelayCommand(NewCommand);

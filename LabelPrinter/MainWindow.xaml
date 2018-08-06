@@ -22,6 +22,7 @@
             <RowDefinition Height="4*"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
+        
         <DockPanel Grid.Column="0" Grid.Row="0">
             <TextBlock Width="100" Height="35" Text="Label Name :"  DockPanel.Dock="Left"/>
             <ComboBox  Width="200" Height="35" DockPanel.Dock="Right"/>
@@ -218,68 +219,296 @@
             </Grid>
 
         </Grid>
-        <Canvas Grid.Column="2" Grid.Row="1">
-            
-            <Image x:Name="Image" Canvas.Left="0" Canvas.Top="0"
-                   Source="Images/Norsel.Bmp" 
-                   Stretch="Fill"
-                   Height="{Binding LabelHeight,Mode=TwoWay}"  
-                   Width="{Binding LabelWidth,Mode=TwoWay}"
-               VerticalAlignment="Top">
-                <Image.RenderTransform>
-                    <TranslateTransform X="0" Y="0"></TranslateTransform>
-                </Image.RenderTransform>
-            </Image>
-            <TextBlock Canvas.Left="0" Canvas.Top="0" Text="{Binding Row1.Text}" FontSize="{Binding Row1.SelectedCharWidth}">
-                <TextBlock.Style>
-                    <Style TargetType="TextBlock">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Row1.IsBold}"
+        <Border Grid.Row="1" Grid.Column="2" BorderBrush="Black" BorderThickness="1" Margin="5,0,0,0">
+            <Grid Background="SkyBlue" Height="{Binding LabelHeight,Mode=TwoWay}" Width="{Binding LabelWidth,Mode=TwoWay}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding Row1.Text}" FontSize="{Binding Row1.CharWidth}" Margin="4,0,0,0">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Row1.IsBold}"
                                  Value="True">
-                                <Setter Property="FontWeight" Value="Bold"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Row1.IsUnderlined}"
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Row1.IsUnderlined}"
                                  Value="True">
-                                <Setter Property="TextDecorations" Value="Underline"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </TextBlock.Style>
-            </TextBlock>
-            
-            <!--<TextBlock Canvas.Left="0" Canvas.Top="0" 
-        FontSize="{Binding Row1.SelectedCharWidth}" Margin="5" Foreground="Black" FontFamily="Verdana" 
-        Text="{Binding Row1.Text,Mode=TwoWay}" FontWeight="ExtraBold">
-            </TextBlock>-->
-            
-            <!--<CheckBox Name="BoldField" Margin="5" FontWeight="Bold">Bold</CheckBox>
-            <Label Name="text" Grid.Row="3" Grid.ColumnSpan="3" 
-    FontWeight="{Binding ElementName=BoldField, Path=IsChecked, Converter={StaticResource custom}}" />-->
-            
-            <!--<TextBlock Canvas.Left="0" Canvas.Top="25" 
-        FontSize="{Binding Row2.SelectedCharWidth}" Margin="5" Foreground="Black" FontFamily="Verdana" 
-        Text="{Binding Row2.Text,Mode=TwoWay}"   FontWeight="ExtraBold">
-            </TextBlock>-->
+                                    <Setter Property="TextDecorations" Value="Underline"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <Grid Grid.Row="2" Grid.Column="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width=".4*"/>
+                        <ColumnDefinition Width=".2*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="{Binding Row2.Text}" FontSize="{Binding Row2.CharWidth}" Margin="4,0,0,0">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Row2.IsBold}"
+                                 Value="True">
+                                        <Setter Property="FontWeight" Value="Bold"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Row2.IsUnderlined}"
+                                 Value="True">
+                                        <Setter Property="TextDecorations" Value="Underline"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </Grid>
+                <TextBlock Grid.Row="3" Text="{Binding Row3.Text}" FontSize="{Binding Row3.CharWidth}" Margin="4,0,0,0">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Row3.IsBold}"
+                                 Value="True">
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Row3.IsUnderlined}"
+                                 Value="True">
+                                    <Setter Property="TextDecorations" Value="Underline"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <TextBlock Grid.Row="4" Text="{Binding Row4.Text}" FontSize="{Binding Row4.CharWidth}" Margin="4,0,0,0">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Row4.IsBold}"
+                                 Value="True">
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Row4.IsUnderlined}"
+                                 Value="True">
+                                    <Setter Property="TextDecorations" Value="Underline"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <TextBlock Grid.Row="5" Text="{Binding Row5.Text}" FontSize="{Binding Row5.CharWidth}" Margin="4,0,0,0">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Row5.IsBold}"
+                                 Value="True">
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Row5.IsUnderlined}"
+                                 Value="True">
+                                    <Setter Property="TextDecorations" Value="Underline"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <TextBlock Grid.Row="6" Text="{Binding Row6.Text}" FontSize="{Binding Row6.CharWidth}" Margin="4,0,0,0">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Row6.IsBold}"
+                                 Value="True">
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Row6.IsUnderlined}"
+                                 Value="True">
+                                    <Setter Property="TextDecorations" Value="Underline"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <TextBlock Grid.Row="7" Text="{Binding Row7.Text}" FontSize="{Binding Row7.CharWidth}" Margin="4,0,0,0">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Row7.IsBold}"
+                                 Value="True">
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Row7.IsUnderlined}"
+                                 Value="True">
+                                    <Setter Property="TextDecorations" Value="Underline"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <TextBlock Grid.Row="8" Text="{Binding Row8.Text}" FontSize="{Binding Row8.CharWidth}" Margin="4,0,0,0">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Row8.IsBold}"
+                                 Value="True">
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Row8.IsUnderlined}"
+                                 Value="True">
+                                    <Setter Property="TextDecorations" Value="Underline"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <TextBlock Grid.Row="9" Text="{Binding Row9.Text}" FontSize="{Binding Row9.CharWidth}" Margin="4,0,0,0">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Row9.IsBold}"
+                                 Value="True">
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Row9.IsUnderlined}"
+                                 Value="True">
+                                    <Setter Property="TextDecorations" Value="Underline"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <TextBlock Grid.Row="10" Text="{Binding Row10.Text}" FontSize="{Binding Row10.CharWidth}" Margin="4,0,0,0">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Row10.IsBold}"
+                                 Value="True">
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Row10.IsUnderlined}"
+                                 Value="True">
+                                    <Setter Property="TextDecorations" Value="Underline"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <TextBlock Grid.Row="11" Text="{Binding Row11.Text}" FontSize="{Binding Row11.CharWidth}" Margin="4,0,0,0">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Row11.IsBold}"
+                                 Value="True">
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Row11.IsUnderlined}"
+                                 Value="True">
+                                    <Setter Property="TextDecorations" Value="Underline"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <TextBlock Grid.Row="12" Text="{Binding Row12.Text}" FontSize="{Binding Row12.CharWidth}" Margin="4,0,0,0">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Row12.IsBold}"
+                                 Value="True">
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Row12.IsUnderlined}"
+                                 Value="True">
+                                    <Setter Property="TextDecorations" Value="Underline"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <TextBlock Grid.Row="13" Text="{Binding Row13.Text}" FontSize="{Binding Row13.CharWidth}" Margin="4,0,0,0">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Row13.IsBold}"
+                                 Value="True">
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Row13.IsUnderlined}"
+                                 Value="True">
+                                    <Setter Property="TextDecorations" Value="Underline"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <TextBlock Grid.Row="14" Text="{Binding Row14.Text}" FontSize="{Binding Row14.CharWidth}" Margin="4,0,0,0">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Row14.IsBold}"
+                                 Value="True">
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Row14.IsUnderlined}"
+                                 Value="True">
+                                    <Setter Property="TextDecorations" Value="Underline"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <TextBlock Grid.Row="15" Text="{Binding Row15.Text}" FontSize="{Binding Row15.CharWidth}" Margin="4,0,0,0">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Row15.IsBold}"
+                                 Value="True">
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Row15.IsUnderlined}"
+                                 Value="True">
+                                    <Setter Property="TextDecorations" Value="Underline"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <TextBlock Grid.Row="8" Text="{Binding Row8.Text}" FontSize="{Binding Row8.CharWidth}" Margin="4,0,0,0">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Row8.IsBold}"
+                                 Value="True">
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Row8.IsUnderlined}"
+                                 Value="True">
+                                    <Setter Property="TextDecorations" Value="Underline"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Grid>
+        </Border>
 
-            <TextBlock Canvas.Left="0" Canvas.Top="25" Text="{Binding Row2.Text}" FontSize="{Binding Row2.SelectedCharWidth}">
-                <TextBlock.Style>
-                    <Style TargetType="TextBlock">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Row2.IsBold}"
-                                 Value="True">
-                                <Setter Property="FontWeight" Value="Bold"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Row2.IsUnderlined}"
-                                 Value="True">
-                                <Setter Property="TextDecorations" Value="Underline"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </TextBlock.Style>
-            </TextBlock>
 
-        </Canvas>
-        
         <Grid Grid.Column="0" Grid.Row="2">
             <Button x:Name="ButtonNew" Content="New" Command="{Binding NewButtonCommand}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="120" Margin="10"/>
             <Button x:Name="ButtonSave" Content="Save" Command="{Binding SaveButtonCommand}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="120" Margin="10"/>
