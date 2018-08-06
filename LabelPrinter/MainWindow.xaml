@@ -238,10 +238,10 @@
                                  Value="True">
                                 <Setter Property="FontWeight" Value="Bold"/>
                             </DataTrigger>
-                            <!--<DataTrigger Binding="{Binding Row1.IsHigh}"
+                            <DataTrigger Binding="{Binding Row1.IsUnderlined}"
                                  Value="True">
                                 <Setter Property="TextDecorations" Value="Underline"/>
-                            </DataTrigger>-->
+                            </DataTrigger>
                         </Style.Triggers>
                     </Style>
                 </TextBlock.Style>
@@ -268,6 +268,10 @@
                             <DataTrigger Binding="{Binding Row2.IsBold}"
                                  Value="True">
                                 <Setter Property="FontWeight" Value="Bold"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Row2.IsUnderlined}"
+                                 Value="True">
+                                <Setter Property="TextDecorations" Value="Underline"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
