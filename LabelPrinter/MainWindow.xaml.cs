@@ -14,9 +14,6 @@ namespace LabelPrinter
             InitializeComponent();
             main = new MainViewModel();
             this.DataContext = main;
-            BarcodeLib.Barcode b = new BarcodeLib.Barcode();
-            System.Drawing.Image img = b.Encode(BarcodeLib.TYPE.UPCA, "038000356216", System.Drawing.Color.Black, System.Drawing.Color.White, 290, 120);
-            
         }
 
         private void UpdateLabelEvent(object sender, RoutedEventArgs e)
