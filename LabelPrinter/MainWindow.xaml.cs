@@ -24,6 +24,6 @@ namespace LabelPrinter
                 vm.UpdateLabelCommand.Execute(null);
             }
         }
-        
+
     }
 }

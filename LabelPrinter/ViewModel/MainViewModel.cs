@@ -1,7 +1,11 @@
+using System;
 using System.Collections.Generic;
+using System.Windows.Media.Imaging;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using LabelPrinter.Helpers;
 using LabelPrinter.Model;
+using System.Windows.Controls;
 
 namespace LabelPrinter.ViewModel
 {
@@ -20,14 +24,39 @@ namespace LabelPrinter.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
-        
+        private string value;
+        public string Value
+        {
+            get { return value; }
+            set
+            {
+                this.value = value;
+                RaisePropertyChanged("Value");
+            }
+        }
+
+        BitmapImage _bitmapImage;
+
+        public BitmapImage BitmapImage
+        {
+            get
+            {
+                return _bitmapImage;
+            }
+            set
+            {
+                _bitmapImage = value;
+                RaisePropertyChanged("BitmapImage");
+            }
+        }
+
         private int _howManyCopies;
         public int HowManyCoppies
         {
             get { return _howManyCopies; }
             set
             {
-                _howManyCopies = value; 
+                _howManyCopies = value;
                 RaisePropertyChanged("HowManyCoppies");
             }
         }
@@ -83,7 +112,7 @@ namespace LabelPrinter.ViewModel
             }
         }
 
-        private int _codeSize ;
+        private int _codeSize;
 
         public int CodeSize
         {
@@ -116,6 +145,31 @@ namespace LabelPrinter.ViewModel
             {
                 _selectedBarCode = value;
                 RaisePropertyChanged("SelectedBarCode");
+                UpdateBarCode(SelectedBarCode);
+            }
+        }
+
+        private void UpdateBarCode(string selectedBarCode)
+        {
+            if(selectedBarCode == "Code39")
+            {
+                BitmapImage = new BarcodeHelper().GetCode39Barcode(Row2.Text);
+            }
+            if(selectedBarCode == "Code128")
+            {
+                BitmapImage = new BarcodeHelper().GetCode128Barcode(Row2.Text);
+            }
+            if(selectedBarCode == "EAN13")
+            {
+                BitmapImage = new BarcodeHelper().GetEAN13Barcode(Row2.Text);
+            }
+            if(selectedBarCode == "EAN8")
+            {
+                BitmapImage = new BarcodeHelper().GetEAN8Barcode(Row2.Text);
+            }
+            if(selectedBarCode == "2/5 Interleaved")
+            {
+                BitmapImage = new BarcodeHelper().GetInterleaved2of5Barcode(Row2.Text);
             }
         }
 
@@ -141,7 +195,7 @@ namespace LabelPrinter.ViewModel
             Row15 = new LabelRow();
 
             Row1.Text = "NORSEL AG77";
-            Row2.Text = "<BAR120021++>";
+            Row2.Text = "123";
             Row3.Text = "120001++";
             Row4.Text = "'''";
             Row5.Text = "jhjhj";
@@ -172,7 +226,7 @@ namespace LabelPrinter.ViewModel
             Row14.SelectedCharWidth = 15;
             Row15.SelectedCharWidth = 18;
 
-           
+            CodeSize = 50;
             /*Value = "12345";
             Symbology = SymbologyType.Code128;*/
 
@@ -183,11 +237,15 @@ namespace LabelPrinter.ViewModel
             PrintJobsButtonCommand = new RelayCommand(PrintJobsCommand);
             ExitButtonCommand = new RelayCommand(ExitCommand);
             UpdateLabelCommand = new RelayCommand(UpdateLabel);
+            BitmapImage = new BarcodeHelper().GetCode39Barcode("123");
+            
         }
+
+       
 
         private void UpdateLabel()
         {
-            
+
         }
 
         private void ExitCommand()
@@ -216,6 +274,7 @@ namespace LabelPrinter.ViewModel
         }
         private void SaveCommand()
         {
+
         }
 
         public LabelRow Row1 { get; set; }
@@ -240,5 +299,6 @@ namespace LabelPrinter.ViewModel
         public RelayCommand PrintJobsButtonCommand { get; private set; }
         public RelayCommand ExitButtonCommand { get; private set; }
         public RelayCommand UpdateLabelCommand { get; private set; }
+        
     }
 }
