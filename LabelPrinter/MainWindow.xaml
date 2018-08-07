@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:byteScout="clr-namespace:Bytescout.BarCode.WPF;assembly=Bytescout.BarCode.WPF"
         xmlns:local="clr-namespace:LabelPrinter"
-        xmlns:Wpf="clr-namespace:ceTe.DynamicBarcode.Creator.Wpf;assembly=ceTe.DynamicBarcode.Creator.Wpf.30" x:Class="LabelPrinter.MainWindow"
         mc:Ignorable="d"
         Title="Label 4.1 - Demo" 
         Height="700" 
@@ -282,10 +281,9 @@
                             </Style>
                         </TextBlock.Style>
                     </TextBlock>-->
-                    <!--<byteScout:BarcodeControl Height="90" Width="300" HorizontalAlignment="Left" Margin="5,5,0,5" Grid.Column="0" Value="{Binding Row2.Text,Mode=TwoWay}" Symbology="{Binding SelectedBarCode,Mode=TwoWay}"></byteScout:BarcodeControl>-->
+                    <byteScout:BarcodeControl Height="90" Width="300" HorizontalAlignment="Left" Margin="5,5,0,5" Grid.Column="0" Value="{Binding Row2.Text,Mode=TwoWay}" Symbology="{Binding SelectedBarCode,Mode=TwoWay}"></byteScout:BarcodeControl>
                     <!-- <Image x:Name="image" Grid.Column="1" HorizontalAlignment="Left" Height="50" VerticalAlignment="Top" Width="70" Source="Images/Norsel.Bmp"/>-->
-                    <Wpf:DataMatrix Grid.Column="0" Height="60" Width="200"  MaxWidth="200" MaxHeight="100" HorizontalAlignment="Left" SymbolSize="Auto" Text="{Binding Row2.Text}" VerticalAlignment="Top"/>
-                    <Image></Image>
+                    
                 </Grid>
                 <TextBlock Grid.Row="3" Text="{Binding Row3.Text}" FontSize="{Binding Row3.CharWidth}" Margin="4,0,0,0">
                     <TextBlock.Style>

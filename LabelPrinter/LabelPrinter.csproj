@@ -60,7 +60,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Program Files\Bytescout BarCode Generator SDK\net3.50\Bytescout.BarCode.WPF.dll</HintPath>
     </Reference>
-    <Reference Include="ceTe.DynamicBarcode.Creator.Wpf.30, Version=2.0.2.30, Culture=neutral, PublicKeyToken=09b5ce0d5c0a9d8b, processorArchitecture=MSIL" />
     <Reference Include="GalaSoft.MvvmLight, Version=5.4.1.0, Culture=neutral, PublicKeyToken=bb738e8c4ab8c76c, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.4.1\lib\net35\GalaSoft.MvvmLight.dll</HintPath>
     </Reference>
