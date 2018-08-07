@@ -1,17 +1,5 @@
 ﻿using LabelPrinter.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace LabelPrinter
 {
@@ -26,6 +14,9 @@ namespace LabelPrinter
             InitializeComponent();
             main = new MainViewModel();
             this.DataContext = main;
+            BarcodeLib.Barcode b = new BarcodeLib.Barcode();
+            System.Drawing.Image img = b.Encode(BarcodeLib.TYPE.UPCA, "038000356216", System.Drawing.Color.Black, System.Drawing.Color.White, 290, 120);
+            
         }
 
         private void UpdateLabelEvent(object sender, RoutedEventArgs e)
