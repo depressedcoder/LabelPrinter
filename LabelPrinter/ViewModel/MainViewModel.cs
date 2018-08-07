@@ -1,16 +1,9 @@
-using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO.Packaging;
-using System.Security.Cryptography.X509Certificates;
-using System.Windows;
-using Bytescout.BarCode;
+using System.Windows.Media.Imaging;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using LabelPrinter.Helpers;
 using LabelPrinter.Model;
-using Microsoft.Win32;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 namespace LabelPrinter.ViewModel
 {
@@ -40,15 +33,15 @@ namespace LabelPrinter.ViewModel
             }
         }
 
-        private SymbologyType symbology;
+        BitmapImage _bitmapImage;
 
-        public SymbologyType Symbology
-        {
-            get { return symbology; }
-            set
+        public BitmapImage BitmapImage { get
             {
-                symbology = value;
-                RaisePropertyChanged("Symbology");
+                return _bitmapImage;
+            } set
+            {
+                _bitmapImage = value;
+                RaisePropertyChanged("BitmapImage");
             }
         }
 
@@ -214,6 +207,8 @@ namespace LabelPrinter.ViewModel
             PrintJobsButtonCommand = new RelayCommand(PrintJobsCommand);
             ExitButtonCommand = new RelayCommand(ExitCommand);
             UpdateLabelCommand = new RelayCommand(UpdateLabel);
+
+            BitmapImage = new BarcodeHelper().GetCode39Barcode("BAR120021");
         }
 
         private void UpdateLabel()
