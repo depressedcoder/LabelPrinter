@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO.Packaging;
 using System.Security.Cryptography.X509Certificates;
 using System.Windows;
+using Bytescout.BarCode;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using LabelPrinter.Model;
@@ -24,6 +26,28 @@ namespace LabelPrinter.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
+        private string value;
+        public string Value
+        {
+            get { return value; }
+            set
+            {
+                this.value = value; 
+                RaisePropertyChanged("Value");
+            }
+        }
+
+        private SymbologyType symbology;
+
+        public SymbologyType Symbology
+        {
+            get { return symbology; }
+            set
+            {
+                symbology = value;
+                RaisePropertyChanged("Symbology");
+            }
+        }
 
         private int _howManyCopies;
         public int HowManyCoppies
@@ -110,7 +134,7 @@ namespace LabelPrinter.ViewModel
             }
         }
 
-        public List<string> BarCode { get; set; } = new List<string> { "2/5 Interleaved", "Code128", "Code39", "DataMatrix", "EAN-13", "EAN-8" };
+        public List<string> BarCode { get; set; } = new List<string> { "2/5 Interleaved", "Code128", "Code39", "DataMatrix", "EAN13", "EAN8" };
         private string _selectedBarCode;
 
         public string SelectedBarCode
@@ -176,6 +200,10 @@ namespace LabelPrinter.ViewModel
             Row14.SelectedCharWidth = 15;
             Row15.SelectedCharWidth = 18;
 
+           
+            /*Value = "12345";
+            Symbology = SymbologyType.Code128;*/
+
             SaveButtonCommand = new RelayCommand(SaveCommand);
             NewButtonCommand = new RelayCommand(NewCommand);
             SetUpButtonCommand = new RelayCommand(SetUpCommand);
@@ -217,11 +245,8 @@ namespace LabelPrinter.ViewModel
 
         private void SaveCommand()
         {
-            int? l = CodeSize;
-            int? w = HeightOfCode;
-            int? p = HowManyCoppies;
-            bool d = IsAutomaticCuttingDevice;
-            MessageBox.Show(l + " " + w + " " + p + " " + d);
+            string p = SelectedBarCode;
+            MessageBox.Show(p);
         }
 
         public LabelRow Row1 { get; set; }
