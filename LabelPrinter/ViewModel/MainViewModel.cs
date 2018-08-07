@@ -1,7 +1,16 @@
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO.Packaging;
+using System.Security.Cryptography.X509Certificates;
+using System.Windows;
+using Bytescout.BarCode;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using LabelPrinter.Model;
+using Microsoft.Win32;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace LabelPrinter.ViewModel
 {
@@ -30,7 +39,18 @@ namespace LabelPrinter.ViewModel
                 RaisePropertyChanged("Value");
             }
         }
-        
+
+        private SymbologyType symbology;
+
+        public SymbologyType Symbology
+        {
+            get { return symbology; }
+            set
+            {
+                symbology = value;
+                RaisePropertyChanged("Symbology");
+            }
+        }
 
         private int _howManyCopies;
         public int HowManyCoppies
@@ -225,20 +245,8 @@ namespace LabelPrinter.ViewModel
         {
             //New Button
         }
-
         private void SaveCommand()
         {
-            //OpenFileDialog open = new OpenFileDialog();
-            //open.Multiselect = false;
-            //open.Filter = "Image Files(*.jpg; *.jpeg; *.gif; *.bmp)|*.jpg; *.jpeg; *.gif; *.bmp";
-            //bool? result = open.ShowDialog();
-
-            //if (result == true)
-            //{
-            //    filepath = open.FileName; // Stores Original Path in Textbox    
-            //    ImageSource imgsource = new BitmapImage(new Uri(filepath)); // Just show The File In Image when we browse It
-            //    Clientimg.Source = imgsource;
-            //}
         }
 
         public LabelRow Row1 { get; set; }

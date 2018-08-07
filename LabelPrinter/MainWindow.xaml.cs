@@ -11,7 +11,6 @@ namespace LabelPrinter
         MainViewModel main;
         public MainWindow()
         {
-            InitializeComponent();
             main = new MainViewModel();
             this.DataContext = main;
         }
