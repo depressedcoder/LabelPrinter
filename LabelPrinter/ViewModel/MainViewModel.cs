@@ -1,16 +1,7 @@
-using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO.Packaging;
-using System.Security.Cryptography.X509Certificates;
-using System.Windows;
-using Bytescout.BarCode;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using LabelPrinter.Model;
-using Microsoft.Win32;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 namespace LabelPrinter.ViewModel
 {
@@ -29,29 +20,7 @@ namespace LabelPrinter.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
-        private string value;
-        public string Value
-        {
-            get { return value; }
-            set
-            {
-                this.value = value; 
-                RaisePropertyChanged("Value");
-            }
-        }
-
-        private SymbologyType symbology;
-
-        public SymbologyType Symbology
-        {
-            get { return symbology; }
-            set
-            {
-                symbology = value;
-                RaisePropertyChanged("Symbology");
-            }
-        }
-
+        
         private int _howManyCopies;
         public int HowManyCoppies
         {
