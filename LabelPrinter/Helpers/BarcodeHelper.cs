@@ -10,6 +10,8 @@ namespace LabelPrinter.Helpers
         public BitmapImage GetCode39Barcode(string encodeString)
         {
             BarcodeLib.Barcode b = new BarcodeLib.Barcode();
+            b.LabelFont = new Font("Sample Bar Code Font", 35, FontStyle.Bold);
+            b.IncludeLabel = true;
             Image image = b.Encode(BarcodeLib.TYPE.CODE39, encodeString, Color.Black, Color.White, 500, 200);
 
             using (var ms = new MemoryStream())
@@ -29,6 +31,8 @@ namespace LabelPrinter.Helpers
         public BitmapImage GetCode128Barcode(string encodeString)
         {
             BarcodeLib.Barcode b = new BarcodeLib.Barcode();
+            b.LabelFont = new Font("Sample Bar Code Font", 35, FontStyle.Bold);
+            b.IncludeLabel = true;
             Image image = b.Encode(BarcodeLib.TYPE.CODE128, encodeString, Color.Black, Color.White, 500, 200);
 
             using (var ms = new MemoryStream())
@@ -48,6 +52,8 @@ namespace LabelPrinter.Helpers
         public BitmapImage GetEAN13Barcode(string encodeString)
         {
             BarcodeLib.Barcode b = new BarcodeLib.Barcode();
+            b.LabelFont = new Font("Sample Bar Code Font", 35, FontStyle.Bold);
+            b.IncludeLabel = true;
             Image image = b.Encode(BarcodeLib.TYPE.EAN13, encodeString, Color.Black, Color.White, 500, 200);
 
             using (var ms = new MemoryStream())
@@ -67,6 +73,8 @@ namespace LabelPrinter.Helpers
         public BitmapImage GetEAN8Barcode(string encodeString)
         {
             BarcodeLib.Barcode b = new BarcodeLib.Barcode();
+            b.LabelFont = new Font("Sample Bar Code Font", 35, FontStyle.Bold);
+            b.IncludeLabel = true;
             Image image = b.Encode(BarcodeLib.TYPE.EAN8, encodeString, Color.Black, Color.White, 500, 200);
 
             using (var ms = new MemoryStream())
@@ -86,6 +94,8 @@ namespace LabelPrinter.Helpers
         public BitmapImage GetInterleaved2of5Barcode(string encodeString)
         {
             BarcodeLib.Barcode b = new BarcodeLib.Barcode();
+            b.LabelFont = new Font("Sample Bar Code Font", 35, FontStyle.Bold);
+            b.IncludeLabel = true;
             Image image = b.Encode(BarcodeLib.TYPE.Interleaved2of5, encodeString, Color.Black, Color.White, 500, 200);
 
             using (var ms = new MemoryStream())

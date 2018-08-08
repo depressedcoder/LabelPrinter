@@ -161,14 +161,26 @@ namespace LabelPrinter.ViewModel
             }
             if(selectedBarCode == "EAN13")
             {
+                if (Row2.Text.Length < 13)
+                {
+                   BitmapImage = new BarcodeHelper().GetEAN13Barcode(Row2.Text.PadLeft(13, '0'));
+                }
                 BitmapImage = new BarcodeHelper().GetEAN13Barcode(Row2.Text);
             }
             if(selectedBarCode == "EAN8")
             {
+                if (Row2.Text.Length < 8)
+                {
+                    BitmapImage = new BarcodeHelper().GetEAN8Barcode(Row2.Text.PadLeft(8, '0'));
+                }
                 BitmapImage = new BarcodeHelper().GetEAN8Barcode(Row2.Text);
             }
             if(selectedBarCode == "2/5 Interleaved")
             {
+                if (Row2.Text.Length < 4)
+                {
+                    BitmapImage = new BarcodeHelper().GetInterleaved2of5Barcode(Row2.Text.PadLeft(4, '0'));
+                }
                 BitmapImage = new BarcodeHelper().GetInterleaved2of5Barcode(Row2.Text);
             }
         }
@@ -227,8 +239,6 @@ namespace LabelPrinter.ViewModel
             Row15.SelectedCharWidth = 18;
 
             CodeSize = 50;
-            /*Value = "12345";
-            Symbology = SymbologyType.Code128;*/
 
             SaveButtonCommand = new RelayCommand(SaveCommand);
             NewButtonCommand = new RelayCommand(NewCommand);
@@ -238,7 +248,6 @@ namespace LabelPrinter.ViewModel
             ExitButtonCommand = new RelayCommand(ExitCommand);
             UpdateLabelCommand = new RelayCommand(UpdateLabel);
             BitmapImage = new BarcodeHelper().GetCode39Barcode("123");
-            
         }
 
        
