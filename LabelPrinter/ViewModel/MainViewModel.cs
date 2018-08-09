@@ -222,31 +222,45 @@ namespace LabelPrinter.ViewModel
             {
                 if (Regex.IsMatch(label, "^<BAR.*>"))
                 {
-                    var barCodeLabel = Regex.Replace(label, "<BAR|\\++>|>", "");
-
-                    var barcodeImage = _barcodeHelper.GetBarcode(barcode, barCodeLabel, CodeSize, HeightOfCode);
-                    graphics.DrawImage(barcodeImage, x, y, barcodeImage.Width, barcodeImage.Height);
-
-                    x = barcodeImage.Width + 5f;
-
-                    if (barcodeImage.Height > rowHeight)
+                    string barCodeLabel = Regex.Replace(label, "<BAR|\\++>|>", "");
+                    if(barCodeLabel.Length>0)
                     {
-                        rowHeight = barcodeImage.Height;
+                        var barcodeImage = _barcodeHelper.GetBarcode(barcode, barCodeLabel, CodeSize, HeightOfCode);
+                        graphics.DrawImage(barcodeImage, x, y, barcodeImage.Width, barcodeImage.Height);
+
+                        x = barcodeImage.Width + 5f;
+
+                        if (barcodeImage.Height > rowHeight)
+                        {
+                            rowHeight = barcodeImage.Height;
+                        }
                     }
                 }
                 else if (Regex.IsMatch(label, "^<IMG.*>"))
                 {
                     var imageLabel = Regex.Replace(label, "<IMG|>", "");
 
-                    var image = System.Drawing.Image.FromFile($"{imageLabel}.bmp");
-                    graphics.DrawImage(image, x, y, image.Width, image.Height);
-
-                    x = image.Width + 5f;
-
-                    if (image.Height > rowHeight)
+                    if (File.Exists($"{imageLabel}.bmp"))
                     {
-                        rowHeight = image.Height;
+                        var image = System.Drawing.Image.FromFile($"{imageLabel}.bmp");
+                        graphics.DrawImage(image, x, y, image.Width, image.Height);
+
+                        x = image.Width + 5f;
+
+                        if (image.Height > rowHeight)
+                        {
+                            rowHeight = image.Height;
+                        }
                     }
+                    else
+                    {
+                        var font = GetRowFont(isBold, isUnderLine, isHigh, selectedCharwidth);
+
+                        graphics.DrawString("<?>", font, Brushes.Black, new PointF(x, y));
+
+                        x += label.Length * font.Size;
+                    }
+                    
                 }
                 else if (!string.IsNullOrEmpty(label))
                 {

@@ -22,17 +22,16 @@ namespace LabelPrinter.Helpers
                     return null;
             }
         }
-
         public Image GetCode39Barcode(string encodeString, int codeSize, int heightOfCode)
         {
-            heightOfCode = heightOfCode * 20;
-            codeSize = codeSize * 100;
-            BarcodeLib.Barcode b = new BarcodeLib.Barcode();
-            b.LabelFont = new Font("Sample Bar Code Font", 20, FontStyle.Bold);
-            b.IncludeLabel = true;
-            Image image = b.Encode(BarcodeLib.TYPE.CODE39, encodeString, Color.Black, Color.White, codeSize, heightOfCode);
+                heightOfCode = heightOfCode * 20;
+                codeSize = codeSize * 100;
+                BarcodeLib.Barcode b = new BarcodeLib.Barcode();
+                b.LabelFont = new Font("Sample Bar Code Font", 20, FontStyle.Bold);
+                b.IncludeLabel = true;
+                Image image = b.Encode(BarcodeLib.TYPE.CODE39, encodeString, Color.Black, Color.White, codeSize, heightOfCode);
 
-            return image;
+                return image;   
         }
         public Image GetCode128Barcode(string encodeString, int codeSize, int heightOfCode)
         {
