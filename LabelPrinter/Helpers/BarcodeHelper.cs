@@ -1,13 +1,18 @@
 ﻿using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Windows.Media.Imaging;
 
 namespace LabelPrinter.Helpers
 {
     public class BarcodeHelper
     {
-        public Image GetCode39Barcode(string encodeString,int codeSize,int heightOfCode)
+        public Image GetBarcode(string selectedBarcode, string label, int codeSize, int heightOfCode)
+        {
+            if (selectedBarcode == "Code39")
+                return GetCode39Barcode(label, codeSize, heightOfCode);
+
+            return null;
+        }
+
+        public Image GetCode39Barcode(string encodeString, int codeSize, int heightOfCode)
         {
             heightOfCode = heightOfCode * 50;
             codeSize = codeSize * 100;
@@ -29,11 +34,11 @@ namespace LabelPrinter.Helpers
 
             return image;
         }
-        public Image GetEAN13Barcode(string encodeString,int codeSize,int heightOfCode)
+        public Image GetEAN13Barcode(string encodeString, int codeSize, int heightOfCode)
         {
             heightOfCode = heightOfCode * 50;
             codeSize = codeSize * 100;
-            if (encodeString.Length<13)
+            if (encodeString.Length < 13)
             {
                 encodeString = encodeString.PadLeft(13, '0');
             }
