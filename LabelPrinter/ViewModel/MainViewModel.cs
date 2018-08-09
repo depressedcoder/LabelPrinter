@@ -165,15 +165,15 @@ namespace LabelPrinter.ViewModel
                 //row1
                 graphics.DrawString(Row1.Text, GetRowFont(Row1.IsBold, Row1.IsUnderlined, Row1.IsHigh, Row1.SelectedCharWidth), Brushes.Black, new PointF(10f, 10f));
                 if(SelectedBarCode == "Code39")
-                    graphics.DrawImage(barcodeHelper.GetCode39Barcode(Row1.Text), new PointF(90f, 10f));
+                    graphics.DrawImage(barcodeHelper.GetCode39Barcode(Row1.Text, CodeSize, HeightOfCode), new PointF(90f, 10f));
                 else if(SelectedBarCode == "Code128")
-                    graphics.DrawImage(barcodeHelper.GetCode128Barcode(Row1.Text), new PointF(90f, 10f));
+                    graphics.DrawImage(barcodeHelper.GetCode128Barcode(Row1.Text, CodeSize, HeightOfCode), new PointF(90f, 10f));
                 else if(SelectedBarCode == "EAN13")
-                    graphics.DrawImage(barcodeHelper.GetEAN13Barcode(Row1.Text), new PointF(90f, 10f));
+                    graphics.DrawImage(barcodeHelper.GetEAN13Barcode(Row1.Text, CodeSize, HeightOfCode), new PointF(90f, 10f));
                 else if (SelectedBarCode == "EAN8")
-                    graphics.DrawImage(barcodeHelper.GetEAN8Barcode(Row1.Text), new PointF(90f, 10f));
+                    graphics.DrawImage(barcodeHelper.GetEAN8Barcode(Row1.Text, CodeSize, HeightOfCode), new PointF(90f, 10f));
                 else if (SelectedBarCode == "2/5 Interleaved")
-                    graphics.DrawImage(barcodeHelper.GetInterleaved2of5Barcode(Row1.Text), new PointF(90f, 10f));
+                    graphics.DrawImage(barcodeHelper.GetInterleaved2of5Barcode(Row1.Text, CodeSize, HeightOfCode), new PointF(90f, 10f));
                 //row2
                 graphics.DrawString(Row2.Text, GetRowFont(Row2.IsBold, Row2.IsUnderlined, Row2.IsHigh, Row2.SelectedCharWidth), Brushes.Black, new PointF(10f, 100f));
                 //row3
@@ -287,8 +287,10 @@ namespace LabelPrinter.ViewModel
             Row14.SelectedCharWidth = 8;
             Row15.SelectedCharWidth = 8;
 
-            CodeSize = 50;
+            CodeSize = 2;
+            HeightOfCode = 2;
             SelectedBarCode = "Code39";
+            
 
             SaveButtonCommand = new RelayCommand(SaveCommand);
             NewButtonCommand = new RelayCommand(NewCommand);
