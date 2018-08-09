@@ -171,20 +171,30 @@ namespace LabelPrinter.ViewModel
                 //Row 3
                 var row3Height = Draw(graphics, Row3.Text, SelectedBarCode, Row3.IsBold, Row3.IsUnderlined, Row3.IsHigh, Row3.SelectedCharWidth, 10f, row2Height+ row1Height);
                 //Row 4
-                var row4Height = Draw(graphics, Row4.Text, SelectedBarCode, Row4.IsBold, Row4.IsUnderlined, Row4.IsHigh, Row4.SelectedCharWidth, 10f, row3Height + row2Height);
-
-                //Draw(graphics, Row2.Text, SelectedBarCode, Row2.IsBold, Row2.IsUnderlined, Row2.IsHigh, Row2.SelectedCharWidth, 10f, 10f);
-                //Draw(graphics, Row2.Text, SelectedBarCode, Row2.IsBold, Row2.IsUnderlined, Row2.IsHigh, Row2.SelectedCharWidth, 10f, 10f);
-                //Draw(graphics, Row2.Text, SelectedBarCode, Row2.IsBold, Row2.IsUnderlined, Row2.IsHigh, Row2.SelectedCharWidth, 10f, 10f);
-                //Draw(graphics, Row2.Text, SelectedBarCode, Row2.IsBold, Row2.IsUnderlined, Row2.IsHigh, Row2.SelectedCharWidth, 10f, 10f);
-                //Draw(graphics, Row2.Text, SelectedBarCode, Row2.IsBold, Row2.IsUnderlined, Row2.IsHigh, Row2.SelectedCharWidth, 10f, 10f);
-                //Draw(graphics, Row2.Text, SelectedBarCode, Row2.IsBold, Row2.IsUnderlined, Row2.IsHigh, Row2.SelectedCharWidth, 10f, 10f);
-                //Draw(graphics, Row2.Text, SelectedBarCode, Row2.IsBold, Row2.IsUnderlined, Row2.IsHigh, Row2.SelectedCharWidth, 10f, 10f);
-                //Draw(graphics, Row2.Text, SelectedBarCode, Row2.IsBold, Row2.IsUnderlined, Row2.IsHigh, Row2.SelectedCharWidth, 10f, 10f);
-                //Draw(graphics, Row2.Text, SelectedBarCode, Row2.IsBold, Row2.IsUnderlined, Row2.IsHigh, Row2.SelectedCharWidth, 10f, 10f);
-                //Draw(graphics, Row2.Text, SelectedBarCode, Row2.IsBold, Row2.IsUnderlined, Row2.IsHigh, Row2.SelectedCharWidth, 10f, 10f);
-                //Draw(graphics, Row2.Text, SelectedBarCode, Row2.IsBold, Row2.IsUnderlined, Row2.IsHigh, Row2.SelectedCharWidth, 10f, 10f);
-
+                var row4Height = Draw(graphics, Row4.Text, SelectedBarCode, Row4.IsBold, Row4.IsUnderlined, Row4.IsHigh, Row4.SelectedCharWidth, 10f, row3Height + row2Height + row1Height);
+                //Row5
+                var row5Height = Draw(graphics, Row5.Text, SelectedBarCode, Row5.IsBold, Row5.IsUnderlined, Row5.IsHigh, Row5.SelectedCharWidth, 10f, row4Height + row3Height + row2Height + row1Height);
+                //ROW6
+                var row6Height = Draw(graphics, Row6.Text, SelectedBarCode, Row6.IsBold, Row6.IsUnderlined, Row6.IsHigh, Row6.SelectedCharWidth, 10f, row5Height + row4Height + row3Height + row2Height + row1Height);
+                //ROW7
+                var row7Height = Draw(graphics, Row7.Text, SelectedBarCode, Row7.IsBold, Row7.IsUnderlined, Row7.IsHigh, Row7.SelectedCharWidth, 10f, row6Height + row5Height + row4Height + row3Height + row2Height + row1Height);
+                //ROW8
+                var row8Height = Draw(graphics, Row8.Text, SelectedBarCode, Row8.IsBold, Row8.IsUnderlined, Row8.IsHigh, Row8.SelectedCharWidth, 10f, row7Height + row6Height + row5Height + row4Height + row3Height + row2Height + row1Height);
+                //ROW9
+                var row9Height = Draw(graphics, Row9.Text, SelectedBarCode, Row9.IsBold, Row9.IsUnderlined, Row9.IsHigh, Row9.SelectedCharWidth, 10f, row8Height + row7Height + row6Height + row5Height + row4Height + row3Height + row2Height + row1Height);
+                //ROW10
+                var row10Height = Draw(graphics, Row10.Text, SelectedBarCode, Row10.IsBold, Row10.IsUnderlined, Row10.IsHigh, Row10.SelectedCharWidth, 10f, row9Height + row8Height + row7Height + row6Height + row5Height + row4Height + row3Height + row2Height + row1Height);
+                //ROW11
+                var row11Height = Draw(graphics, Row11.Text, SelectedBarCode, Row11.IsBold, Row11.IsUnderlined, Row11.IsHigh, Row11.SelectedCharWidth, 10f, row10Height + row9Height + row8Height + row7Height + row6Height + row5Height + row4Height + row3Height + row2Height + row1Height);
+                //ROW12
+                var row12Height = Draw(graphics, Row12.Text, SelectedBarCode, Row12.IsBold, Row12.IsUnderlined, Row12.IsHigh, Row12.SelectedCharWidth, 10f, row11Height + row10Height + row9Height + row8Height + row7Height + row6Height + row5Height + row4Height + row3Height + row2Height + row1Height);
+                //ROW13
+                var row13Height = Draw(graphics, Row13.Text, SelectedBarCode, Row13.IsBold, Row13.IsUnderlined, Row13.IsHigh, Row13.SelectedCharWidth, 10f, row12Height + row11Height + row10Height + row9Height + row8Height + row7Height + row6Height + row5Height + row4Height + row3Height + row2Height + row1Height);
+                //ROW14
+                var row14Height = Draw(graphics, Row14.Text, SelectedBarCode, Row14.IsBold, Row14.IsUnderlined, Row14.IsHigh, Row14.SelectedCharWidth, 10f, row13Height +  row12Height + row11Height + row10Height + row9Height + row8Height + row7Height + row6Height + row5Height + row4Height + row3Height + row2Height + row1Height);
+                //ROW15
+                var row15Height = Draw(graphics, Row15.Text, SelectedBarCode, Row15.IsBold, Row15.IsUnderlined, Row15.IsHigh, Row15.SelectedCharWidth, 10f, row14Height + row13Height + row12Height + row11Height + row10Height + row9Height + row8Height + row7Height + row6Height + row5Height + row4Height + row3Height + row2Height + row1Height);
+                
             }
 
             using (var ms = new MemoryStream())
