@@ -21,7 +21,7 @@ namespace LabelPrinter
 
             if (vm != null)
             {
-                vm.UpdateLabelCommand.Execute(null);
+                vm.UpdateBarCode();
             }
         }
 

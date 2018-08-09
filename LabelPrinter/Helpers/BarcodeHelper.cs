@@ -7,110 +7,62 @@ namespace LabelPrinter.Helpers
 {
     public class BarcodeHelper
     {
-        public BitmapImage GetCode39Barcode(string encodeString)
+        public Image GetCode39Barcode(string encodeString)
         {
             BarcodeLib.Barcode b = new BarcodeLib.Barcode();
-            b.LabelFont = new Font("Sample Bar Code Font", 35, FontStyle.Bold);
+            b.LabelFont = new Font("Sample Bar Code Font", 20, FontStyle.Bold);
             b.IncludeLabel = true;
-            Image image = b.Encode(BarcodeLib.TYPE.CODE39, encodeString, Color.Black, Color.White, 500, 200);
+            Image image = b.Encode(BarcodeLib.TYPE.CODE39, encodeString, Color.Black, Color.White, 200, 100);
 
-            using (var ms = new MemoryStream())
-            {
-                image.Save(ms, ImageFormat.Bmp);
-                ms.Seek(0, SeekOrigin.Begin);
-
-                var bitmapImage = new BitmapImage();
-                bitmapImage.BeginInit();
-                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                bitmapImage.StreamSource = ms;
-                bitmapImage.EndInit();
-
-                return bitmapImage;
-            }
+            return image;
         }
-        public BitmapImage GetCode128Barcode(string encodeString)
+        public Image GetCode128Barcode(string encodeString)
         {
             BarcodeLib.Barcode b = new BarcodeLib.Barcode();
-            b.LabelFont = new Font("Sample Bar Code Font", 35, FontStyle.Bold);
+            b.LabelFont = new Font("Sample Bar Code Font", 20, FontStyle.Bold);
             b.IncludeLabel = true;
-            Image image = b.Encode(BarcodeLib.TYPE.CODE128, encodeString, Color.Black, Color.White, 500, 200);
+            Image image = b.Encode(BarcodeLib.TYPE.CODE128, encodeString, Color.Black, Color.White, 200, 100);
 
-            using (var ms = new MemoryStream())
-            {
-                image.Save(ms, ImageFormat.Bmp);
-                ms.Seek(0, SeekOrigin.Begin);
-
-                var bitmapImage = new BitmapImage();
-                bitmapImage.BeginInit();
-                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                bitmapImage.StreamSource = ms;
-                bitmapImage.EndInit();
-
-                return bitmapImage;
-            }
+            return image;
         }
-        public BitmapImage GetEAN13Barcode(string encodeString)
+        public Image GetEAN13Barcode(string encodeString)
         {
-            BarcodeLib.Barcode b = new BarcodeLib.Barcode();
-            b.LabelFont = new Font("Sample Bar Code Font", 35, FontStyle.Bold);
-            b.IncludeLabel = true;
-            Image image = b.Encode(BarcodeLib.TYPE.EAN13, encodeString, Color.Black, Color.White, 500, 200);
-
-            using (var ms = new MemoryStream())
+            if(encodeString.Length<13)
             {
-                image.Save(ms, ImageFormat.Bmp);
-                ms.Seek(0, SeekOrigin.Begin);
-
-                var bitmapImage = new BitmapImage();
-                bitmapImage.BeginInit();
-                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                bitmapImage.StreamSource = ms;
-                bitmapImage.EndInit();
-
-                return bitmapImage;
+                encodeString = encodeString.PadLeft(13, '0');
             }
+            BarcodeLib.Barcode b = new BarcodeLib.Barcode();
+            b.LabelFont = new Font("Sample Bar Code Font", 20, FontStyle.Bold);
+            b.IncludeLabel = true;
+            Image image = b.Encode(BarcodeLib.TYPE.EAN13, encodeString, Color.Black, Color.White, 200, 100);
+
+            return image;
         }
-        public BitmapImage GetEAN8Barcode(string encodeString)
+        public Image GetEAN8Barcode(string encodeString)
         {
-            BarcodeLib.Barcode b = new BarcodeLib.Barcode();
-            b.LabelFont = new Font("Sample Bar Code Font", 35, FontStyle.Bold);
-            b.IncludeLabel = true;
-            Image image = b.Encode(BarcodeLib.TYPE.EAN8, encodeString, Color.Black, Color.White, 500, 200);
-
-            using (var ms = new MemoryStream())
+            if (encodeString.Length < 8)
             {
-                image.Save(ms, ImageFormat.Bmp);
-                ms.Seek(0, SeekOrigin.Begin);
-
-                var bitmapImage = new BitmapImage();
-                bitmapImage.BeginInit();
-                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                bitmapImage.StreamSource = ms;
-                bitmapImage.EndInit();
-
-                return bitmapImage;
+                encodeString = encodeString.PadLeft(8, '0');
             }
+            BarcodeLib.Barcode b = new BarcodeLib.Barcode();
+            b.LabelFont = new Font("Sample Bar Code Font", 20, FontStyle.Bold);
+            b.IncludeLabel = true;
+            Image image = b.Encode(BarcodeLib.TYPE.EAN8, encodeString, Color.Black, Color.White, 200, 100);
+
+            return image;
         }
-        public BitmapImage GetInterleaved2of5Barcode(string encodeString)
+        public Image GetInterleaved2of5Barcode(string encodeString)
         {
-            BarcodeLib.Barcode b = new BarcodeLib.Barcode();
-            b.LabelFont = new Font("Sample Bar Code Font", 35, FontStyle.Bold);
-            b.IncludeLabel = true;
-            Image image = b.Encode(BarcodeLib.TYPE.Interleaved2of5, encodeString, Color.Black, Color.White, 500, 200);
-
-            using (var ms = new MemoryStream())
+            if (encodeString.Length < 4)
             {
-                image.Save(ms, ImageFormat.Bmp);
-                ms.Seek(0, SeekOrigin.Begin);
-
-                var bitmapImage = new BitmapImage();
-                bitmapImage.BeginInit();
-                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                bitmapImage.StreamSource = ms;
-                bitmapImage.EndInit();
-
-                return bitmapImage;
+                encodeString = encodeString.PadLeft(4, '0');
             }
+            BarcodeLib.Barcode b = new BarcodeLib.Barcode();
+            b.LabelFont = new Font("Sample Bar Code Font", 20, FontStyle.Bold);
+            b.IncludeLabel = true;
+            Image image = b.Encode(BarcodeLib.TYPE.Interleaved2of5, encodeString, Color.Black, Color.White, 200, 100);
+
+            return image;
         }
 
     }

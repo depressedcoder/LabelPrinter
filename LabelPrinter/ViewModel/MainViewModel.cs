@@ -6,6 +6,9 @@ using GalaSoft.MvvmLight.Command;
 using LabelPrinter.Helpers;
 using LabelPrinter.Model;
 using System.Windows.Controls;
+using System.Drawing;
+using System.IO;
+using System.Drawing.Imaging;
 
 namespace LabelPrinter.ViewModel
 {
@@ -145,44 +148,90 @@ namespace LabelPrinter.ViewModel
             {
                 _selectedBarCode = value;
                 RaisePropertyChanged("SelectedBarCode");
-                UpdateBarCode(SelectedBarCode);
+                UpdateBarCode();
             }
         }
 
-        private void UpdateBarCode(string selectedBarCode)
+        public void UpdateBarCode()
         {
-            if(selectedBarCode == "Code39")
+            //Add Row 1
+            var bitmap = new Bitmap(LabelWidth, labelHeight);
+            var barcodeHelper = new BarcodeHelper();
+
+            using (var graphics = Graphics.FromImage(bitmap))
             {
-                BitmapImage = new BarcodeHelper().GetCode39Barcode(Row2.Text);
+                graphics.Clear(Color.White);
+                
+                //row1
+                graphics.DrawString(Row1.Text, GetRowFont(Row1.IsBold, Row1.IsUnderlined, Row1.IsHigh, Row1.SelectedCharWidth), Brushes.Black, new PointF(10f, 10f));
+                if(SelectedBarCode == "Code39")
+                    graphics.DrawImage(barcodeHelper.GetCode39Barcode(Row1.Text), new PointF(90f, 10f));
+                else if(SelectedBarCode == "Code128")
+                    graphics.DrawImage(barcodeHelper.GetCode128Barcode(Row1.Text), new PointF(90f, 10f));
+                else if(SelectedBarCode == "EAN13")
+                    graphics.DrawImage(barcodeHelper.GetEAN13Barcode(Row1.Text), new PointF(90f, 10f));
+                else if (SelectedBarCode == "EAN8")
+                    graphics.DrawImage(barcodeHelper.GetEAN8Barcode(Row1.Text), new PointF(90f, 10f));
+                else if (SelectedBarCode == "2/5 Interleaved")
+                    graphics.DrawImage(barcodeHelper.GetInterleaved2of5Barcode(Row1.Text), new PointF(90f, 10f));
+                //row2
+                graphics.DrawString(Row2.Text, GetRowFont(Row2.IsBold, Row2.IsUnderlined, Row2.IsHigh, Row2.SelectedCharWidth), Brushes.Black, new PointF(10f, 100f));
+                //row3
+                graphics.DrawString(Row3.Text, GetRowFont(Row3.IsBold, Row3.IsUnderlined, Row3.IsHigh, Row3.SelectedCharWidth), Brushes.Black, new PointF(10f, 120f));
+                //row4
+                graphics.DrawString(Row4.Text, GetRowFont(Row4.IsBold, Row4.IsUnderlined, Row4.IsHigh, Row4.SelectedCharWidth), Brushes.Black, new PointF(10f, 140f));
+                //row5
+                graphics.DrawString(Row5.Text, GetRowFont(Row5.IsBold, Row5.IsUnderlined, Row5.IsHigh, Row5.SelectedCharWidth), Brushes.Black, new PointF(10f, 160f));
+                //row6
+                graphics.DrawString(Row6.Text, GetRowFont(Row6.IsBold, Row6.IsUnderlined, Row6.IsHigh, Row6.SelectedCharWidth), Brushes.Black, new PointF(10f, 180f));
+                //row7
+                graphics.DrawString(Row7.Text, GetRowFont(Row7.IsBold, Row7.IsUnderlined, Row7.IsHigh, Row7.SelectedCharWidth), Brushes.Black, new PointF(10f, 200f));
+                //row8
+                graphics.DrawString(Row8.Text, GetRowFont(Row8.IsBold, Row8.IsUnderlined, Row8.IsHigh, Row8.SelectedCharWidth), Brushes.Black, new PointF(10f, 220f));
+                //row9
+                graphics.DrawString(Row9.Text, GetRowFont(Row9.IsBold, Row9.IsUnderlined, Row9.IsHigh, Row9.SelectedCharWidth), Brushes.Black, new PointF(10f, 240f));
+                //row10
+                graphics.DrawString(Row10.Text, GetRowFont(Row10.IsBold, Row10.IsUnderlined, Row10.IsHigh, Row10.SelectedCharWidth), Brushes.Black, new PointF(10f, 260f));
+                //row11
+                graphics.DrawString(Row11.Text, GetRowFont(Row11.IsBold, Row11.IsUnderlined, Row11.IsHigh, Row11.SelectedCharWidth), Brushes.Black, new PointF(10f, 280f));
+                //row12
+                graphics.DrawString(Row12.Text, GetRowFont(Row12.IsBold, Row12.IsUnderlined, Row12.IsHigh, Row12.SelectedCharWidth), Brushes.Black, new PointF(10f, 300f));
+                //row13
+                graphics.DrawString(Row13.Text, GetRowFont(Row13.IsBold, Row13.IsUnderlined, Row13.IsHigh, Row13.SelectedCharWidth), Brushes.Black, new PointF(10f, 320f));
+                //row14
+                graphics.DrawString(Row14.Text, GetRowFont(Row14.IsBold, Row14.IsUnderlined, Row14.IsHigh, Row14.SelectedCharWidth), Brushes.Black, new PointF(10f, 340f));
+                //row15
+                graphics.DrawString(Row15.Text, GetRowFont(Row15.IsBold, Row15.IsUnderlined, Row15.IsHigh, Row15.SelectedCharWidth), Brushes.Black, new PointF(10f, 360f));
+
             }
-            if(selectedBarCode == "Code128")
+
+            using (var ms = new MemoryStream())
             {
-                BitmapImage = new BarcodeHelper().GetCode128Barcode(Row2.Text);
+                bitmap.Save(ms, ImageFormat.Bmp);
+                ms.Seek(0, SeekOrigin.Begin);
+
+                var bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.StreamSource = ms;
+                bitmapImage.EndInit();
+
+                BitmapImage = bitmapImage;
             }
-            if(selectedBarCode == "EAN13")
+        }
+
+        Font GetRowFont(bool isBold, bool isUnderLine,bool isHigh,int selectedCharwidth)
+        {
+            FontStyle style = FontStyle.Regular;
+            if (isBold) style |= FontStyle.Bold;
+            if (isUnderLine) style |= FontStyle.Underline;
+            if(isHigh)
             {
-                if (Row2.Text.Length < 13)
-                {
-                   BitmapImage = new BarcodeHelper().GetEAN13Barcode(Row2.Text.PadLeft(13, '0'));
-                }
-                BitmapImage = new BarcodeHelper().GetEAN13Barcode(Row2.Text);
+                selectedCharwidth = selectedCharwidth * 2;
             }
-            if(selectedBarCode == "EAN8")
-            {
-                if (Row2.Text.Length < 8)
-                {
-                    BitmapImage = new BarcodeHelper().GetEAN8Barcode(Row2.Text.PadLeft(8, '0'));
-                }
-                BitmapImage = new BarcodeHelper().GetEAN8Barcode(Row2.Text);
-            }
-            if(selectedBarCode == "2/5 Interleaved")
-            {
-                if (Row2.Text.Length < 4)
-                {
-                    BitmapImage = new BarcodeHelper().GetInterleaved2of5Barcode(Row2.Text.PadLeft(4, '0'));
-                }
-                BitmapImage = new BarcodeHelper().GetInterleaved2of5Barcode(Row2.Text);
-            }
+            var font = new Font("Arial", selectedCharwidth , style|style);
+
+            return font;
         }
 
         /// <summary>
@@ -206,7 +255,7 @@ namespace LabelPrinter.ViewModel
             Row14 = new LabelRow();
             Row15 = new LabelRow();
 
-            Row1.Text = "NORSEL AG77";
+            Row1.Text = "123";
             Row2.Text = "123";
             Row3.Text = "120001++";
             Row4.Text = "'''";
@@ -222,23 +271,24 @@ namespace LabelPrinter.ViewModel
             Row14.Text = "jhj";
             Row15.Text = "hj";
 
-            Row1.SelectedCharWidth = 15;
-            Row2.SelectedCharWidth = 15;
-            Row3.SelectedCharWidth = 15;
-            Row4.SelectedCharWidth = 15;
-            Row5.SelectedCharWidth = 18;
-            Row6.SelectedCharWidth = 18;
-            Row7.SelectedCharWidth = 18;
-            Row8.SelectedCharWidth = 15;
-            Row9.SelectedCharWidth = 15;
-            Row10.SelectedCharWidth = 15;
-            Row11.SelectedCharWidth = 18;
-            Row12.SelectedCharWidth = 15;
-            Row13.SelectedCharWidth = 18;
-            Row14.SelectedCharWidth = 15;
-            Row15.SelectedCharWidth = 18;
+            Row1.SelectedCharWidth = 8;
+            Row2.SelectedCharWidth = 8;
+            Row3.SelectedCharWidth = 8;
+            Row4.SelectedCharWidth = 8;
+            Row5.SelectedCharWidth = 8;
+            Row6.SelectedCharWidth = 8;
+            Row7.SelectedCharWidth = 8;
+            Row8.SelectedCharWidth = 8;
+            Row9.SelectedCharWidth = 8;
+            Row10.SelectedCharWidth = 8;
+            Row11.SelectedCharWidth = 8;
+            Row12.SelectedCharWidth = 8;
+            Row13.SelectedCharWidth = 8;
+            Row14.SelectedCharWidth = 8;
+            Row15.SelectedCharWidth = 8;
 
             CodeSize = 50;
+            SelectedBarCode = "Code39";
 
             SaveButtonCommand = new RelayCommand(SaveCommand);
             NewButtonCommand = new RelayCommand(NewCommand);
@@ -247,7 +297,6 @@ namespace LabelPrinter.ViewModel
             PrintJobsButtonCommand = new RelayCommand(PrintJobsCommand);
             ExitButtonCommand = new RelayCommand(ExitCommand);
             UpdateLabelCommand = new RelayCommand(UpdateLabel);
-            BitmapImage = new BarcodeHelper().GetCode39Barcode("123");
         }
 
        
