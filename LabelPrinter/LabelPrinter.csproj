@@ -89,6 +89,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Helpers\BarcodeHelper.cs" />
+    <Compile Include="Helpers\GraphicsHelper.cs" />
     <Compile Include="Model\LabelRow.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
@@ -190,6 +191,9 @@
     <Content Include="EZio32.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Norsel.bmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Images\white.jpg" />
     <Resource Include="Images\Norsel.bmp" />
     <Resource Include="Images\ProfileImage.jpg" />
