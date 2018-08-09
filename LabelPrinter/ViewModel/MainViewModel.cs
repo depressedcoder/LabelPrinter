@@ -165,13 +165,13 @@ namespace LabelPrinter.ViewModel
                 graphics.Clear(Color.White);
 
                 //Row 1
-                Draw(graphics, Row1.Text, SelectedBarCode, Row1.IsBold, Row1.IsUnderlined, Row1.IsHigh, Row1.SelectedCharWidth, 10f, 10f);
+                var row1Height = Draw(graphics, Row1.Text, SelectedBarCode, Row1.IsBold, Row1.IsUnderlined, Row1.IsHigh, Row1.SelectedCharWidth, 10f, 10f);
                 //Row 2
-                Draw(graphics, Row2.Text, SelectedBarCode, Row2.IsBold, Row2.IsUnderlined, Row2.IsHigh, Row2.SelectedCharWidth, 10f, 100f);
+                var row2Height = Draw(graphics, Row2.Text, SelectedBarCode, Row2.IsBold, Row2.IsUnderlined, Row2.IsHigh, Row2.SelectedCharWidth, 10f, row1Height);
                 //Row 3
-                Draw(graphics, Row3.Text, SelectedBarCode, Row3.IsBold, Row3.IsUnderlined, Row3.IsHigh, Row3.SelectedCharWidth, 10f, 120f);
+                var row3Height = Draw(graphics, Row3.Text, SelectedBarCode, Row3.IsBold, Row3.IsUnderlined, Row3.IsHigh, Row3.SelectedCharWidth, 10f, row2Height+ row1Height);
                 //Row 4
-                Draw(graphics, Row4.Text, SelectedBarCode, Row4.IsBold, Row4.IsUnderlined, Row4.IsHigh, Row4.SelectedCharWidth, 10f, 140f);
+                var row4Height = Draw(graphics, Row4.Text, SelectedBarCode, Row4.IsBold, Row4.IsUnderlined, Row4.IsHigh, Row4.SelectedCharWidth, 10f, row3Height + row2Height);
 
                 //Draw(graphics, Row2.Text, SelectedBarCode, Row2.IsBold, Row2.IsUnderlined, Row2.IsHigh, Row2.SelectedCharWidth, 10f, 10f);
                 //Draw(graphics, Row2.Text, SelectedBarCode, Row2.IsBold, Row2.IsUnderlined, Row2.IsHigh, Row2.SelectedCharWidth, 10f, 10f);
@@ -202,9 +202,11 @@ namespace LabelPrinter.ViewModel
             }
         }
 
-        public void Draw(Graphics graphics, string input, string barcode, bool isBold, bool isUnderLine, bool isHigh, int selectedCharwidth, float x, float y)
+        public int Draw(Graphics graphics, string input, string barcode, bool isBold, bool isUnderLine, bool isHigh, int selectedCharwidth, float x, float y)
         {
             var labels = GetLabels(input);
+
+            var rowHeight = 10;
 
             foreach (var label in labels)
             {
@@ -213,30 +215,43 @@ namespace LabelPrinter.ViewModel
                     var barCodeLabel = Regex.Replace(label, "<BAR|\\++>|>", "");
 
                     var barcodeImage = _barcodeHelper.GetBarcode(barcode, barCodeLabel, CodeSize, HeightOfCode);
-                    graphics.DrawImage(barcodeImage, new PointF(x, y));
+                    graphics.DrawImage(barcodeImage, x, y, barcodeImage.Width, barcodeImage.Height);
 
                     x = barcodeImage.Width + 5f;
+
+                    if (barcodeImage.Height > rowHeight)
+                    {
+                        rowHeight = barcodeImage.Height;
+                    }
                 }
                 else if (Regex.IsMatch(label, "^<IMG.*>"))
                 {
                     var imageLabel = Regex.Replace(label, "<IMG|>", "");
 
                     var image = System.Drawing.Image.FromFile($"{imageLabel}.bmp");
-                    graphics.DrawImage(image, new PointF(x, y));
+                    graphics.DrawImage(image, x, y, image.Width, image.Height);
+
                     x = image.Width + 5f;
+
+                    if (image.Height > rowHeight)
+                    {
+                        rowHeight = image.Height;
+                    }
                 }
                 else if (!string.IsNullOrEmpty(label))
                 {
                     var font = GetRowFont(isBold, isUnderLine, isHigh, selectedCharwidth);
-                    
+
                     graphics.DrawString(label, font, Brushes.Black, new PointF(x, y));
 
                     x += label.Length * font.Size;
                 }
 
-                x += 5f;
-                graphics.DrawString(" ", GetRowFont(isBold, isUnderLine, isHigh, selectedCharwidth), Brushes.Black, new PointF(x, y));
+                //x += 5f;
+                //graphics.DrawString(" ", GetRowFont(isBold, isUnderLine, isHigh, selectedCharwidth), Brushes.Black, new PointF(x, y));
             }
+
+            return rowHeight + 10;
         }
 
 
