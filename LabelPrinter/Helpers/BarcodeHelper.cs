@@ -9,7 +9,7 @@ namespace LabelPrinter.Helpers
     {
         public Image GetCode39Barcode(string encodeString,int codeSize,int heightOfCode)
         {
-            heightOfCode = heightOfCode * 50;
+            heightOfCode = heightOfCode * 20;
             codeSize = codeSize * 100;
             BarcodeLib.Barcode b = new BarcodeLib.Barcode();
             b.LabelFont = new Font("Sample Bar Code Font", 20, FontStyle.Bold);
@@ -20,7 +20,7 @@ namespace LabelPrinter.Helpers
         }
         public Image GetCode128Barcode(string encodeString, int codeSize, int heightOfCode)
         {
-            heightOfCode = heightOfCode * 50;
+            heightOfCode = heightOfCode * 20;
             codeSize = codeSize * 100;
             BarcodeLib.Barcode b = new BarcodeLib.Barcode();
             b.LabelFont = new Font("Sample Bar Code Font", 20, FontStyle.Bold);
@@ -31,7 +31,7 @@ namespace LabelPrinter.Helpers
         }
         public Image GetEAN13Barcode(string encodeString,int codeSize,int heightOfCode)
         {
-            heightOfCode = heightOfCode * 50;
+            heightOfCode = heightOfCode * 20;
             codeSize = codeSize * 100;
             if (encodeString.Length<13)
             {
@@ -46,7 +46,7 @@ namespace LabelPrinter.Helpers
         }
         public Image GetEAN8Barcode(string encodeString, int codeSize, int heightOfCode)
         {
-            heightOfCode = heightOfCode * 50;
+            heightOfCode = heightOfCode * 20;
             codeSize = codeSize * 100;
             if (encodeString.Length < 8)
             {
@@ -61,7 +61,7 @@ namespace LabelPrinter.Helpers
         }
         public Image GetInterleaved2of5Barcode(string encodeString, int codeSize, int heightOfCode)
         {
-            heightOfCode = heightOfCode * 50;
+            heightOfCode = heightOfCode * 20;
             codeSize = codeSize * 100;
             if (encodeString.Length < 4)
             {

@@ -288,7 +288,7 @@ namespace LabelPrinter.ViewModel
             Row15.SelectedCharWidth = 8;
 
             CodeSize = 2;
-            HeightOfCode = 2;
+            HeightOfCode = 5;
             SelectedBarCode = "Code39";
             
 
