@@ -6,10 +6,21 @@ namespace LabelPrinter.Helpers
     {
         public Image GetBarcode(string selectedBarcode, string label, int codeSize, int heightOfCode)
         {
-            if (selectedBarcode == "Code39")
-                return GetCode39Barcode(label, codeSize, heightOfCode);
-
-            return null;
+            switch (selectedBarcode)
+            {
+                case "Code39":
+                    return GetCode39Barcode(label, codeSize, heightOfCode);
+                case "Code128":
+                    return GetCode128Barcode(label, codeSize, heightOfCode);
+                case "EAN13":
+                    return GetEAN13Barcode(label, codeSize, heightOfCode);
+                case "EAN8":
+                    return GetEAN8Barcode(label, codeSize, heightOfCode);
+                case "2/5 Interleaved":
+                    return GetInterleaved2of5Barcode(label, codeSize, heightOfCode);
+                default:
+                    return null;
+            }
         }
 
         public Image GetCode39Barcode(string encodeString, int codeSize, int heightOfCode)
