@@ -184,7 +184,7 @@ namespace LabelPrinter.ViewModel
                 //Draw(graphics, Row2.Text, SelectedBarCode, Row2.IsBold, Row2.IsUnderlined, Row2.IsHigh, Row2.SelectedCharWidth, 10f, 10f);
                 //Draw(graphics, Row2.Text, SelectedBarCode, Row2.IsBold, Row2.IsUnderlined, Row2.IsHigh, Row2.SelectedCharWidth, 10f, 10f);
                 //Draw(graphics, Row2.Text, SelectedBarCode, Row2.IsBold, Row2.IsUnderlined, Row2.IsHigh, Row2.SelectedCharWidth, 10f, 10f);
-                
+
             }
 
             using (var ms = new MemoryStream())
@@ -204,7 +204,7 @@ namespace LabelPrinter.ViewModel
 
         public void Draw(Graphics graphics, string input, string barcode, bool isBold, bool isUnderLine, bool isHigh, int selectedCharwidth, float x, float y)
         {
-            var labels = input.Split(' ');
+            var labels = GetLabels(input);
 
             foreach (var label in labels)
             {
@@ -222,20 +222,42 @@ namespace LabelPrinter.ViewModel
                     var imageLabel = Regex.Replace(label, "<IMG|>", "");
 
                     var image = System.Drawing.Image.FromFile($"{imageLabel}.bmp");
-                        
                     graphics.DrawImage(image, new PointF(x, y));
-
                     x = image.Width + 5f;
                 }
                 else if (!string.IsNullOrEmpty(label))
                 {
-                    graphics.DrawString(label, GetRowFont(isBold, isUnderLine, isHigh, selectedCharwidth), Brushes.Black, new PointF(x, y));
+                    var font = GetRowFont(isBold, isUnderLine, isHigh, selectedCharwidth);
+                    
+                    graphics.DrawString(label, font, Brushes.Black, new PointF(x, y));
+
+                    x += label.Length * font.Size;
                 }
 
                 x += 5f;
                 graphics.DrawString(" ", GetRowFont(isBold, isUnderLine, isHigh, selectedCharwidth), Brushes.Black, new PointF(x, y));
-
             }
+        }
+
+
+        List<string> GetLabels(string input)
+        {
+            var results = new List<string>();
+
+            var labels = Regex.Split(input, "<[^>]*>");
+
+            var matches = Regex.Matches(input, "<[^>]*>");
+
+            for (var i = 0; i < labels.Length; i++)
+            {
+                results.Add(labels[i]);
+                if (i < matches.Count)
+                {
+                    results.Add(matches[i].Value);
+                }
+            }
+
+            return results;
         }
 
         Font GetRowFont(bool isBold, bool isUnderLine, bool isHigh, int selectedCharwidth)
