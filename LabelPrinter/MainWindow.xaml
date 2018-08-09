@@ -158,10 +158,10 @@
             <ComboBox x:Name="BarcodeComboBox" ItemsSource="{Binding BarCode}" SelectedItem="{Binding SelectedBarCode}" Grid.Row="16" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Width="145.314" Margin="5,19.766,30.509,3" Grid.ColumnSpan="3" FontSize="12" Grid.RowSpan="2" />
 
             <TextBlock Text="Code Size(1-9)" Grid.Column="0" Grid.Row="18" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="18.793,0.991,18.793,0.992"/>
-            <TextBox  Grid.Column="1" Grid.Row="18" Margin="5,0,30.065,0" Text="{Binding CodeSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2" Height="21.767" VerticalAlignment="Top" FontSize="13"/>
+            <TextBox  Grid.Column="1" Grid.Row="18" Margin="5,0,30.065,0" Text="{Binding CodeSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2" Height="21.767" VerticalAlignment="Top" FontSize="13" TextChanged="UpdateLabelEvent"/>
 
             <TextBlock Text="Height of code(mm)" Grid.Column="0" Grid.Row="19" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0.156,0.991,0.157,0.991"/>
-            <TextBox  Grid.Column="1" Grid.Row="19" Margin="5,0,30.065,0" Text="{Binding HeightOfCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2" Height="21.766" VerticalAlignment="Bottom" FontSize="13"/>
+            <TextBox  Grid.Column="1" Grid.Row="19" Margin="5,0,30.065,0" Text="{Binding HeightOfCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2" Height="21.766" VerticalAlignment="Bottom" FontSize="13" TextChanged="UpdateLabelEvent"/>
 
         </Grid>
         <Grid Grid.Column="1" Grid.Row="1">
