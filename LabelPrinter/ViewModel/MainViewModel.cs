@@ -1,11 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Windows.Media.Imaging;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using LabelPrinter.Helpers;
 using LabelPrinter.Model;
-using System.Windows.Controls;
 using System.Drawing;
 using System.IO;
 using System.Drawing.Imaging;
@@ -76,8 +74,6 @@ namespace LabelPrinter.ViewModel
                 RaisePropertyChanged("IsAutomaticCuttingDevice");
             }
         }
-
-        //public int LabelWidth { get; set; } = 305;
         private int labelWidth = 315;
         public int LabelWidth
         {
@@ -91,7 +87,6 @@ namespace LabelPrinter.ViewModel
                 }
             }
         }
-        //public int LabelHeight { get; set; } = 200;
         private int labelHeight = 435;
         public int LabelHeight
         {
@@ -169,7 +164,7 @@ namespace LabelPrinter.ViewModel
                 //Row 2
                 var row2Height = Draw(graphics, Row2.Text, SelectedBarCode, Row2.IsBold, Row2.IsUnderlined, Row2.IsHigh, Row2.SelectedCharWidth, 10f, row1Height);
                 //Row 3
-                var row3Height = Draw(graphics, Row3.Text, SelectedBarCode, Row3.IsBold, Row3.IsUnderlined, Row3.IsHigh, Row3.SelectedCharWidth, 10f, row2Height+ row1Height);
+                var row3Height = Draw(graphics, Row3.Text, SelectedBarCode, Row3.IsBold, Row3.IsUnderlined, Row3.IsHigh, Row3.SelectedCharWidth, 10f, row2Height + row1Height);
                 //Row 4
                 var row4Height = Draw(graphics, Row4.Text, SelectedBarCode, Row4.IsBold, Row4.IsUnderlined, Row4.IsHigh, Row4.SelectedCharWidth, 10f, row3Height + row2Height + row1Height);
                 //Row5
@@ -191,10 +186,10 @@ namespace LabelPrinter.ViewModel
                 //ROW13
                 var row13Height = Draw(graphics, Row13.Text, SelectedBarCode, Row13.IsBold, Row13.IsUnderlined, Row13.IsHigh, Row13.SelectedCharWidth, 10f, row12Height + row11Height + row10Height + row9Height + row8Height + row7Height + row6Height + row5Height + row4Height + row3Height + row2Height + row1Height);
                 //ROW14
-                var row14Height = Draw(graphics, Row14.Text, SelectedBarCode, Row14.IsBold, Row14.IsUnderlined, Row14.IsHigh, Row14.SelectedCharWidth, 10f, row13Height +  row12Height + row11Height + row10Height + row9Height + row8Height + row7Height + row6Height + row5Height + row4Height + row3Height + row2Height + row1Height);
+                var row14Height = Draw(graphics, Row14.Text, SelectedBarCode, Row14.IsBold, Row14.IsUnderlined, Row14.IsHigh, Row14.SelectedCharWidth, 10f, row13Height + row12Height + row11Height + row10Height + row9Height + row8Height + row7Height + row6Height + row5Height + row4Height + row3Height + row2Height + row1Height);
                 //ROW15
                 var row15Height = Draw(graphics, Row15.Text, SelectedBarCode, Row15.IsBold, Row15.IsUnderlined, Row15.IsHigh, Row15.SelectedCharWidth, 10f, row14Height + row13Height + row12Height + row11Height + row10Height + row9Height + row8Height + row7Height + row6Height + row5Height + row4Height + row3Height + row2Height + row1Height);
-                
+
             }
 
             using (var ms = new MemoryStream())
@@ -212,18 +207,19 @@ namespace LabelPrinter.ViewModel
             }
         }
 
-        public int Draw(Graphics graphics, string input, string barcode, bool isBold, bool isUnderLine, bool isHigh, int selectedCharwidth, float x, float y)
+        public float Draw(Graphics graphics, string input, string barcode, bool isBold, bool isUnderLine, bool isHigh, int selectedCharwidth, float x, float y)
         {
             var labels = GetLabels(input);
 
-            var rowHeight = 10;
+            var rowHeight = y;
 
             foreach (var label in labels)
             {
                 if (Regex.IsMatch(label, "^<BAR.*>"))
                 {
                     string barCodeLabel = Regex.Replace(label, "<BAR|\\++>|>", "");
-                    if(barCodeLabel.Length>0)
+
+                    if (barCodeLabel.Length > 0)
                     {
                         var barcodeImage = _barcodeHelper.GetBarcode(barcode, barCodeLabel, CodeSize, HeightOfCode);
                         graphics.DrawImage(barcodeImage, x, y, barcodeImage.Width, barcodeImage.Height);
@@ -242,7 +238,7 @@ namespace LabelPrinter.ViewModel
 
                     if (File.Exists($"{imageLabel}.bmp"))
                     {
-                        var image = System.Drawing.Image.FromFile($"{imageLabel}.bmp");
+                        var image = Image.FromFile($"{imageLabel}.bmp");
                         graphics.DrawImage(image, x, y, image.Width, image.Height);
 
                         x = image.Width + 5f;
@@ -260,7 +256,7 @@ namespace LabelPrinter.ViewModel
 
                         x += label.Length * font.Size;
                     }
-                    
+
                 }
                 else if (!string.IsNullOrEmpty(label))
                 {
@@ -269,15 +265,16 @@ namespace LabelPrinter.ViewModel
                     graphics.DrawString(label, font, Brushes.Black, new PointF(x, y));
 
                     x += label.Length * font.Size;
-                }
 
-                //x += 5f;
-                //graphics.DrawString(" ", GetRowFont(isBold, isUnderLine, isHigh, selectedCharwidth), Brushes.Black, new PointF(x, y));
+                    if (font.Height > rowHeight)
+                    {
+                        rowHeight = font.Height;
+                    }
+                }
             }
 
-            return rowHeight + 10;
+            return rowHeight + y;
         }
-
 
         List<string> GetLabels(string input)
         {
@@ -313,9 +310,6 @@ namespace LabelPrinter.ViewModel
             return font;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the MainViewModel class.
-        /// </summary>
         public MainViewModel()
         {
             Row1 = new LabelRow();

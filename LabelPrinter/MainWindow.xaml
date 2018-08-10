@@ -13,8 +13,8 @@
         DataContext="{Binding Main, Source={StaticResource Locator}}" FontFamily="/LabelPrinter;component/Fonts/#Roboto">
     <Grid Margin="8">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1.8*"/>
-            <ColumnDefinition Width="1.9*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="2.2*"/>
             <ColumnDefinition Width="2.4*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
