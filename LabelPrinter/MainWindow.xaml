@@ -43,11 +43,20 @@
             </Grid.RowDefinitions>
 
             <TextBlock Text="Label Width:" Grid.Column="0" Grid.Row="0" Margin="5"/>
-            <TextBox  Grid.Column="1" Grid.Row="0" Margin="5" Text="{Binding LabelWidth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox  
+                Grid.Column="1"
+                Grid.Row="0" 
+                Margin="5"
+                Text="{Binding LabelWidth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                TextChanged="UpdateLabelEvent"/>
             <TextBlock Text="mm" Grid.Row="0" Grid.Column="2" Margin="5"/>
 
             <TextBlock Text="Label Height:" Grid.Row="1" Grid.Column="0" Margin="5"/>
-            <TextBox  Grid.Row="1" Grid.Column="1" Margin="5" Text="{Binding LabelHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox  Grid.Row="1" 
+                      Grid.Column="1" 
+                      Margin="5" 
+                      Text="{Binding LabelHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      TextChanged="UpdateLabelEvent"/>
             <TextBlock Text="mm" Grid.Row="1" Grid.Column="2" Margin="5"/>
 
             <TextBlock Text="Distance from left:" Grid.Row="2" Grid.Column="0" Margin="5"/>
