@@ -164,31 +164,31 @@ namespace LabelPrinter.ViewModel
                 //Row 2
                 var row2Height = Draw(graphics, Row2.Text, SelectedBarCode, Row2.IsBold, Row2.IsUnderlined, Row2.IsHigh, Row2.SelectedCharWidth, 10f, row1Height);
                 //Row 3
-                var row3Height = Draw(graphics, Row3.Text, SelectedBarCode, Row3.IsBold, Row3.IsUnderlined, Row3.IsHigh, Row3.SelectedCharWidth, 10f, row2Height + row1Height);
+                var row3Height = Draw(graphics, Row3.Text, SelectedBarCode, Row3.IsBold, Row3.IsUnderlined, Row3.IsHigh, Row3.SelectedCharWidth, 10f, row2Height);
                 //Row 4
-                var row4Height = Draw(graphics, Row4.Text, SelectedBarCode, Row4.IsBold, Row4.IsUnderlined, Row4.IsHigh, Row4.SelectedCharWidth, 10f, row3Height + row2Height + row1Height);
+                var row4Height = Draw(graphics, Row4.Text, SelectedBarCode, Row4.IsBold, Row4.IsUnderlined, Row4.IsHigh, Row4.SelectedCharWidth, 10f, row3Height);
                 //Row5
-                var row5Height = Draw(graphics, Row5.Text, SelectedBarCode, Row5.IsBold, Row5.IsUnderlined, Row5.IsHigh, Row5.SelectedCharWidth, 10f, row4Height + row3Height + row2Height + row1Height);
+                var row5Height = Draw(graphics, Row5.Text, SelectedBarCode, Row5.IsBold, Row5.IsUnderlined, Row5.IsHigh, Row5.SelectedCharWidth, 10f, row4Height);
                 //ROW6
-                var row6Height = Draw(graphics, Row6.Text, SelectedBarCode, Row6.IsBold, Row6.IsUnderlined, Row6.IsHigh, Row6.SelectedCharWidth, 10f, row5Height + row4Height + row3Height + row2Height + row1Height);
+                var row6Height = Draw(graphics, Row6.Text, SelectedBarCode, Row6.IsBold, Row6.IsUnderlined, Row6.IsHigh, Row6.SelectedCharWidth, 10f, row5Height);
                 //ROW7
-                var row7Height = Draw(graphics, Row7.Text, SelectedBarCode, Row7.IsBold, Row7.IsUnderlined, Row7.IsHigh, Row7.SelectedCharWidth, 10f, row6Height + row5Height + row4Height + row3Height + row2Height + row1Height);
+                var row7Height = Draw(graphics, Row7.Text, SelectedBarCode, Row7.IsBold, Row7.IsUnderlined, Row7.IsHigh, Row7.SelectedCharWidth, 10f, row6Height);
                 //ROW8
-                var row8Height = Draw(graphics, Row8.Text, SelectedBarCode, Row8.IsBold, Row8.IsUnderlined, Row8.IsHigh, Row8.SelectedCharWidth, 10f, row7Height + row6Height + row5Height + row4Height + row3Height + row2Height + row1Height);
+                var row8Height = Draw(graphics, Row8.Text, SelectedBarCode, Row8.IsBold, Row8.IsUnderlined, Row8.IsHigh, Row8.SelectedCharWidth, 10f, row7Height);
                 //ROW9
-                var row9Height = Draw(graphics, Row9.Text, SelectedBarCode, Row9.IsBold, Row9.IsUnderlined, Row9.IsHigh, Row9.SelectedCharWidth, 10f, row8Height + row7Height + row6Height + row5Height + row4Height + row3Height + row2Height + row1Height);
+                var row9Height = Draw(graphics, Row9.Text, SelectedBarCode, Row9.IsBold, Row9.IsUnderlined, Row9.IsHigh, Row9.SelectedCharWidth, 10f, row8Height);
                 //ROW10
-                var row10Height = Draw(graphics, Row10.Text, SelectedBarCode, Row10.IsBold, Row10.IsUnderlined, Row10.IsHigh, Row10.SelectedCharWidth, 10f, row9Height + row8Height + row7Height + row6Height + row5Height + row4Height + row3Height + row2Height + row1Height);
+                var row10Height = Draw(graphics, Row10.Text, SelectedBarCode, Row10.IsBold, Row10.IsUnderlined, Row10.IsHigh, Row10.SelectedCharWidth, 10f, row9Height);
                 //ROW11
-                var row11Height = Draw(graphics, Row11.Text, SelectedBarCode, Row11.IsBold, Row11.IsUnderlined, Row11.IsHigh, Row11.SelectedCharWidth, 10f, row10Height + row9Height + row8Height + row7Height + row6Height + row5Height + row4Height + row3Height + row2Height + row1Height);
+                var row11Height = Draw(graphics, Row11.Text, SelectedBarCode, Row11.IsBold, Row11.IsUnderlined, Row11.IsHigh, Row11.SelectedCharWidth, 10f, row10Height);
                 //ROW12
-                var row12Height = Draw(graphics, Row12.Text, SelectedBarCode, Row12.IsBold, Row12.IsUnderlined, Row12.IsHigh, Row12.SelectedCharWidth, 10f, row11Height + row10Height + row9Height + row8Height + row7Height + row6Height + row5Height + row4Height + row3Height + row2Height + row1Height);
+                var row12Height = Draw(graphics, Row12.Text, SelectedBarCode, Row12.IsBold, Row12.IsUnderlined, Row12.IsHigh, Row12.SelectedCharWidth, 10f, row11Height);
                 //ROW13
-                var row13Height = Draw(graphics, Row13.Text, SelectedBarCode, Row13.IsBold, Row13.IsUnderlined, Row13.IsHigh, Row13.SelectedCharWidth, 10f, row12Height + row11Height + row10Height + row9Height + row8Height + row7Height + row6Height + row5Height + row4Height + row3Height + row2Height + row1Height);
+                var row13Height = Draw(graphics, Row13.Text, SelectedBarCode, Row13.IsBold, Row13.IsUnderlined, Row13.IsHigh, Row13.SelectedCharWidth, 10f, row12Height);
                 //ROW14
-                var row14Height = Draw(graphics, Row14.Text, SelectedBarCode, Row14.IsBold, Row14.IsUnderlined, Row14.IsHigh, Row14.SelectedCharWidth, 10f, row13Height + row12Height + row11Height + row10Height + row9Height + row8Height + row7Height + row6Height + row5Height + row4Height + row3Height + row2Height + row1Height);
+                var row14Height = Draw(graphics, Row14.Text, SelectedBarCode, Row14.IsBold, Row14.IsUnderlined, Row14.IsHigh, Row14.SelectedCharWidth, 10f, row13Height);
                 //ROW15
-                var row15Height = Draw(graphics, Row15.Text, SelectedBarCode, Row15.IsBold, Row15.IsUnderlined, Row15.IsHigh, Row15.SelectedCharWidth, 10f, row14Height + row13Height + row12Height + row11Height + row10Height + row9Height + row8Height + row7Height + row6Height + row5Height + row4Height + row3Height + row2Height + row1Height);
+                var row15Height = Draw(graphics, Row15.Text, SelectedBarCode, Row15.IsBold, Row15.IsUnderlined, Row15.IsHigh, Row15.SelectedCharWidth, 10f, row14Height);
 
             }
 
@@ -207,11 +207,11 @@ namespace LabelPrinter.ViewModel
             }
         }
 
-        public float Draw(Graphics graphics, string input, string barcode, bool isBold, bool isUnderLine, bool isHigh, int selectedCharwidth, float x, float y)
+        float Draw(Graphics graphics, string input, string barcode, bool isBold, bool isUnderLine, bool isHigh, int selectedCharwidth, float x, float y)
         {
             var labels = GetLabels(input);
 
-            var rowHeight = y;
+            var rowHeight = 10;
 
             foreach (var label in labels)
             {
@@ -258,7 +258,7 @@ namespace LabelPrinter.ViewModel
                     }
 
                 }
-                else if (!string.IsNullOrEmpty(label))
+                else
                 {
                     var font = GetRowFont(isBold, isUnderLine, isHigh, selectedCharwidth);
 
@@ -276,20 +276,61 @@ namespace LabelPrinter.ViewModel
             return rowHeight + y;
         }
 
+        //List<string> GetLabels(string input)
+        //{
+        //    var results = new List<string>();
+
+        //    if (string.IsNullOrEmpty(input))
+        //    {
+        //        return results;
+        //    }
+
+        //    var labels = Regex.Split(input, "<.+?>");
+
+        //    var matches = Regex.Matches(input, "<.+?>");
+
+        //    for (var i = 0; i < labels.Length; i++)
+        //    {
+        //       if(!string.IsNullOrEmpty(labels[i]))
+        //            results.Add(labels[i]);
+
+        //        if (i < matches.Count)
+        //            results.Add(matches[i].Value);
+        //    }
+
+        //    return results;
+        //}
+
         List<string> GetLabels(string input)
         {
             var results = new List<string>();
 
-            var labels = Regex.Split(input, "<[^>]*>");
-
-            var matches = Regex.Matches(input, "<[^>]*>");
-
-            for (var i = 0; i < labels.Length; i++)
+            if (string.IsNullOrEmpty(input))
             {
-                results.Add(labels[i]);
-                if (i < matches.Count)
+                return results;
+            }
+
+            var matches = Regex.Matches(input, "<.+?>");
+
+            for (var i = 0; i < matches.Count; i++)
+            {
+                var idx = input.IndexOf(matches[i].Value);
+
+                var token = input.Substring(0, idx);
+
+                if (!string.IsNullOrEmpty(token))
                 {
-                    results.Add(matches[i].Value);
+                    results.Add(token);
+                }
+
+                results.Add(matches[i].Value);
+
+                input = input.Substring(idx + matches[i].Value.Length);
+
+                if (!Regex.IsMatch(input, "<.+?>"))
+                {
+                    if (!string.IsNullOrEmpty(input))
+                        results.Add(input);
                 }
             }
 
@@ -328,22 +369,6 @@ namespace LabelPrinter.ViewModel
             Row14 = new LabelRow();
             Row15 = new LabelRow();
 
-            Row1.Text = "123";
-            Row2.Text = "123";
-            Row3.Text = "120001++";
-            Row4.Text = "'''";
-            Row5.Text = "jhjhj";
-            Row6.Text = "jh";
-            Row7.Text = "jh";
-            Row8.Text = "jhjh";
-            Row9.Text = "jhjh";
-            Row10.Text = "jhjh";
-            Row11.Text = "jhjj";
-            Row12.Text = "jh";
-            Row13.Text = "kj";
-            Row14.Text = "jhj";
-            Row15.Text = "hj";
-
             Row1.SelectedCharWidth = 8;
             Row2.SelectedCharWidth = 8;
             Row3.SelectedCharWidth = 8;
@@ -376,8 +401,6 @@ namespace LabelPrinter.ViewModel
             _barcodeHelper = new BarcodeHelper();
         }
 
-
-
         private void UpdateLabel()
         {
 
@@ -407,6 +430,7 @@ namespace LabelPrinter.ViewModel
         {
             //New Button
         }
+
         private void SaveCommand()
         {
 
