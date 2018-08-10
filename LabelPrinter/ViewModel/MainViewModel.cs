@@ -312,6 +312,14 @@ namespace LabelPrinter.ViewModel
 
             var matches = Regex.Matches(input, "<.+?>");
 
+
+            if (matches.Count == 0)
+            {
+                results.Add(input);
+
+                return results;
+            }
+
             for (var i = 0; i < matches.Count; i++)
             {
                 var idx = input.IndexOf(matches[i].Value);
