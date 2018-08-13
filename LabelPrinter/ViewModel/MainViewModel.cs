@@ -222,7 +222,7 @@ namespace LabelPrinter.ViewModel
                     {
                         using (var barcodeHelper = new BarcodeHelper())
                         {
-                            var barcodeImage = barcodeHelper.GetBarcode(barcode, barCodeLabel, CodeSize*100, HeightOfCode*20);
+                            var barcodeImage = barcodeHelper.GetBarcode(barcode, barCodeLabel, CodeSize, HeightOfCode);
                             graphics.DrawImage(barcodeImage, x, y, barcodeImage.Width, barcodeImage.Height);
 
                             x = barcodeImage.Width;
