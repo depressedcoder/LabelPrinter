@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:LabelPrinter"
         mc:Ignorable="d"
         Title="Label 4.1 - Demo" 
-        Height="800" 
+        Height="720" 
         Width="1080"
         FontSize="15"
         WindowStartupLocation="CenterScreen"

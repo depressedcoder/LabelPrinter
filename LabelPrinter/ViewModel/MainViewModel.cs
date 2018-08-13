@@ -233,14 +233,41 @@ namespace LabelPrinter.ViewModel
                             }
                         }
                     }
+                    else
+                    {
+                        using (var barcodeHelper = new BarcodeHelper())
+                        {
+                            var barcodeImage = barcodeHelper.GetBarcode(barcode, "0", CodeSize * 100, HeightOfCode * 20);
+                            graphics.DrawImage(barcodeImage, x, y, barcodeImage.Width, barcodeImage.Height);
+
+                            x = barcodeImage.Width;
+
+                            if (barcodeImage.Height > rowHeight)
+                            {
+                                rowHeight = barcodeImage.Height;
+                            }
+                        }
+                    }
                 }
                 else if (Regex.IsMatch(label, "^<IMG.*>"))
                 {
                     var imageLabel = Regex.Replace(label, "<IMG|>", "");
-
+                    
                     if (File.Exists($"{imageLabel}.bmp"))
                     {
                         var image = Image.FromFile($"{imageLabel}.bmp");
+                        graphics.DrawImage(image, x, y, image.Width, image.Height);
+
+                        x = image.Width;
+
+                        if (image.Height > rowHeight)
+                        {
+                            rowHeight = image.Height;
+                        }
+                    }
+                    else if(label == "<IMG>")
+                    {
+                        var image = Image.FromFile("Norsel.bmp");
                         graphics.DrawImage(image, x, y, image.Width, image.Height);
 
                         x = image.Width;
@@ -257,6 +284,7 @@ namespace LabelPrinter.ViewModel
                         graphics.DrawString("<?>", font, Brushes.Black, new PointF(x, y));
 
                         x += label.Length * font.Size;
+
                     }
 
                 }
