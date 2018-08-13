@@ -1,5 +1,8 @@
-﻿using System;
+﻿
+using iTextSharp.text.pdf;
+using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -18,6 +21,8 @@ namespace LabelPrinter.Helpers
 
         public Image GetBarcode(string selectedBarcode, string label, int width, int height)
         {
+            width = width * 100;
+            height = height * 20;
             switch (selectedBarcode)
             {
                 case "Code39":
@@ -79,6 +84,20 @@ namespace LabelPrinter.Helpers
                         }
                         else
                             return _barcode.Encode(BarcodeLib.TYPE.Interleaved2of5, "0000", Color.Black, Color.White, width, height);
+                case "DataMatrix":
+                    {
+                        BarcodeDatamatrix barcodeDatamatrix = new BarcodeDatamatrix
+                        {
+                            Height = 24,
+                            Width = 24,
+                            Options = BarcodeDatamatrix.DM_AUTO,
+                            ForceSquareSize = true
+                        };
+                        //https://online-barcode-reader.inliteresearch.com/
+                        barcodeDatamatrix.Generate(label);
+                        var image = barcodeDatamatrix.CreateDrawingImage(Color.Black, Color.White);
+                        var newImage = Resize(image, 48, 48, false);
+                        return newImage;
                     }
                 default:
                     return null;
@@ -88,6 +107,32 @@ namespace LabelPrinter.Helpers
         public void Dispose()
         {
             _barcode.Dispose();
+        }
+
+        Image Resize(Image image, int newWidth, int maxHeight, bool onlyResizeIfWider)
+        {
+            if (onlyResizeIfWider && image.Width <= newWidth) newWidth = image.Width;
+
+            var newHeight = image.Height * newWidth / image.Width;
+            if (newHeight > maxHeight)
+            {
+                // Resize with height instead  
+                newWidth = image.Width * maxHeight / image.Height;
+                newHeight = maxHeight;
+            }
+
+            var res = new Bitmap(newWidth, newHeight);
+
+            using (var graphic = Graphics.FromImage(res))
+            {
+                graphic.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                graphic.SmoothingMode = SmoothingMode.HighQuality;
+                graphic.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                graphic.CompositingQuality = CompositingQuality.HighQuality;
+                graphic.DrawImage(image, 0, 0, newWidth, newHeight);
+            }
+
+            return res;
         }
     }
 }
