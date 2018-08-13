@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace LabelPrinter.Helpers
@@ -23,7 +24,9 @@ namespace LabelPrinter.Helpers
                     if (Regex.IsMatch(label, @"^[-+]?[0-9]*\.?[0-9]+$"))
                         return _barcode.Encode(BarcodeLib.TYPE.CODE39, label, Color.Black, Color.White, width, height);
                     else
+                    {
                         return _barcode.Encode(BarcodeLib.TYPE.CODE39, "0", Color.Black, Color.White, width, height);
+                    } 
                 case "Code128":
                     if (Regex.IsMatch(label, @"^[-+]?[0-9]*\.?[0-9]+$"))
                         return _barcode.Encode(BarcodeLib.TYPE.CODE128, label, Color.Black, Color.White, width, height);
