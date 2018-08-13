@@ -89,7 +89,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Helpers\BarcodeHelper.cs" />
-    <Compile Include="Helpers\GraphicsHelper.cs" />
     <Compile Include="Model\LabelRow.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />

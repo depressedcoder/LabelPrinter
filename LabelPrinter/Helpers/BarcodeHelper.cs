@@ -1,105 +1,61 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 namespace LabelPrinter.Helpers
 {
-    public class BarcodeHelper
+    public class BarcodeHelper : IDisposable
     {
-        public Image GetBarcode(string selectedBarcode, string label, int codeSize, int heightOfCode)
+        BarcodeLib.Barcode _barcode;
+
+        public BarcodeHelper()
+        {
+            _barcode = new BarcodeLib.Barcode();
+            _barcode.Alignment = BarcodeLib.AlignmentPositions.LEFT;
+        }
+
+        public Image GetBarcode(string selectedBarcode, string label, int width, int height)
         {
             switch (selectedBarcode)
             {
                 case "Code39":
-                    return GetCode39Barcode(label, codeSize, heightOfCode);
+                    return _barcode.Encode(BarcodeLib.TYPE.CODE39, label, Color.Black, Color.White, width, height);
                 case "Code128":
-                    return GetCode128Barcode(label, codeSize, heightOfCode);
+                    return _barcode.Encode(BarcodeLib.TYPE.CODE128, label, Color.Black, Color.White, width, height);
                 case "EAN13":
-                    return GetEAN13Barcode(label, codeSize, heightOfCode);
+                    {
+                        if (label.Length < 13)
+                        {
+                            label = label.PadLeft(13, '0');
+                        }
+                        _barcode.IncludeLabel = true;
+                        _barcode.LabelPosition = BarcodeLib.LabelPositions.BOTTOMCENTER;
+                        return _barcode.Encode(BarcodeLib.TYPE.EAN13, label, Color.Black, Color.White, width, height);
+                    }
                 case "EAN8":
-                    return GetEAN8Barcode(label, codeSize, heightOfCode);
+                    {
+                        if (label.Length < 8)
+                        {
+                            label = label.PadLeft(8, '0');
+                        }
+                        _barcode.IncludeLabel = true;
+                        return _barcode.Encode(BarcodeLib.TYPE.EAN8, label, Color.Black, Color.White, width, height);
+                    }
                 case "2/5 Interleaved":
-                    return GetInterleaved2of5Barcode(label, codeSize, heightOfCode);
+                    {
+                        if (label.Length < 4)
+                        {
+                            label = label.PadLeft(4, '0');
+                        }
+                        return _barcode.Encode(BarcodeLib.TYPE.Interleaved2of5, label, Color.Black, Color.White, width, height);
+                    }
                 default:
                     return null;
             }
         }
 
-        public Image GetCode39Barcode(string encodeString, int codeSize, int heightOfCode)
+        public void Dispose()
         {
-            heightOfCode = heightOfCode * 20;
-            codeSize = codeSize * 100;
-            BarcodeLib.Barcode b = new BarcodeLib.Barcode();
-            b.LabelFont = new Font("Sample Bar Code Font", 20, FontStyle.Bold);
-            b.Alignment = BarcodeLib.AlignmentPositions.LEFT;
-            b.IncludeLabel = true;
-
-            Image image = b.Encode(BarcodeLib.TYPE.CODE39, encodeString, Color.Black, Color.White, codeSize, heightOfCode);
-
-            return image;
+            _barcode.Dispose();
         }
-
-        public Image GetCode128Barcode(string encodeString, int codeSize, int heightOfCode)
-        {
-            heightOfCode = heightOfCode * 20;
-            codeSize = codeSize * 100;
-            BarcodeLib.Barcode b = new BarcodeLib.Barcode();
-            b.LabelFont = new Font("Sample Bar Code Font", 20, FontStyle.Bold);
-            b.IncludeLabel = true;
-            b.Alignment = BarcodeLib.AlignmentPositions.LEFT;
-            Image image = b.Encode(BarcodeLib.TYPE.CODE128, encodeString, Color.Black, Color.White, codeSize, heightOfCode);
-
-            return image;
-        }
-
-        public Image GetEAN13Barcode(string encodeString, int codeSize, int heightOfCode)
-        {
-            heightOfCode = heightOfCode * 20;
-            codeSize = codeSize * 100;
-            if (encodeString.Length < 13)
-            {
-                encodeString = encodeString.PadLeft(13, '0');
-            }
-            BarcodeLib.Barcode b = new BarcodeLib.Barcode();
-            b.LabelFont = new Font("Sample Bar Code Font", 20, FontStyle.Bold);
-            b.IncludeLabel = true;
-            b.Alignment = BarcodeLib.AlignmentPositions.LEFT;
-            Image image = b.Encode(BarcodeLib.TYPE.EAN13, encodeString, Color.Black, Color.White, codeSize, heightOfCode);
-
-            return image;
-        }
-
-        public Image GetEAN8Barcode(string encodeString, int codeSize, int heightOfCode)
-        {
-            heightOfCode = heightOfCode * 20;
-            codeSize = codeSize * 100;
-            if (encodeString.Length < 8)
-            {
-                encodeString = encodeString.PadLeft(8, '0');
-            }
-            BarcodeLib.Barcode b = new BarcodeLib.Barcode();
-            b.LabelFont = new Font("Sample Bar Code Font", 20, FontStyle.Bold);
-            b.IncludeLabel = true;
-            b.Alignment = BarcodeLib.AlignmentPositions.LEFT;
-            Image image = b.Encode(BarcodeLib.TYPE.EAN8, encodeString, Color.Black, Color.White, codeSize, heightOfCode);
-
-            return image;
-        }
-
-        public Image GetInterleaved2of5Barcode(string encodeString, int codeSize, int heightOfCode)
-        {
-            heightOfCode = heightOfCode * 20;
-            codeSize = codeSize * 100;
-            if (encodeString.Length < 4)
-            {
-                encodeString = encodeString.PadLeft(4, '0');
-            }
-            BarcodeLib.Barcode b = new BarcodeLib.Barcode();
-            b.LabelFont = new Font("Sample Bar Code Font", 20, FontStyle.Bold);
-            b.IncludeLabel = true;
-            b.Alignment = BarcodeLib.AlignmentPositions.LEFT;
-            Image image = b.Encode(BarcodeLib.TYPE.Interleaved2of5, encodeString, Color.Black, Color.White, codeSize, heightOfCode);
-
-            return image;
-        }
-
     }
 }

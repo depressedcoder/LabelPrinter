@@ -26,7 +26,6 @@ namespace LabelPrinter.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
-        BarcodeHelper _barcodeHelper;
         private string value;
         public string Value
         {
@@ -221,14 +220,17 @@ namespace LabelPrinter.ViewModel
 
                     if (barCodeLabel.Length > 0)
                     {
-                        var barcodeImage = _barcodeHelper.GetBarcode(barcode, barCodeLabel, CodeSize, HeightOfCode);
-                        graphics.DrawImage(barcodeImage, x, y, barcodeImage.Width, barcodeImage.Height);
-
-                        x = barcodeImage.Width + 5f;
-
-                        if (barcodeImage.Height > rowHeight)
+                        using (var barcodeHelper = new BarcodeHelper())
                         {
-                            rowHeight = barcodeImage.Height;
+                            var barcodeImage = barcodeHelper.GetBarcode(barcode, barCodeLabel, CodeSize*100, HeightOfCode*20);
+                            graphics.DrawImage(barcodeImage, x, y, barcodeImage.Width, barcodeImage.Height);
+
+                            x = barcodeImage.Width;
+
+                            if (barcodeImage.Height > rowHeight)
+                            {
+                                rowHeight = barcodeImage.Height;
+                            }
                         }
                     }
                 }
@@ -241,7 +243,7 @@ namespace LabelPrinter.ViewModel
                         var image = Image.FromFile($"{imageLabel}.bmp");
                         graphics.DrawImage(image, x, y, image.Width, image.Height);
 
-                        x = image.Width + 5f;
+                        x = image.Width;
 
                         if (image.Height > rowHeight)
                         {
@@ -276,31 +278,6 @@ namespace LabelPrinter.ViewModel
             return rowHeight + y;
         }
 
-        //List<string> GetLabels(string input)
-        //{
-        //    var results = new List<string>();
-
-        //    if (string.IsNullOrEmpty(input))
-        //    {
-        //        return results;
-        //    }
-
-        //    var labels = Regex.Split(input, "<.+?>");
-
-        //    var matches = Regex.Matches(input, "<.+?>");
-
-        //    for (var i = 0; i < labels.Length; i++)
-        //    {
-        //       if(!string.IsNullOrEmpty(labels[i]))
-        //            results.Add(labels[i]);
-
-        //        if (i < matches.Count)
-        //            results.Add(matches[i].Value);
-        //    }
-
-        //    return results;
-        //}
-
         List<string> GetLabels(string input)
         {
             var results = new List<string>();
@@ -316,13 +293,12 @@ namespace LabelPrinter.ViewModel
             if (matches.Count == 0)
             {
                 results.Add(input);
-
                 return results;
             }
 
             for (var i = 0; i < matches.Count; i++)
             {
-                var idx = input.IndexOf(matches[i].Value);
+                var idx = input.IndexOf(matches[i].Value, System.StringComparison.Ordinal);
 
                 var token = input.Substring(0, idx);
 
@@ -405,8 +381,6 @@ namespace LabelPrinter.ViewModel
             PrintJobsButtonCommand = new RelayCommand(PrintJobsCommand);
             ExitButtonCommand = new RelayCommand(ExitCommand);
             UpdateLabelCommand = new RelayCommand(UpdateLabel);
-
-            _barcodeHelper = new BarcodeHelper();
         }
 
         private void UpdateLabel()
