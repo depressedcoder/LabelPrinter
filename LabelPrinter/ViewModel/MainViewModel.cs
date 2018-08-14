@@ -16,7 +16,6 @@ namespace LabelPrinter.ViewModel
             //Add Row 1
             var bitmap = new Bitmap(LabelWidth, labelHeight);
 
-
             using (var graphics = Graphics.FromImage(bitmap))
             {
                 graphics.Clear(Color.White);
@@ -68,7 +67,19 @@ namespace LabelPrinter.ViewModel
                 BitmapImage = bitmapImage;
             }
         }
-
+        /// <summary>
+        /// Used For Drawing the Barcodes,Images and texts
+        /// </summary>
+        /// <param name="graphics"></param>
+        /// <param name="input">All the Input from a particular text field</param>
+        /// <param name="barcode">Design of the barcode</param>
+        /// <param name="isBold">Text Bold</param>
+        /// <param name="isUnderLine">Text UnderLined</param>
+        /// <param name="isHigh">If True then returns the double of selected char Width value</param>
+        /// <param name="selectedCharwidth">Text Font Size</param>
+        /// <param name="x">Drawing position of the Label</param>
+        /// <param name="y">Drawing position of the Label</param>
+        /// <returns>Returns the Next Rows starting point of Y coordinate</returns>
         float Draw(Graphics graphics, string input, string barcode, bool isBold, bool isUnderLine, bool isHigh, int selectedCharwidth, float x, float y)
         {
             var labels = GetLabels(input);
@@ -148,7 +159,6 @@ namespace LabelPrinter.ViewModel
 
             return rowHeight + y;
         }
-
         List<string> GetLabels(string input)
         {
             var results = new List<string>();
@@ -205,7 +215,6 @@ namespace LabelPrinter.ViewModel
 
             return font;
         }
-
         void UpdateLabel()
         {
 

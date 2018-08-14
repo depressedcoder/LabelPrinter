@@ -6,9 +6,8 @@ namespace LabelPrinter.Model
     public class LabelRow: ViewModelBase
     {
         string _text;
-
         /// <summary>
-        /// 
+        /// Used for all the 15 text inputs
         /// </summary>
         public string Text
         {
@@ -19,16 +18,14 @@ namespace LabelPrinter.Model
                 RaisePropertyChanged(nameof(Text));
             }
         }
-
         /// <summary>
-        /// 
+        /// Used for the Char Widths ComboBox
         /// </summary>
         public List<int> CharWidths { get; set; } = new List<int> { 6, 8, 10, 12, 15, 18, 20, 24 };
 
         int _selectedCharWidth;
-
         /// <summary>
-        /// 
+        /// Used For Selected Char Width
         /// </summary>
         public int SelectedCharWidth
         {
@@ -50,9 +47,8 @@ namespace LabelPrinter.Model
         }
 
         bool _isHigh;
-
         /// <summary>
-        /// 
+        /// the text input font size is doubled with the selected char Width When its Checked 
         /// </summary>
         public bool IsHigh
         {
@@ -73,9 +69,8 @@ namespace LabelPrinter.Model
         }
 
         bool _isBold;
-
         /// <summary>
-        /// 
+        /// Text input is Bold When Checked
         /// </summary>
         public bool IsBold
         {
@@ -90,7 +85,7 @@ namespace LabelPrinter.Model
         bool _isUnderLined;
 
         /// <summary>
-        /// 
+        /// Text input is Underlined When Checked 
         /// </summary>
         public bool IsUnderlined
         {
@@ -105,7 +100,7 @@ namespace LabelPrinter.Model
         int _charWidth;
 
         /// <summary>
-        /// 
+        /// Used for the Char Width
         /// </summary>
         public int CharWidth
         {

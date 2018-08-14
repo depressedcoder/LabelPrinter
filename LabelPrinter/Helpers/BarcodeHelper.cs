@@ -19,7 +19,14 @@ namespace LabelPrinter.Helpers
                 LabelPosition = BarcodeLib.LabelPositions.BOTTOMCENTER
             };
         }
-
+        /// <summary>
+        /// For Generating All the Barcodes
+        /// </summary>
+        /// <param name="selectedBarcode"></param>
+        /// <param name="barCodeLabel"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <returns></returns>
         public Image GetBarcode(string selectedBarcode, string barCodeLabel, int width, int height)
         {
             width = width * 100;

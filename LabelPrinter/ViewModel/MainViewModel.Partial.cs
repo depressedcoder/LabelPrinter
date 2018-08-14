@@ -42,7 +42,7 @@ namespace LabelPrinter.ViewModel
             set
             {
                 _bitmapImage = value;
-                RaisePropertyChanged("BitmapImage");
+                RaisePropertyChanged(nameof(BitmapImage));
             }
         }
 
@@ -57,7 +57,7 @@ namespace LabelPrinter.ViewModel
             set
             {
                 _howManyCopies = value;
-                RaisePropertyChanged("HowManyCoppies");
+                RaisePropertyChanged(nameof(HowManyCoppies));
             }
         }
 
@@ -72,6 +72,9 @@ namespace LabelPrinter.ViewModel
             }
         }
         int labelWidth = 315;
+        /// <summary>
+        /// Used For The Width of Label
+        /// </summary>
         public int LabelWidth
         {
             get { return labelWidth; }
@@ -80,11 +83,14 @@ namespace LabelPrinter.ViewModel
                 if (value != labelWidth)
                 {
                     labelWidth = value;
-                    RaisePropertyChanged("LabelWidth");
+                    RaisePropertyChanged(nameof(LabelWidth));
                 }
             }
         }
         int labelHeight = 435;
+        /// <summary>
+        /// used for the height of Label
+        /// </summary>
         public int LabelHeight
         {
             get { return labelHeight; }
@@ -93,48 +99,61 @@ namespace LabelPrinter.ViewModel
                 if (value != labelHeight)
                 {
                     labelHeight = value;
-                    RaisePropertyChanged("LabelHeight");
+                    RaisePropertyChanged(nameof(LabelHeight));
                 }
             }
         }
 
         int _distanceFromLeft;
+        /// <summary>
+        /// Distance from left for the Label
+        /// </summary>
         public int DistanceFromLeft
         {
             get { return _distanceFromLeft; }
             set
             {
                 _distanceFromLeft = value;
-                RaisePropertyChanged("DistanceFromLeft");
+                RaisePropertyChanged(nameof(DistanceFromLeft));
             }
         }
 
         int _codeSize;
-
+        /// <summary>
+        /// Used for Barcode Width
+        /// </summary>
         public int CodeSize
         {
             get { return _codeSize; }
             set
             {
                 _codeSize = value;
-                RaisePropertyChanged("CodeSize");
+                RaisePropertyChanged(nameof(CodeSize));
             }
         }
 
         int _heightOfCode;
+        /// <summary>
+        /// Used for Barcode Height
+        /// </summary>
         public int HeightOfCode
         {
             get { return _heightOfCode; }
             set
             {
                 _heightOfCode = value;
-                RaisePropertyChanged("HeightOfCode");
+                RaisePropertyChanged(nameof(HeightOfCode));
             }
         }
-
+        /// <summary>
+        /// List of all BarCodes
+        /// </summary>
         public List<string> BarCode { get; set; } = new List<string> { "2/5 Interleaved", "Code128", "Code39", "DataMatrix", "EAN13", "EAN8" };
-        string _selectedBarCode;
 
+        string _selectedBarCode;
+        /// <summary>
+        /// Selected Barcode From  the Combobox
+        /// </summary>
         public string SelectedBarCode
         {
             get { return _selectedBarCode; }
@@ -164,21 +183,21 @@ namespace LabelPrinter.ViewModel
             Row14 = new LabelRow();
             Row15 = new LabelRow();
 
-            Row1.SelectedCharWidth = 8;
-            Row2.SelectedCharWidth = 8;
-            Row3.SelectedCharWidth = 8;
-            Row4.SelectedCharWidth = 8;
-            Row5.SelectedCharWidth = 8;
-            Row6.SelectedCharWidth = 8;
-            Row7.SelectedCharWidth = 8;
-            Row8.SelectedCharWidth = 8;
-            Row9.SelectedCharWidth = 8;
-            Row10.SelectedCharWidth = 8;
-            Row11.SelectedCharWidth = 8;
-            Row12.SelectedCharWidth = 8;
-            Row13.SelectedCharWidth = 8;
-            Row14.SelectedCharWidth = 8;
-            Row15.SelectedCharWidth = 8;
+            Row1.SelectedCharWidth = Row1.CharWidths.FirstOrDefault();
+            Row2.SelectedCharWidth = Row2.CharWidths.FirstOrDefault();
+            Row3.SelectedCharWidth = Row3.CharWidths.FirstOrDefault();
+            Row4.SelectedCharWidth = Row4.CharWidths.FirstOrDefault();
+            Row5.SelectedCharWidth = Row5.CharWidths.FirstOrDefault();
+            Row6.SelectedCharWidth = Row6.CharWidths.FirstOrDefault();
+            Row7.SelectedCharWidth = Row7.CharWidths.FirstOrDefault();
+            Row8.SelectedCharWidth = Row8.CharWidths.FirstOrDefault();
+            Row9.SelectedCharWidth = Row9.CharWidths.FirstOrDefault();
+            Row10.SelectedCharWidth = Row10.CharWidths.FirstOrDefault();
+            Row11.SelectedCharWidth = Row11.CharWidths.FirstOrDefault();
+            Row12.SelectedCharWidth = Row12.CharWidths.FirstOrDefault();
+            Row13.SelectedCharWidth = Row13.CharWidths.FirstOrDefault();
+            Row14.SelectedCharWidth = Row14.CharWidths.FirstOrDefault();
+            Row15.SelectedCharWidth = Row15.CharWidths.FirstOrDefault();
 
             CodeSize = 2;
             HeightOfCode = 5;
