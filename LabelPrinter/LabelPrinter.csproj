@@ -94,6 +94,7 @@
     <Compile Include="Helpers\BarcodeHelper.cs" />
     <Compile Include="Model\LabelRow.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\MainViewModel.Partial.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

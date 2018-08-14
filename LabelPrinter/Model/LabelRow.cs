@@ -5,29 +5,38 @@ namespace LabelPrinter.Model
 {
     public class LabelRow: ViewModelBase
     {
-        private string _text;
+        string _text;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public string Text
         {
             get { return _text; }
             set
             {
                 _text = value;
-                RaisePropertyChanged("Text");
+                RaisePropertyChanged(nameof(Text));
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public List<int> CharWidths { get; set; } = new List<int> { 6, 8, 10, 12, 15, 18, 20, 24 };
 
-        private int _selectedCharWidth;
+        int _selectedCharWidth;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public int SelectedCharWidth
         {
             get { return _selectedCharWidth; }
             set
             {
                 _selectedCharWidth = value;
-                RaisePropertyChanged("SelectedCharWidth");
+                RaisePropertyChanged(nameof(SelectedCharWidth));
 
                 if (IsHigh)
                 {
@@ -40,8 +49,11 @@ namespace LabelPrinter.Model
             }
         }
 
-        private bool _isHigh;
+        bool _isHigh;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public bool IsHigh
         {
             get { return _isHigh; }
@@ -56,36 +68,45 @@ namespace LabelPrinter.Model
                 {
                     CharWidth = CharWidth/2;
                 }
-                RaisePropertyChanged("IsHigh");
+                RaisePropertyChanged(nameof(IsHigh));
             }
         }
 
-        private bool _isBold;
+        bool _isBold;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public bool IsBold
         {
             get { return _isBold; }
             set
             {
                 _isBold = value;
-                RaisePropertyChanged("IsBold");
+                RaisePropertyChanged(nameof(IsBold));
             }
         }
 
-        private bool _isUnderLined;
+        bool _isUnderLined;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public bool IsUnderlined
         {
             get { return _isUnderLined; }
             set
             {
                 _isUnderLined = value;
-                RaisePropertyChanged("IsUnderlined");
+                RaisePropertyChanged(nameof(IsUnderlined));
             }
         }
 
-        private int _charWidth;
+        int _charWidth;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public int CharWidth
         {
             get
@@ -97,7 +118,7 @@ namespace LabelPrinter.Model
             {
                 _charWidth = value;
 
-                RaisePropertyChanged("CharWidth");
+                RaisePropertyChanged(nameof(CharWidth));
             }
         }
 
