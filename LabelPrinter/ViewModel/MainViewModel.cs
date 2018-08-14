@@ -216,36 +216,16 @@ namespace LabelPrinter.ViewModel
             {
                 if (Regex.IsMatch(label, "^<BAR.*>"))
                 {
-                    string barCodeLabel = Regex.Replace(label, "<BAR|\\++>|>", "");
-
-                    if (barCodeLabel.Length > 0)
+                    using (var barcodeHelper = new BarcodeHelper())
                     {
-                        using (var barcodeHelper = new BarcodeHelper())
+                        var barcodeImage = barcodeHelper.GetBarcode(barcode,label, CodeSize, HeightOfCode);
+                        graphics.DrawImage(barcodeImage, x, y, barcodeImage.Width, barcodeImage.Height);
+
+                        x = barcodeImage.Width;
+
+                        if (barcodeImage.Height > rowHeight)
                         {
-                            var barcodeImage = barcodeHelper.GetBarcode(barcode, barCodeLabel, CodeSize, HeightOfCode);
-                            graphics.DrawImage(barcodeImage, x, y, barcodeImage.Width, barcodeImage.Height);
-
-                            x = barcodeImage.Width;
-
-                            if (barcodeImage.Height > rowHeight)
-                            {
-                                rowHeight = barcodeImage.Height;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        using (var barcodeHelper = new BarcodeHelper())
-                        {
-                            var barcodeImage = barcodeHelper.GetBarcode(barcode, "0", CodeSize * 100, HeightOfCode * 20);
-                            graphics.DrawImage(barcodeImage, x, y, barcodeImage.Width, barcodeImage.Height);
-
-                            x = barcodeImage.Width;
-
-                            if (barcodeImage.Height > rowHeight)
-                            {
-                                rowHeight = barcodeImage.Height;
-                            }
+                            rowHeight = barcodeImage.Height;
                         }
                     }
                 }
