@@ -33,31 +33,29 @@ namespace LabelPrinter.Helpers
             height = height * 20;
 
             var label = Regex.Replace(Regex.Replace(barCodeLabel, "<BAR|\\++>|>", ""), @"\D", "0");
-
+            var barcodeType = selectedBarcode.ToBarcodeType();
             if (string.IsNullOrEmpty(label))
                 label = "0";
 
-            if (selectedBarcode == "EAN13")
+            if (barcodeType == BarcodeLib.TYPE.EAN13)
             {
                 _barcode.IncludeLabel = true;
                 label = label.Substring(0, Math.Min(13, label.Length)).PadLeft(13, '0');
             }
 
-            if (selectedBarcode == "EAN8")
+            if (barcodeType == BarcodeLib.TYPE.EAN8)
             {
                 _barcode.IncludeLabel = true;
                 label = label.Substring(0, Math.Min(8, label.Length)).PadLeft(8, '0');
             }
 
-            if (selectedBarcode == "2/5 Interleaved")
+            if (barcodeType == BarcodeLib.TYPE.Interleaved2of5)
             {
                 if (label.Length % 2 != 0)
                 {
                     label = "0".Insert(1, label);
                 }
             }
-
-            var barcodeType = selectedBarcode.ToBarcodeType();
 
             if (barcodeType == BarcodeLib.TYPE.UNSPECIFIED)
             {

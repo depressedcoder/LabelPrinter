@@ -95,7 +95,7 @@ namespace LabelPrinter.ViewModel
                         var barcodeImage = barcodeHelper.GetBarcode(barcode,label, CodeSize, HeightOfCode);
                         graphics.DrawImage(barcodeImage, x, y, barcodeImage.Width, barcodeImage.Height);
 
-                        x = barcodeImage.Width;
+                        x += barcodeImage.Width;
 
                         if (barcodeImage.Height > rowHeight)
                         {
@@ -112,7 +112,7 @@ namespace LabelPrinter.ViewModel
                         var image = Image.FromFile($"{imageLabel}.bmp");
                         graphics.DrawImage(image, x, y, image.Width, image.Height);
 
-                        x = image.Width;
+                        x += image.Width;
 
                         if (image.Height > rowHeight)
                         {
@@ -124,7 +124,7 @@ namespace LabelPrinter.ViewModel
                         var image = Image.FromFile("Norsel.bmp");
                         graphics.DrawImage(image, x, y, image.Width, image.Height);
 
-                        x = image.Width;
+                        x += image.Width;
 
                         if (image.Height > rowHeight)
                         {
@@ -138,9 +138,7 @@ namespace LabelPrinter.ViewModel
                         graphics.DrawString("<?>", font, Brushes.Black, new PointF(x, y));
 
                         x += label.Length * font.Size;
-
                     }
-
                 }
                 else
                 {
@@ -170,7 +168,6 @@ namespace LabelPrinter.ViewModel
 
             var matches = Regex.Matches(input, "<.+?>");
 
-
             if (matches.Count == 0)
             {
                 results.Add(input);
@@ -198,7 +195,6 @@ namespace LabelPrinter.ViewModel
                         results.Add(input);
                 }
             }
-
             return results;
         }
 
@@ -219,7 +215,6 @@ namespace LabelPrinter.ViewModel
         {
 
         }
-
         void ExitCommand()
         {
             //Exit Button

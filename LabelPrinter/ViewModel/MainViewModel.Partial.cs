@@ -87,7 +87,7 @@ namespace LabelPrinter.ViewModel
                 }
             }
         }
-        int labelHeight = 435;
+        int labelHeight = 423;
         /// <summary>
         /// used for the height of Label
         /// </summary>

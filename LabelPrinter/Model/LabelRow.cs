@@ -83,7 +83,6 @@ namespace LabelPrinter.Model
         }
 
         bool _isUnderLined;
-
         /// <summary>
         /// Text input is Underlined When Checked 
         /// </summary>
