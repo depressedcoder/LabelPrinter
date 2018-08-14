@@ -130,7 +130,7 @@
             <CheckBox x:Name="HighCheckBox13" IsChecked="{Binding Row14.IsHigh}" Cursor="Hand" Grid.Row="14" Grid.Column="1" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
             <CheckBox x:Name="HighCheckBox14" IsChecked="{Binding Row15.IsHigh}" Cursor="Hand" Grid.Row="15" Grid.Column="1" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
 
-            <TextBlock Text="Bold" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="8.081,0,8.081,1.324"/>
+            <TextBlock Text="Bold" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
             <CheckBox x:Name="BoldCheckBox15" IsChecked="{Binding Row1.IsBold}" Cursor="Hand" Grid.Row="1" Grid.Column="2" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
             <CheckBox x:Name="BoldCheckBox16" IsChecked="{Binding Row2.IsBold}" Cursor="Hand" Grid.Row="2" Grid.Column="2" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
