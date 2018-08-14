@@ -37,21 +37,32 @@ namespace LabelPrinter.Helpers
             if (string.IsNullOrEmpty(label))
                 label = "0";
 
-            if (selectedBarcode == "EAN13" && label.Length < 13)
+            if (selectedBarcode == "EAN13")
             {
                 _barcode.IncludeLabel = true;
-                label = label.PadLeft(13, '0');
+                if (label.Length<13)
+                    label = label.PadLeft(13, '0');
+                else
+                    label = label.Substring(0, Math.Min(13, label.Length));
             }
 
-            if (selectedBarcode == "EAN8" && label.Length < 8)
+            if (selectedBarcode == "EAN8")
             {
-                label = label.PadLeft(8, '0');
                 _barcode.IncludeLabel = true;
+                if (label.Length < 8)
+                    label = label.PadLeft(8, '0');
+                else
+                    label = label.Substring(0, Math.Min(8, label.Length));
             }
 
-            if (selectedBarcode == "2/5 Interleaved" && label.Length < 4)
-                label = label.PadLeft(4, '0');
-
+            if (selectedBarcode == "2/5 Interleaved")
+            {
+                if(label.Length%2 != 0)
+                {
+                    label= "0".Insert(1, label);
+                }
+            }
+                
             var barcodeType = selectedBarcode.ToBarcodeType();
 
             if (barcodeType == BarcodeLib.TYPE.UNSPECIFIED)
