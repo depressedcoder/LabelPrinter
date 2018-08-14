@@ -14,7 +14,7 @@ namespace LabelPrinter.ViewModel
         public void PreviewLabel()
         {
             //Add Row 1
-            var bitmap = new Bitmap(LabelWidth, labelHeight);
+            var bitmap = new Bitmap(LabelWidth, LabelHeight);
 
             using (var graphics = Graphics.FromImage(bitmap))
             {
