@@ -91,6 +91,7 @@ namespace LabelPrinter.ViewModel
         /// <summary>
         /// used for the height of Label
         /// </summary>
+       
         public int LabelHeight
         {
             get { return labelHeight; }
