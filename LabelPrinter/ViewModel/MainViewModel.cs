@@ -67,6 +67,7 @@ namespace LabelPrinter.ViewModel
                 BitmapImage = bitmapImage;
             }
         }
+
         /// <summary>
         /// Used For Drawing the Barcodes,Images and texts
         /// </summary>

@@ -19,6 +19,7 @@ namespace LabelPrinter.Helpers
                 LabelPosition = BarcodeLib.LabelPositions.BOTTOMCENTER
             };
         }
+
         /// <summary>
         /// For Generating All the Barcodes
         /// </summary>
