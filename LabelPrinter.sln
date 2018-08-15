@@ -5,16 +5,32 @@ VisualStudioVersion = 15.0.27703.2047
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LabelPrinter", "LabelPrinter\LabelPrinter.csproj", "{3D38EF0E-8472-44A5-9DD5-E8ADD4AB7DC7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DLLTest", "DLLTest\DLLTest.csproj", "{605B3574-DC80-43D5-B27C-2E1D1DB7DC77}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{3D38EF0E-8472-44A5-9DD5-E8ADD4AB7DC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3D38EF0E-8472-44A5-9DD5-E8ADD4AB7DC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D38EF0E-8472-44A5-9DD5-E8ADD4AB7DC7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3D38EF0E-8472-44A5-9DD5-E8ADD4AB7DC7}.Debug|x86.Build.0 = Debug|Any CPU
 		{3D38EF0E-8472-44A5-9DD5-E8ADD4AB7DC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D38EF0E-8472-44A5-9DD5-E8ADD4AB7DC7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D38EF0E-8472-44A5-9DD5-E8ADD4AB7DC7}.Release|x86.ActiveCfg = Release|Any CPU
+		{3D38EF0E-8472-44A5-9DD5-E8ADD4AB7DC7}.Release|x86.Build.0 = Release|Any CPU
+		{605B3574-DC80-43D5-B27C-2E1D1DB7DC77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{605B3574-DC80-43D5-B27C-2E1D1DB7DC77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{605B3574-DC80-43D5-B27C-2E1D1DB7DC77}.Debug|x86.ActiveCfg = Debug|x86
+		{605B3574-DC80-43D5-B27C-2E1D1DB7DC77}.Debug|x86.Build.0 = Debug|x86
+		{605B3574-DC80-43D5-B27C-2E1D1DB7DC77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{605B3574-DC80-43D5-B27C-2E1D1DB7DC77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{605B3574-DC80-43D5-B27C-2E1D1DB7DC77}.Release|x86.ActiveCfg = Release|x86
+		{605B3574-DC80-43D5-B27C-2E1D1DB7DC77}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
