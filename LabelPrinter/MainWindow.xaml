@@ -321,7 +321,7 @@
     </Grid>
     <Grid Grid.Column="1" Grid.Row="2">
       <Button x:Name="ButtonSetUp" Content="Set Up" Command="{Binding SetUpButtonCommand}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="120" Margin="40,0,10,10"/>
-      <Button x:Name="ButtonPrint" Content="Print" Command="{Binding PrintButtonCommand}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="120" Margin="10,0,40,10"/>
+      <Button x:Name="ButtonPrint" Content="Print" Command="{Binding PrintButtonCommand}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="120" Margin="10,0,40,10" Click="ButtonPrint_Click"/>
     </Grid>
     <Grid Grid.Column="2" Grid.Row="2">
       <Button x:Name="ButtonPrintJob" Content="Print Jobs" Command="{Binding PrintJobsButtonCommand}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="120" Margin="10"/>

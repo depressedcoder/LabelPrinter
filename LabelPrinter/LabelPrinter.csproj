@@ -91,6 +91,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="EZioApi.cs" />
+    <Compile Include="GodexPrinter.cs" />
     <Compile Include="Helpers\BarcodeHelper.cs" />
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Model\LabelRow.cs" />

@@ -1,23 +1,19 @@
-﻿//------------------------------------------------------------------------------------------------
-// Create EZioApi.cs by Jeffrey 2014/07/14
-//------------------------------------------------------------------------------------------------
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
 
-namespace EzioDll
+namespace LabelPrinter
 {
     public class EZioApi
     {
-        public EZioApi()
-        {
-        }
-
         [DllImport("Ezio32.dll")]
         public static extern bool openport(
             int Port);
-
         [DllImport("Ezio32.dll")]
         public static extern bool openport(
-            [MarshalAs(UnmanagedType.LPStr)]string DeviceName);
+           [MarshalAs(UnmanagedType.LPStr)]string DeviceName);
 
         [DllImport("Ezio32.dll")]
         public static extern bool OpenDriver(
@@ -47,7 +43,7 @@ namespace EzioDll
 
         [DllImport("Ezio32.dll")]
         public static extern void sendbuf(
-            [MarshalAs(UnmanagedType.LPArray)]byte[] command, 
+            [MarshalAs(UnmanagedType.LPArray)]byte[] command,
             int length);
 
         [DllImport("Ezio32.dll")]
@@ -68,15 +64,15 @@ namespace EzioDll
 
         [DllImport("Ezio32.dll")]
         public static extern int ecTextOut(
-            int PosX, 
-            int PosY, 
+            int PosX,
+            int PosY,
             int FontHeight,
             [MarshalAs(UnmanagedType.LPStr)]string FontName,
             [MarshalAs(UnmanagedType.LPStr)]string Data);
 
         [DllImport("Ezio32.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int ecTextOutW(
-            int PosX, 
+            int PosX,
             int PosY,
             int FontHeight,
             [MarshalAs(UnmanagedType.LPStr)]string FontName,
@@ -89,9 +85,9 @@ namespace EzioDll
             int PosY,
             int FontHeight,
             [MarshalAs(UnmanagedType.LPStr)]string FontName,
-            [MarshalAs(UnmanagedType.LPStr)]string Data, 
-            int TextWidth, 
-            int Dark, 
+            [MarshalAs(UnmanagedType.LPStr)]string Data,
+            int TextWidth,
+            int Dark,
             int Rotate);
 
         [DllImport("Ezio32.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
@@ -101,8 +97,8 @@ namespace EzioDll
             int FontHeight,
             [MarshalAs(UnmanagedType.LPStr)]string FontName,
             [MarshalAs(UnmanagedType.LPArray)]byte[] UnicodeByteData,
-            int TextWidth, 
-            int Dark, 
+            int TextWidth,
+            int Dark,
             int Rotate,
             int TextLength);
 
@@ -116,7 +112,7 @@ namespace EzioDll
             int TextWidth,
             int Dark,
             int Rotate,
-            int Italic, 
+            int Italic,
             int Underline,
             int Strikeout,
             int Inverse);
@@ -143,9 +139,9 @@ namespace EzioDll
 
         [DllImport("Ezio32.dll")]
         public static extern int putimage(
-            int PosX, 
+            int PosX,
             int PosY,
-            [MarshalAs(UnmanagedType.LPStr)]string Filename, 
+            [MarshalAs(UnmanagedType.LPStr)]string Filename,
             int Degree);
 
         [DllImport("Ezio32.dll")]
@@ -158,7 +154,7 @@ namespace EzioDll
 
         [DllImport("Ezio32.dll")]
         public static extern int downloadimage(
-            [MarshalAs(UnmanagedType.LPStr)]string Filename, 
+            [MarshalAs(UnmanagedType.LPStr)]string Filename,
             int Degree,
             [MarshalAs(UnmanagedType.LPStr)]string ObjectName);
 
@@ -185,15 +181,15 @@ namespace EzioDll
 
         [DllImport("Ezio32.dll")]
         public static extern int Bar(
-            [MarshalAs(UnmanagedType.LPStr)]string BarcodeType, 
-	        int PosX, 
-	        int PosY,
-	        int Narrow,
-	        int Wide,
-	        int Height,
-	        int Rotation,
-	        int Readable,
-	        [MarshalAs(UnmanagedType.LPStr)]string data);
+            [MarshalAs(UnmanagedType.LPStr)]string BarcodeType,
+            int PosX,
+            int PosY,
+            int Narrow,
+            int Wide,
+            int Height,
+            int Rotation,
+            int Readable,
+            [MarshalAs(UnmanagedType.LPStr)]string data);
 
         [DllImport("Ezio32.dll")]
         public static extern int Bar_S(
@@ -434,58 +430,58 @@ namespace EzioDll
 
         [DllImport("Ezio32.dll")]
         public static extern int InternalFont_TextOut(
-            [MarshalAs(UnmanagedType.LPStr)]string FontType, 
-            int PosX, 
-            int PosY, 
-            int Mul_X, 
-            int Mul_Y, 
-            int Gap, 
-            [MarshalAs(UnmanagedType.LPStr)]string RotationInverse, 
+            [MarshalAs(UnmanagedType.LPStr)]string FontType,
+            int PosX,
+            int PosY,
+            int Mul_X,
+            int Mul_Y,
+            int Gap,
+            [MarshalAs(UnmanagedType.LPStr)]string RotationInverse,
             [MarshalAs(UnmanagedType.LPStr)]string Data);
 
         [DllImport("Ezio32.dll")]
         public static extern int InternalFont_TextOut_S(
-            [MarshalAs(UnmanagedType.LPStr)]string FontType, 
-            int PosX, 
-            int PosY, 
+            [MarshalAs(UnmanagedType.LPStr)]string FontType,
+            int PosX,
+            int PosY,
             [MarshalAs(UnmanagedType.LPStr)]string Data);
-        
+
         [DllImport("Ezio32.dll")]
         public static extern int DownloadFont_TextOut(
-            [MarshalAs(UnmanagedType.LPStr)]string FontName, 
-            int PosX, 
-            int PosY, 
-            int Mul_X, 
-            int Mul_Y, 
-            int Gap, 
-            [MarshalAs(UnmanagedType.LPStr)]string RotationInverse, 
+            [MarshalAs(UnmanagedType.LPStr)]string FontName,
+            int PosX,
+            int PosY,
+            int Mul_X,
+            int Mul_Y,
+            int Gap,
+            [MarshalAs(UnmanagedType.LPStr)]string RotationInverse,
             [MarshalAs(UnmanagedType.LPStr)]string Data);
-        
+
         [DllImport("Ezio32.dll")]
         public static extern int DownloadFont_TextOut_S(
-            [MarshalAs(UnmanagedType.LPStr)]string FontName, 
-            int PosX, 
-            int PosY, 
+            [MarshalAs(UnmanagedType.LPStr)]string FontName,
+            int PosX,
+            int PosY,
             [MarshalAs(UnmanagedType.LPStr)]string Data);
-        
+
         [DllImport("Ezio32.dll")]
         public static extern int TrueTypeFont_TextOut(
-            [MarshalAs(UnmanagedType.LPStr)]string FontName, 
-            int PosX, 
-            int PosY, 
-            int Font_W, 
-            int Font_H, 
-            int SpaceChar, 
-            [MarshalAs(UnmanagedType.LPStr)]string RotationInverse, 
-            [MarshalAs(UnmanagedType.LPStr)]string TTFTable, 
-            int WidthMode, 
+            [MarshalAs(UnmanagedType.LPStr)]string FontName,
+            int PosX,
+            int PosY,
+            int Font_W,
+            int Font_H,
+            int SpaceChar,
+            [MarshalAs(UnmanagedType.LPStr)]string RotationInverse,
+            [MarshalAs(UnmanagedType.LPStr)]string TTFTable,
+            int WidthMode,
             [MarshalAs(UnmanagedType.LPStr)]string Data);
-        
+
         [DllImport("Ezio32.dll")]
         public static extern int TrueTypeFont_TextOut_S(
-            [MarshalAs(UnmanagedType.LPStr)]string FontName, 
-            int PosX, 
-            int PosY, 
+            [MarshalAs(UnmanagedType.LPStr)]string FontName,
+            int PosX,
+            int PosY,
             [MarshalAs(UnmanagedType.LPStr)]string Data);
     }
 }
