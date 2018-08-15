@@ -192,6 +192,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Assets\error.png" />
     <Content Include="External\EZio32.dll" />
     <Content Include="EZio32.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -210,5 +211,6 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
