@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:LabelPrinter"
+        xmlns:local="clr-namespace:LabelPrinter.ValidationRules"
         mc:Ignorable="d"
         Title="Label 4.1 - Demo" 
         Height="720" 
@@ -43,18 +43,21 @@
             </Grid.RowDefinitions>
 
             <TextBlock Text="Label Width:" Grid.Column="0" Grid.Row="0" Margin="5"/>
-            <TextBox  
-                PreviewTextInput="TextBox_OnPreviewTextInput"
+            <TextBox 
                 Grid.Column="1"
                 Grid.Row="0" 
                 Margin="5"
-                Text="{Binding LabelWidth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                TextChanged="UpdateLabelEvent"/>
+                TextChanged="UpdateLabelEvent">
+                <Binding Path="LabelWidth" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
+                    <Binding.ValidationRules>
+                        <local:MinMaxValidationRule MaxValue="400" MinValue="50"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox>
             <TextBlock Text="mm" Grid.Row="0" Grid.Column="2" Margin="5"/>
 
             <TextBlock Text="Label Height:" Grid.Row="1" Grid.Column="0" Margin="5"/>
             <TextBox
-                      PreviewTextInput="TextBox_OnPreviewTextInput"
                       Grid.Row="1" 
                       Grid.Column="1" 
                       Margin="5" 
@@ -63,7 +66,7 @@
             <TextBlock Text="mm" Grid.Row="1" Grid.Column="2" Margin="5"/>
 
             <TextBlock Text="Distance from left:" Grid.Row="2" Grid.Column="0" Margin="5"/>
-            <TextBox PreviewTextInput="TextBox_OnPreviewTextInput" Grid.Row="2" Grid.Column="1" Margin="5" Text="{Binding DistanceFromLeft, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox Grid.Row="2" Grid.Column="1" Margin="5" Text="{Binding DistanceFromLeft, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBlock Text="mm" Grid.Row="2" Grid.Column="2" Margin="5"/>
         </Grid>
         <Grid Grid.Column="0" Grid.Row="1">
@@ -170,10 +173,10 @@
             <ComboBox x:Name="BarcodeComboBox" ItemsSource="{Binding BarCode}" SelectedItem="{Binding SelectedBarCode}" Grid.Row="16" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Width="145.314" Margin="5,19.766,30.509,3" Grid.ColumnSpan="3" FontSize="12" Grid.RowSpan="2" />
 
             <TextBlock Text="Code Size(1-9)" Grid.Column="0" Grid.Row="18" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="18.793,0.991,18.793,0.992"/>
-            <TextBox PreviewTextInput="TextBox_OnPreviewTextInput" Grid.Column="1" Grid.Row="18" Margin="6.5,0,28.565,0.666" Text="{Binding CodeSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2" FontSize="13" TextChanged="UpdateLabelEvent"/>
+            <TextBox Grid.Column="1" Grid.Row="18" Margin="6.5,0,28.565,0.666" Text="{Binding CodeSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2" FontSize="13" TextChanged="UpdateLabelEvent"/>
 
             <TextBlock Text="Height of code(mm)" Grid.Column="0" Grid.Row="19" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0.156,0.991,0.157,0.991"/>
-            <TextBox PreviewTextInput="TextBox_OnPreviewTextInput" Grid.Column="1" Grid.Row="19" Margin="6.5,0,28.565,0" Text="{Binding HeightOfCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2" Height="21.766" VerticalAlignment="Bottom" FontSize="13" TextChanged="UpdateLabelEvent"/>
+            <TextBox Grid.Column="1" Grid.Row="19" Margin="6.5,0,28.565,0" Text="{Binding HeightOfCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2" Height="21.766" VerticalAlignment="Bottom" FontSize="13" TextChanged="UpdateLabelEvent"/>
 
         </Grid>
         <Grid Grid.Column="1" Grid.Row="1">
@@ -237,7 +240,7 @@
                 <TextBlock FontSize="12" Text="Automatic cutting device" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
                 <TextBlock FontSize="12" Text="How many coppies" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                <TextBox PreviewTextInput="TextBox_OnPreviewTextInput" Grid.Column="3" Grid.Row="0" Text="{Binding HowManyCoppies, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="13"/>
+                <TextBox Grid.Column="3" Grid.Row="0" Text="{Binding HowManyCoppies, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="13"/>
             </Grid>
         </Grid>
         <Border x:Name="Border"
