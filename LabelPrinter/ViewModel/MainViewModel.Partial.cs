@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight.Command;
+﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using LabelPrinter.Model;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Windows.Media.Imaging;
 
 namespace LabelPrinter.ViewModel
 {
-    public partial class MainViewModel
+    public partial class MainViewModel: ViewModelBase
     {
         public LabelRow Row1 { get; set; }
         public LabelRow Row2 { get; set; }
@@ -30,6 +31,8 @@ namespace LabelPrinter.ViewModel
         public RelayCommand PrintJobsButtonCommand { get; private set; }
         public RelayCommand ExitButtonCommand { get; private set; }
         public RelayCommand UpdateLabelCommand { get; private set; }
+
+        public Barcode Barcode { get; set; }
 
         BitmapImage _bitmapImage;
 
@@ -91,7 +94,7 @@ namespace LabelPrinter.ViewModel
         /// <summary>
         /// used for the height of Label
         /// </summary>
-       
+
         public int LabelHeight
         {
             get { return labelHeight; }
@@ -119,52 +122,10 @@ namespace LabelPrinter.ViewModel
             }
         }
 
-        int _codeSize;
-        /// <summary>
-        /// Used for Barcode Width
-        /// </summary>
-        public int CodeSize
-        {
-            get { return _codeSize; }
-            set
-            {
-                _codeSize = value;
-                RaisePropertyChanged(nameof(CodeSize));
-            }
-        }
-
-        int _heightOfCode;
-        /// <summary>
-        /// Used for Barcode Height
-        /// </summary>
-        public int HeightOfCode
-        {
-            get { return _heightOfCode; }
-            set
-            {
-                _heightOfCode = value;
-                RaisePropertyChanged(nameof(HeightOfCode));
-            }
-        }
         /// <summary>
         /// List of all BarCodes
         /// </summary>
-        public List<string> BarCode { get; set; } = new List<string> { "2/5 Interleaved", "Code128", "Code39", "DataMatrix", "EAN13", "EAN8" };
-
-        string _selectedBarCode;
-        /// <summary>
-        /// Selected Barcode From  the Combobox
-        /// </summary>
-        public string SelectedBarCode
-        {
-            get { return _selectedBarCode; }
-            set
-            {
-                _selectedBarCode = value;
-                RaisePropertyChanged("SelectedBarCode");
-                PreviewLabel();
-            }
-        }
+        public List<string> BarCodes { get; set; } = new List<string> { "2/5 Interleaved", "Code128", "Code39", "DataMatrix", "EAN13", "EAN8" };
 
         public MainViewModel()
         {
@@ -200,11 +161,14 @@ namespace LabelPrinter.ViewModel
             Row14.SelectedCharWidth = Row14.CharWidths.FirstOrDefault();
             Row15.SelectedCharWidth = Row15.CharWidths.FirstOrDefault();
 
-            CodeSize = 2;
-            HeightOfCode = 5;
+            Barcode = new Barcode
+            {
+                CodeSize = 2,
+                HeightOfCode = 5,
+                SelectedBarCode = BarCodes.FirstOrDefault()
+            };
 
-            SelectedBarCode = BarCode.FirstOrDefault();
-            
+
             SaveButtonCommand = new RelayCommand(SaveCommand);
             NewButtonCommand = new RelayCommand(NewCommand);
             SetUpButtonCommand = new RelayCommand(SetUpCommand);

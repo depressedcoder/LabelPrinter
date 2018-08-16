@@ -1,17 +1,18 @@
 using System.Collections.Generic;
 using System.Windows.Media.Imaging;
 using GalaSoft.MvvmLight;
-using LabelPrinter.Helpers;
 using System.Drawing;
 using System.IO;
 using System.Drawing.Imaging;
 using System.Text.RegularExpressions;
 using System;
 using System.Windows.Forms;
+using LabelPrinter.LabelDrawingStrategy;
+using LabelPrinter.Model;
 
 namespace LabelPrinter.ViewModel
 {
-    public partial class MainViewModel : ViewModelBase
+    public partial class MainViewModel
     {
         public void PreviewLabel()
         {
@@ -23,35 +24,35 @@ namespace LabelPrinter.ViewModel
                 graphics.Clear(Color.White);
 
                 //Row 1
-                var row1Height = Draw(graphics, Row1.Text, SelectedBarCode, Row1.IsBold, Row1.IsUnderlined, Row1.IsHigh, Row1.SelectedCharWidth, 10f, 10f);
+                var row1Height = Draw(graphics,  Barcode, Row1, 10f, 10f);
                 //Row 2
-                var row2Height = Draw(graphics, Row2.Text, SelectedBarCode, Row2.IsBold, Row2.IsUnderlined, Row2.IsHigh, Row2.SelectedCharWidth, 10f, row1Height);
+                var row2Height = Draw(graphics,  Barcode, Row2, 10f, row1Height);
                 //Row 3
-                var row3Height = Draw(graphics, Row3.Text, SelectedBarCode, Row3.IsBold, Row3.IsUnderlined, Row3.IsHigh, Row3.SelectedCharWidth, 10f, row2Height);
+                var row3Height = Draw(graphics, Barcode, Row3, 10f, row2Height);
                 //Row 4
-                var row4Height = Draw(graphics, Row4.Text, SelectedBarCode, Row4.IsBold, Row4.IsUnderlined, Row4.IsHigh, Row4.SelectedCharWidth, 10f, row3Height);
+                var row4Height = Draw(graphics, Barcode, Row4 , 10f, row3Height);
                 //Row5
-                var row5Height = Draw(graphics, Row5.Text, SelectedBarCode, Row5.IsBold, Row5.IsUnderlined, Row5.IsHigh, Row5.SelectedCharWidth, 10f, row4Height);
+                var row5Height = Draw(graphics, Barcode, Row5 , 10f, row4Height);
                 //ROW6
-                var row6Height = Draw(graphics, Row6.Text, SelectedBarCode, Row6.IsBold, Row6.IsUnderlined, Row6.IsHigh, Row6.SelectedCharWidth, 10f, row5Height);
+                var row6Height = Draw(graphics, Barcode, Row6 , 10f, row5Height);
                 //ROW7
-                var row7Height = Draw(graphics, Row7.Text, SelectedBarCode, Row7.IsBold, Row7.IsUnderlined, Row7.IsHigh, Row7.SelectedCharWidth, 10f, row6Height);
+                var row7Height = Draw(graphics, Barcode, Row7, 10f, row6Height);
                 //ROW8
-                var row8Height = Draw(graphics, Row8.Text, SelectedBarCode, Row8.IsBold, Row8.IsUnderlined, Row8.IsHigh, Row8.SelectedCharWidth, 10f, row7Height);
+                var row8Height = Draw(graphics, Barcode, Row8 , 10f, row7Height);
                 //ROW9
-                var row9Height = Draw(graphics, Row9.Text, SelectedBarCode, Row9.IsBold, Row9.IsUnderlined, Row9.IsHigh, Row9.SelectedCharWidth, 10f, row8Height);
+                var row9Height = Draw(graphics, Barcode, Row9 , 10f, row8Height);
                 //ROW10
-                var row10Height = Draw(graphics, Row10.Text, SelectedBarCode, Row10.IsBold, Row10.IsUnderlined, Row10.IsHigh, Row10.SelectedCharWidth, 10f, row9Height);
+                var row10Height = Draw(graphics, Barcode, Row10, 10f, row9Height);
                 //ROW11
-                var row11Height = Draw(graphics, Row11.Text, SelectedBarCode, Row11.IsBold, Row11.IsUnderlined, Row11.IsHigh, Row11.SelectedCharWidth, 10f, row10Height);
+                var row11Height = Draw(graphics, Barcode, Row11, 10f, row10Height);
                 //ROW12
-                var row12Height = Draw(graphics, Row12.Text, SelectedBarCode, Row12.IsBold, Row12.IsUnderlined, Row12.IsHigh, Row12.SelectedCharWidth, 10f, row11Height);
+                var row12Height = Draw(graphics, Barcode, Row12, 10f, row11Height);
                 //ROW13
-                var row13Height = Draw(graphics, Row13.Text, SelectedBarCode, Row13.IsBold, Row13.IsUnderlined, Row13.IsHigh, Row13.SelectedCharWidth, 10f, row12Height);
+                var row13Height = Draw(graphics, Barcode, Row13, 10f, row12Height);
                 //ROW14
-                var row14Height = Draw(graphics, Row14.Text, SelectedBarCode, Row14.IsBold, Row14.IsUnderlined, Row14.IsHigh, Row14.SelectedCharWidth, 10f, row13Height);
+                var row14Height = Draw(graphics, Barcode, Row14, 10f, row13Height);
                 //ROW15
-                var row15Height = Draw(graphics, Row15.Text, SelectedBarCode, Row15.IsBold, Row15.IsUnderlined, Row15.IsHigh, Row15.SelectedCharWidth, 10f, row14Height);
+                var row15Height = Draw(graphics, Barcode, Row15 , 10f, row14Height);
 
             }
 
@@ -74,42 +75,40 @@ namespace LabelPrinter.ViewModel
         /// Used For Drawing the Barcodes,Images and texts
         /// </summary>
         /// <param name="graphics"></param>
-        /// <param name="input">All the Input from a particular text field</param>
         /// <param name="barcode">Design of the barcode</param>
-        /// <param name="isBold">Text Bold</param>
-        /// <param name="isUnderLine">Text UnderLined</param>
-        /// <param name="isHigh">If True then returns the double of selected char Width value</param>
-        /// <param name="selectedCharwidth">Text Font Size</param>
         /// <param name="x">Drawing position of the Label</param>
         /// <param name="y">Drawing position of the Label</param>
         /// <returns>Returns the Next Rows starting point of Y coordinate</returns>
-        float Draw(Graphics graphics, string input, string barcode, bool isBold, bool isUnderLine, bool isHigh, int selectedCharwidth, float x, float y)
+        float Draw(Graphics graphics, Barcode barcode, LabelRow row, float x, float y)
         {
-            var labels = GetLabels(input);
+            var labels = GetLabels(row.Text);
 
             var rowHeight = 10;
 
             foreach (var label in labels)
             {
+
                 if (Regex.IsMatch(label, "^<BAR.*>"))
                 {
-                    using (var barcodeHelper = new BarcodeHelper())
-                    {
-                        var barcodeImage = barcodeHelper.GetBarcode(barcode,label, CodeSize, HeightOfCode);
-                        graphics.DrawImage(barcodeImage, x, y, barcodeImage.Width, barcodeImage.Height);
+                    var s = new StrategySelector().GetStrategy(label).Draw(graphics, barcode, row, x, y);
 
-                        x += barcodeImage.Width;
+                    //using (var barcodeHelper = new BarcodeHelper())
+                    //{
+                    //    var barcodeImage = barcodeHelper.GetBarcode(barcode,label, CodeSize, HeightOfCode);
+                    //    graphics.DrawImage(barcodeImage, x, y, barcodeImage.Width, barcodeImage.Height);
 
-                        if (barcodeImage.Height > rowHeight)
-                        {
-                            rowHeight = barcodeImage.Height;
-                        }
-                    }
+                    //    x += barcodeImage.Width;
+
+                    //    if (barcodeImage.Height > rowHeight)
+                    //    {
+                    //        rowHeight = barcodeImage.Height;
+                    //    }
+                    //}
                 }
                 else if (Regex.IsMatch(label, "^<IMG.*>"))
                 {
                     var imageLabel = Regex.Replace(label, "<IMG|>", "");
-                    
+
                     if (File.Exists($"{imageLabel}.bmp"))
                     {
                         var image = Image.FromFile($"{imageLabel}.bmp");
@@ -122,7 +121,7 @@ namespace LabelPrinter.ViewModel
                             rowHeight = image.Height;
                         }
                     }
-                    else if(label == "<IMG>")
+                    else if (label == "<IMG>")
                     {
                         var image = Image.FromFile("Norsel.bmp");
                         graphics.DrawImage(image, x, y, image.Width, image.Height);
@@ -136,16 +135,16 @@ namespace LabelPrinter.ViewModel
                     }
                     else
                     {
-                        var font = GetRowFont(isBold, isUnderLine, isHigh, selectedCharwidth);
+                        var font = GetRowFont(row.IsBold, row.IsUnderlined, row.IsHigh, row.SelectedCharWidth);
 
                         graphics.DrawString("<?>", font, Brushes.Black, new PointF(x, y));
 
                         x += label.Length * font.Size;
                     }
                 }
-                else if(label == "<WEIGHT>")
+                else if (label == "<WEIGHT>")
                 {
-                    var font = GetRowFont(isBold, isUnderLine, isHigh, selectedCharwidth);
+                    var font = GetRowFont(row.IsBold, row.IsUnderlined , row.IsHigh, row.SelectedCharWidth);
 
                     graphics.DrawString("0.0", font, Brushes.Black, new PointF(x, y));
 
@@ -156,11 +155,11 @@ namespace LabelPrinter.ViewModel
                         rowHeight = font.Height;
                     }
                 }
-                else if(label == "<TIMESTAMP>")
+                else if (label == "<TIMESTAMP>")
                 {
                     string timestamp = DateTime.Now.ToString("h:mm");
 
-                    var font = GetRowFont(isBold, isUnderLine, isHigh, selectedCharwidth);
+                    var font = GetRowFont(row.IsBold, row.IsUnderlined, row.IsHigh, row.SelectedCharWidth);
 
                     graphics.DrawString(timestamp, font, Brushes.Black, new PointF(x, y));
 
@@ -175,7 +174,7 @@ namespace LabelPrinter.ViewModel
                 {
                     string time = DateTime.Now.ToString("HH:mm:ss tt");
 
-                    var font = GetRowFont(isBold, isUnderLine, isHigh, selectedCharwidth);
+                    var font = GetRowFont(row.IsBold, row.IsUnderlined, row.IsHigh, row.SelectedCharWidth);
 
                     graphics.DrawString(time, font, Brushes.Black, new PointF(x, y));
 
@@ -190,7 +189,7 @@ namespace LabelPrinter.ViewModel
                 {
                     string date = DateTime.Now.ToString("dd-MM-yyyy");
 
-                    var font = GetRowFont(isBold, isUnderLine, isHigh, selectedCharwidth);
+                    var font = GetRowFont(row.IsBold, row.IsUnderlined, row.IsHigh, row.SelectedCharWidth);
 
                     graphics.DrawString(date, font, Brushes.Black, new PointF(x, y));
 
@@ -203,7 +202,7 @@ namespace LabelPrinter.ViewModel
                 }
                 else
                 {
-                    var font = GetRowFont(isBold, isUnderLine, isHigh, selectedCharwidth);
+                    var font = GetRowFont(row.IsBold, row.IsUnderlined, row.IsHigh, row.SelectedCharWidth);
 
                     graphics.DrawString(label, font, Brushes.Black, new PointF(x, y));
 

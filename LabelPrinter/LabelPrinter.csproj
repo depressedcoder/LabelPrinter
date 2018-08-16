@@ -113,6 +113,14 @@
     <Compile Include="GodexPrinter.cs" />
     <Compile Include="Helpers\BarcodeHelper.cs" />
     <Compile Include="Helpers\Extensions.cs" />
+    <Compile Include="LabelDrawingStrategy\BarcodeStategy.cs" />
+    <Compile Include="LabelDrawingStrategy\IDrawingStrategy.cs" />
+    <Compile Include="LabelDrawingStrategy\DateTimeStrategy.cs" />
+    <Compile Include="LabelDrawingStrategy\ImageStrategy.cs" />
+    <Compile Include="LabelDrawingStrategy\StrategySelector.cs" />
+    <Compile Include="LabelDrawingStrategy\TextStrategy.cs" />
+    <Compile Include="LabelDrawingStrategy\WeightStrategy.cs" />
+    <Compile Include="Model\Barcode.cs" />
     <Compile Include="Model\LabelRow.cs" />
     <Compile Include="ValidationRules\MinMaxValidationRule.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
