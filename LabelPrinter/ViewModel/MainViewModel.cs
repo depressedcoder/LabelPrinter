@@ -7,6 +7,7 @@ using System.IO;
 using System.Drawing.Imaging;
 using System.Text.RegularExpressions;
 using System;
+using System.Windows.Forms;
 
 namespace LabelPrinter.ViewModel
 {
@@ -297,12 +298,24 @@ namespace LabelPrinter.ViewModel
 
         void NewCommand()
         {
-            //New Button
+            var desiredText = File.ReadAllLines("NORSEL-IMPORT.txt");
+            if (desiredText.Length > 0)
+                Row1.Text = desiredText[0];
+            if (desiredText.Length > 1)
+                Row2.Text = desiredText[1];
+            if (desiredText.Length > 2)
+                Row3.Text = desiredText[2];
         }
 
         void SaveCommand()
         {
-
+            using (StreamWriter objWriter = new StreamWriter("NORSEL-IMPORT.txt"))
+            {
+                objWriter.Write(Row1.Text + "\n");
+                objWriter.Write(Row2.Text + "\n");
+                objWriter.Write(Row3.Text);
+                MessageBox.Show("Details have been saved");
+            }
         }
     }
 }

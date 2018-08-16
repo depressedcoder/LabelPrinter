@@ -65,28 +65,6 @@ namespace LabelPrinter
            
             DisconnectPrinter();
         }
-
-        private void ButtonSave_Click(object sender, RoutedEventArgs e)
-        {
-            using (StreamWriter objWriter = new StreamWriter("NORSEL-IMPORT.txt"))
-            {
-                objWriter.Write(Row1Text.Text+"\n");
-                objWriter.Write(Row2Text.Text+"\n");
-                objWriter.Write(Row3Text.Text);
-                MessageBox.Show("Details have been saved");
-            }
-
-        }
-
-        private void ButtonNew_Click(object sender, RoutedEventArgs e)
-        {
-            var desiredText = File.ReadAllLines("NORSEL-IMPORT.txt");
-            if (desiredText.Length > 0)
-                Row1Text.Text = desiredText[0];
-            if (desiredText.Length > 1)
-                Row2Text.Text = desiredText[1];
-            if(desiredText.Length>2)
-                Row3Text.Text = desiredText[2];
-        }
+        
     }
 }

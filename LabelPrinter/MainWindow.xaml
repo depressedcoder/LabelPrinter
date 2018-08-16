@@ -316,8 +316,8 @@
     </Border>
 
     <Grid Grid.Column="0" Grid.Row="2">
-      <Button x:Name="ButtonNew" Content="New" Command="{Binding NewButtonCommand}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="120" Margin="10" Click="ButtonNew_Click"/>
-      <Button x:Name="ButtonSave" Content="Save" Command="{Binding SaveButtonCommand}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="120" Margin="10" Click="ButtonSave_Click"/>
+      <Button x:Name="ButtonNew" Content="New" Command="{Binding NewButtonCommand}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="120" Margin="10"/>
+      <Button x:Name="ButtonSave" Content="Save" Command="{Binding SaveButtonCommand}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="120" Margin="10"/>
     </Grid>
     <Grid Grid.Column="1" Grid.Row="2">
       <Button x:Name="ButtonSetUp" Content="Set Up" Command="{Binding SetUpButtonCommand}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="120" Margin="40,0,10,10"/>
