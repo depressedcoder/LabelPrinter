@@ -25,7 +25,7 @@
 
     <DockPanel Grid.Column="0" Grid.Row="0">
       <TextBlock Width="100" Height="35" Text="Label Name :"  DockPanel.Dock="Left"/>
-      <ComboBox  Width="200" Height="35" DockPanel.Dock="Right"/>
+      <ComboBox  Width="200" Height="35" DockPanel.Dock="Right" IsEditable="True"/>
     </DockPanel>
 
     <TextBlock Text="Label 4.1 - Demo" Grid.Column="1" Grid.Row="0" Height="35" HorizontalAlignment="Center" FontSize="20"/>
