@@ -25,7 +25,7 @@
 
     <DockPanel Grid.Column="0" Grid.Row="0">
       <TextBlock Width="100" Height="35" Text="Label Name :"  DockPanel.Dock="Left"/>
-      <ComboBox ItemsSource="{Binding LabelName}" SelectedItem="{Binding SelectedLabelName}" Cursor="Hand"  Width="200" Height="35" DockPanel.Dock="Right"/>
+      <ComboBox IsEditable="True" ItemsSource="{Binding LabelName}" SelectedItem="{Binding SelectedLabelName}" Cursor="Hand"  Width="200" Height="35" DockPanel.Dock="Right"/>
     </DockPanel>
 
     <TextBlock Text="Label 4.1 - Demo" Grid.Column="1" Grid.Row="0" Height="35" HorizontalAlignment="Center" FontSize="20"/>
