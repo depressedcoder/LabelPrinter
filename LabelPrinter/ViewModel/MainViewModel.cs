@@ -8,6 +8,7 @@ using System.Drawing.Imaging;
 using System.Text.RegularExpressions;
 using System;
 using System.Windows.Forms;
+using LabelPrinter.Model;
 
 namespace LabelPrinter.ViewModel
 {
@@ -164,7 +165,7 @@ namespace LabelPrinter.ViewModel
 
                     graphics.DrawString(timestamp, font, Brushes.Black, new PointF(x, y));
 
-                    x += label.Length * font.Size;
+                    x += timestamp.Length * font.Size;
 
                     if (font.Height > rowHeight)
                     {
@@ -179,7 +180,7 @@ namespace LabelPrinter.ViewModel
 
                     graphics.DrawString(time, font, Brushes.Black, new PointF(x, y));
 
-                    x += label.Length * font.Size;
+                    x += time.Length * font.Size;
 
                     if (font.Height > rowHeight)
                     {
@@ -194,7 +195,7 @@ namespace LabelPrinter.ViewModel
 
                     graphics.DrawString(date, font, Brushes.Black, new PointF(x, y));
 
-                    x += label.Length * font.Size;
+                    x += date.Length * font.Size;
 
                     if (font.Height > rowHeight)
                     {
