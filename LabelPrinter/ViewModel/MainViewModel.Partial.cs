@@ -68,7 +68,7 @@ namespace LabelPrinter.ViewModel
             set
             {
                 _isAutomaticCuttingDevice = value;
-                RaisePropertyChanged("IsAutomaticCuttingDevice");
+                RaisePropertyChanged(nameof(IsAutomaticCuttingDevice));
             }
         }
         int labelWidth = 315;
@@ -147,6 +147,24 @@ namespace LabelPrinter.ViewModel
             }
         }
         /// <summary>
+        /// List of all LabelNames
+        /// </summary>
+        public List<string> LabelName { get; set; } = new List<string> { "NorselGHI", "NorselABC" };
+        private string _selectedLabelName;
+        /// <summary>
+        /// Selected Label Name From ComboBox
+        /// </summary>
+        public string SelectedLabelName
+        {
+            get { return _selectedLabelName; }
+            set {
+                _selectedLabelName = value;
+                RaisePropertyChanged("SelectedLabelName");
+                PreviewLabel();
+            }
+        }
+
+        /// <summary>
         /// List of all BarCodes
         /// </summary>
         public List<string> BarCode { get; set; } = new List<string> { "2/5 Interleaved", "Code128", "Code39", "DataMatrix", "EAN13", "EAN8" };
@@ -204,6 +222,7 @@ namespace LabelPrinter.ViewModel
             HeightOfCode = 5;
 
             SelectedBarCode = BarCode.FirstOrDefault();
+            SelectedLabelName = LabelName.FirstOrDefault();
             
             SaveButtonCommand = new RelayCommand(SaveCommand);
             NewButtonCommand = new RelayCommand(NewCommand);
