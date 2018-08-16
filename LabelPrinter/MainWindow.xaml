@@ -245,19 +245,19 @@
         <RowDefinition Height=".2*"/>
       </Grid.RowDefinitions>
 
-      <TextBox  Grid.Column="0" 
+      <TextBox x:Name="Row1Text"  Grid.Column="0" 
                       Grid.Row="1" 
                       FontSize="11" 
                       Text="{Binding Row1.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       TextChanged="UpdateLabelEvent"
                       />
-      <TextBox  Grid.Column="0" 
+      <TextBox x:Name="Row2Text"  Grid.Column="0" 
                       Grid.Row="2" 
                       FontSize="11" 
                       Text="{Binding Row2.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       TextChanged="UpdateLabelEvent"
                       />
-      <TextBox  Grid.Column="0" Grid.Row="3" FontSize="11" Text="{Binding Row3.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="UpdateLabelEvent"/>
+      <TextBox x:Name="Row3Text"  Grid.Column="0" Grid.Row="3" FontSize="11" Text="{Binding Row3.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="UpdateLabelEvent"/>
       <TextBox  Grid.Column="0" Grid.Row="4" FontSize="11" Text="{Binding Row4.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="UpdateLabelEvent"/>
       <TextBox  Grid.Column="0" Grid.Row="5" FontSize="11" Text="{Binding Row5.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="UpdateLabelEvent"/>
       <TextBox  Grid.Column="0" Grid.Row="6" FontSize="11" Text="{Binding Row6.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="UpdateLabelEvent"/>
@@ -316,8 +316,8 @@
     </Border>
 
     <Grid Grid.Column="0" Grid.Row="2">
-      <Button x:Name="ButtonNew" Content="New" Command="{Binding NewButtonCommand}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="120" Margin="10"/>
-      <Button x:Name="ButtonSave" Content="Save" Command="{Binding SaveButtonCommand}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="120" Margin="10"/>
+      <Button x:Name="ButtonNew" Content="New" Command="{Binding NewButtonCommand}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="120" Margin="10" Click="ButtonNew_Click"/>
+      <Button x:Name="ButtonSave" Content="Save" Command="{Binding SaveButtonCommand}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="120" Margin="10" Click="ButtonSave_Click"/>
     </Grid>
     <Grid Grid.Column="1" Grid.Row="2">
       <Button x:Name="ButtonSetUp" Content="Set Up" Command="{Binding SetUpButtonCommand}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="120" Margin="40,0,10,10"/>

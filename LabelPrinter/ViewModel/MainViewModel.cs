@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Drawing.Imaging;
 using System.Text.RegularExpressions;
+using System;
 
 namespace LabelPrinter.ViewModel
 {
@@ -139,6 +140,64 @@ namespace LabelPrinter.ViewModel
                         graphics.DrawString("<?>", font, Brushes.Black, new PointF(x, y));
 
                         x += label.Length * font.Size;
+                    }
+                }
+                else if(label == "<WEIGHT>")
+                {
+                    var font = GetRowFont(isBold, isUnderLine, isHigh, selectedCharwidth);
+
+                    graphics.DrawString("0.0", font, Brushes.Black, new PointF(x, y));
+
+                    x += label.Length * font.Size;
+
+                    if (font.Height > rowHeight)
+                    {
+                        rowHeight = font.Height;
+                    }
+                }
+                else if(label == "<TIMESTAMP>")
+                {
+                    string timestamp = DateTime.Now.ToString("h:mm");
+
+                    var font = GetRowFont(isBold, isUnderLine, isHigh, selectedCharwidth);
+
+                    graphics.DrawString(timestamp, font, Brushes.Black, new PointF(x, y));
+
+                    x += label.Length * font.Size;
+
+                    if (font.Height > rowHeight)
+                    {
+                        rowHeight = font.Height;
+                    }
+                }
+                else if (label == "<TIME>")
+                {
+                    string time = DateTime.Now.ToString("HH:mm:ss tt");
+
+                    var font = GetRowFont(isBold, isUnderLine, isHigh, selectedCharwidth);
+
+                    graphics.DrawString(time, font, Brushes.Black, new PointF(x, y));
+
+                    x += label.Length * font.Size;
+
+                    if (font.Height > rowHeight)
+                    {
+                        rowHeight = font.Height;
+                    }
+                }
+                else if (label == "<DATE>")
+                {
+                    string date = DateTime.Now.ToString("dd-MM-yyyy");
+
+                    var font = GetRowFont(isBold, isUnderLine, isHigh, selectedCharwidth);
+
+                    graphics.DrawString(date, font, Brushes.Black, new PointF(x, y));
+
+                    x += label.Length * font.Size;
+
+                    if (font.Height > rowHeight)
+                    {
+                        rowHeight = font.Height;
                     }
                 }
                 else

@@ -422,10 +422,13 @@ namespace DLLTest
             // Print QR Code by Dll Function
             Encoding mEncoding = Encoding.GetEncoding(CodePage_Code[Cbo_QR_Encoding.SelectedIndex]);
             Printer.Command.PrintQRCode(10, 10, Txt_QRcode_Data.Text, mEncoding);
+           
 
             // Print QR Code by Send() & SendByte()
             Printer.Command.Send("W240,10,5,2,M,8,5," + mEncoding.GetByteCount(Txt_QRcode_Data.Text) + ",0");
             Printer.Command.SendByte(mEncoding.GetBytes(Txt_QRcode_Data.Text));
+
+            
 
             Printer.Command.End();
             DisconnectPrinter();
