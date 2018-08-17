@@ -9,7 +9,10 @@ namespace LabelPrinter.LabelDrawingStrategy
 {
     public class BarcodeStategy : DrawingStrategy
     {
+        const string _barcodeMatchingPattern = "<BAR|\\++>|>";
+
         readonly Dictionary<string, BarcodeLib.TYPE> _barcodeTypes;
+
         readonly BarcodeLib.Barcode _barcode;
 
         public BarcodeStategy()
@@ -53,7 +56,7 @@ namespace LabelPrinter.LabelDrawingStrategy
             width = width * 100;
             height = height * 20;
 
-            var label = Regex.Replace(Regex.Replace(barCodeLabel, "<BAR|\\++>|>", ""), @"\D", "0");
+            var label = Regex.Replace(Regex.Replace(barCodeLabel, _barcodeMatchingPattern, ""), @"\D", "0");
 
             if (!_barcodeTypes.ContainsKey(selectedBarcode))
             {
