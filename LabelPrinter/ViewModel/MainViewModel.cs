@@ -74,7 +74,7 @@ namespace LabelPrinter.ViewModel
             }
 
             //Increase row width
-            y += y;
+            y = rowHeight+ y;
         }
 
         List<string> GetPlaceholders(string input)
