@@ -25,6 +25,7 @@ namespace LabelPrinter.LabelDrawingStrategy
         protected Font GetRowFont()
         {
             FontStyle style = FontStyle.Regular;
+
             var charWidth = LabelRow.SelectedCharWidth;
 
             if (LabelRow.IsBold) style |= FontStyle.Bold;
