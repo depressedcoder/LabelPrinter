@@ -15,7 +15,7 @@ namespace LabelPrinter.ViewModel
     {
         public void PreviewLabel()
         {
-            using(var bitmap = new Bitmap(LabelWidth, LabelHeight))
+            using (var bitmap = new Bitmap(LabelWidth, LabelHeight))
             {
                 var rowHeight = 10f;
 
@@ -74,12 +74,12 @@ namespace LabelPrinter.ViewModel
             }
 
             //Increase row width
-            y = rowHeight+ y;
+            y = rowHeight + y;
         }
 
         List<string> GetPlaceholders(string input)
         {
-            var placeholderPattern = "<[A-Z].*?>";
+            var placeholderPattern = "<([a-zA-Z0-9_.-])+?>";
 
             var results = new List<string>();
 
@@ -148,8 +148,6 @@ namespace LabelPrinter.ViewModel
 
         void NewCommand()
         {
-            //var numberOfCopies = HowManyCoppies.ToString();
-
             if (File.Exists("NORSEL-IMPORT.txt"))
             {
                 var desiredText = File.ReadAllLines("NORSEL-IMPORT.txt");

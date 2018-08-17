@@ -5,12 +5,6 @@ namespace LabelPrinter.LabelDrawingStrategy
 {
     public abstract class DrawingStrategy
     {
-        /// <summary>
-        /// Used For Drawing the Barcodes,Images and texts
-        /// </summary>
-        /// <param name="x">Drawing position of the Label</param>
-        /// <param name="y">Drawing position of the Label</param>
-        /// <returns>Returns the Next Rows starting point of Y coordinate</returns>
         public abstract void Draw(
             ref int rowHeight,
             ref float x,
