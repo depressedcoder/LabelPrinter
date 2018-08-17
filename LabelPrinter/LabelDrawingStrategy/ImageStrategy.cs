@@ -37,11 +37,12 @@ namespace LabelPrinter.LabelDrawingStrategy
             }
             else
             {
-                var font = GetRowFont(row.IsBold, row.IsUnderlined, row.IsHigh, row.SelectedCharWidth);
+                using (var font = GetRowFont(row.IsBold, row.IsUnderlined, row.IsHigh, row.SelectedCharWidth))
+                {
+                    graphics.DrawString("<?>", font, Brushes.Black, new PointF(x, y));
 
-                graphics.DrawString("<?>", font, Brushes.Black, new PointF(x, y));
-
-                x += Placeholder.Length * font.Size;
+                    x += Placeholder.Length * font.Size;
+                }
             }
         }
     }

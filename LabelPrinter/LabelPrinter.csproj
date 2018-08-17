@@ -114,7 +114,7 @@
     <Compile Include="Helpers\BarcodeHelper.cs" />
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="LabelDrawingStrategy\BarcodeStategy.cs" />
-    <Compile Include="LabelDrawingStrategy\IDrawingStrategy.cs" />
+    <Compile Include="LabelDrawingStrategy\DrawingStrategy.cs" />
     <Compile Include="LabelDrawingStrategy\DateTimeStrategy.cs" />
     <Compile Include="LabelDrawingStrategy\ImageStrategy.cs" />
     <Compile Include="LabelDrawingStrategy\StrategySelector.cs" />

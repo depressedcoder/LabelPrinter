@@ -26,12 +26,16 @@ namespace LabelPrinter.LabelDrawingStrategy
         protected Font GetRowFont(bool isBold, bool isUnderLine, bool isHigh, int selectedCharwidth)
         {
             FontStyle style = FontStyle.Regular;
+
             if (isBold) style |= FontStyle.Bold;
+
             if (isUnderLine) style |= FontStyle.Underline;
+
             if (isHigh)
             {
                 selectedCharwidth = selectedCharwidth * 2;
             }
+
             var font = new Font("Arial", selectedCharwidth, style | style);
 
             return font;

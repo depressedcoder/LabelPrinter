@@ -23,15 +23,16 @@ namespace LabelPrinter.LabelDrawingStrategy
                     break;
             }
 
-            var font = GetRowFont(row.IsBold, row.IsUnderlined, row.IsHigh, row.SelectedCharWidth);
-
-            graphics.DrawString(timestamp, font, Brushes.Black, new PointF(x, y));
-
-            x += timestamp.Length * font.Size;
-
-            if (font.Height > rowHeight)
+            using(var font = GetRowFont(row.IsBold, row.IsUnderlined, row.IsHigh, row.SelectedCharWidth))
             {
-                rowHeight = font.Height;
+                graphics.DrawString(timestamp, font, Brushes.Black, new PointF(x, y));
+
+                x += timestamp.Length * font.Size;
+
+                if (font.Height > rowHeight)
+                {
+                    rowHeight = font.Height;
+                }
             }
         }
     }
