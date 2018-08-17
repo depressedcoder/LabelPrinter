@@ -172,7 +172,7 @@ namespace LabelPrinter.ViewModel
                 if (desiredText.Length > 0)
                     SelectedLabelName = desiredText[0];
                 if (desiredText.Length > 1)
-                    HowManyCoppies = Int32.Parse(desiredText[1]);
+                    HowManyCoppies = int.Parse(desiredText[1]);
                 if (desiredText.Length > 2)
                     Row1.Text = desiredText[2];
                 if (desiredText.Length > 3)
