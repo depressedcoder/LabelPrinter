@@ -25,6 +25,7 @@ namespace LabelPrinter.LabelDrawingStrategy
         protected Font GetRowFont()
         {
             FontStyle style = FontStyle.Regular;
+            var charWidth = LabelRow.SelectedCharWidth;
 
             if (LabelRow.IsBold) style |= FontStyle.Bold;
 
@@ -32,10 +33,10 @@ namespace LabelPrinter.LabelDrawingStrategy
 
             if (LabelRow.IsHigh)
             {
-                LabelRow.SelectedCharWidth *= 2;
+                charWidth *= 2;
             }
 
-            var font = new Font("Arial", LabelRow.SelectedCharWidth, style | style);
+            var font = new Font("Arial", charWidth, style | style);
 
             return font;
         }
