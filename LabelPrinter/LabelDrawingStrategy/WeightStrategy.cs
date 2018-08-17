@@ -4,13 +4,14 @@ namespace LabelPrinter.LabelDrawingStrategy
 {
     public class WeightStrategy : DrawingStrategy
     {
+        const string _convertedWeight = "0.0";
         public override void Draw(ref int rowHeight, ref float x, float y)
         {
             using (var font = GetRowFont())
             {
-                Graphics.DrawString("0.0", font, Brushes.Black, new PointF(x, y));
-
-                x += Placeholder.Length * font.Size;
+                Graphics.DrawString(_convertedWeight, font, Brushes.Black, new PointF(x, y));
+                
+                x +=  Graphics.MeasureString(_convertedWeight, font).Width;
 
                 if (font.Height > rowHeight)
                 {

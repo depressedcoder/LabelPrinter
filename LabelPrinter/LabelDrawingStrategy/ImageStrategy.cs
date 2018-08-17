@@ -37,7 +37,7 @@ namespace LabelPrinter.LabelDrawingStrategy
                 {
                     Graphics.DrawString(imageNotFound, font, Brushes.Black, new PointF(x, y));
 
-                    x += Placeholder.Length * font.Size;
+                    x += Graphics.MeasureString(imageNotFound, font).Width;
                 }
             }
         }

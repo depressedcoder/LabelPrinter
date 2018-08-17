@@ -10,7 +10,7 @@ namespace LabelPrinter.LabelDrawingStrategy
             {
                 Graphics.DrawString(Placeholder, font, Brushes.Black, new PointF(x, y));
 
-                x += Placeholder.Length * font.Size;
+                x += Graphics.MeasureString(Placeholder, font).Width;
 
                 if (font.Height > rowHeight)
                 {

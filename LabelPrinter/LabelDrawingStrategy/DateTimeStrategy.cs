@@ -26,7 +26,7 @@ namespace LabelPrinter.LabelDrawingStrategy
 
                 Graphics.DrawString(datetime, font, Brushes.Black, new PointF(x, y));
 
-                x += (datetime.Length * font.Size) - 20;
+                x += Graphics.MeasureString(datetime, font).Width;
 
                 if (font.Height > rowHeight)
                 {
