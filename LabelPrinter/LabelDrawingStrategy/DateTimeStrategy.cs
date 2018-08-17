@@ -4,11 +4,35 @@ using LabelPrinter.Model;
 
 namespace LabelPrinter.LabelDrawingStrategy
 {
-    public class DateTimeStrategy : IDrawingStrategy
+    public class DateTimeStrategy : DrawingStrategy
     {
-        public PointF Draw(Graphics graphics, Barcode barcode, LabelRow row, float x, float y)
+        public override void Draw(Graphics graphics, Barcode barcode, LabelRow row, ref int rowHeight, ref float x, float y)
         {
-            throw new NotImplementedException();
+            var timestamp = string.Empty;
+
+            switch (Placeholder)
+            {
+                case "<TIMESTAMP>":
+                    timestamp = DateTime.Now.ToString("h:mm");
+                    break;
+                case "<TIME>":
+                    timestamp = DateTime.Now.ToString("HH:mm:ss tt");
+                    break;
+                case "<DATE>":
+                    timestamp = DateTime.Now.ToString("dd-mm-yyyy");
+                    break;
+            }
+
+            var font = GetRowFont(row.IsBold, row.IsUnderlined, row.IsHigh, row.SelectedCharWidth);
+
+            graphics.DrawString(timestamp, font, Brushes.Black, new PointF(x, y));
+
+            x += timestamp.Length * font.Size;
+
+            if (font.Height > rowHeight)
+            {
+                rowHeight = font.Height;
+            }
         }
     }
 }

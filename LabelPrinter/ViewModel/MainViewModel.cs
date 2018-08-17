@@ -1,11 +1,9 @@
 using System.Collections.Generic;
 using System.Windows.Media.Imaging;
-using GalaSoft.MvvmLight;
 using System.Drawing;
 using System.IO;
 using System.Drawing.Imaging;
 using System.Text.RegularExpressions;
-using System;
 using System.Windows.Forms;
 using LabelPrinter.LabelDrawingStrategy;
 using LabelPrinter.Model;
@@ -24,23 +22,23 @@ namespace LabelPrinter.ViewModel
                 graphics.Clear(Color.White);
 
                 //Row 1
-                var row1Height = Draw(graphics,  Barcode, Row1, 10f, 10f);
+                var row1Height = Draw(graphics, Barcode, Row1, 10f, 10f);
                 //Row 2
-                var row2Height = Draw(graphics,  Barcode, Row2, 10f, row1Height);
+                var row2Height = Draw(graphics, Barcode, Row2, 10f, row1Height);
                 //Row 3
                 var row3Height = Draw(graphics, Barcode, Row3, 10f, row2Height);
                 //Row 4
-                var row4Height = Draw(graphics, Barcode, Row4 , 10f, row3Height);
+                var row4Height = Draw(graphics, Barcode, Row4, 10f, row3Height);
                 //Row5
-                var row5Height = Draw(graphics, Barcode, Row5 , 10f, row4Height);
+                var row5Height = Draw(graphics, Barcode, Row5, 10f, row4Height);
                 //ROW6
-                var row6Height = Draw(graphics, Barcode, Row6 , 10f, row5Height);
+                var row6Height = Draw(graphics, Barcode, Row6, 10f, row5Height);
                 //ROW7
                 var row7Height = Draw(graphics, Barcode, Row7, 10f, row6Height);
                 //ROW8
-                var row8Height = Draw(graphics, Barcode, Row8 , 10f, row7Height);
+                var row8Height = Draw(graphics, Barcode, Row8, 10f, row7Height);
                 //ROW9
-                var row9Height = Draw(graphics, Barcode, Row9 , 10f, row8Height);
+                var row9Height = Draw(graphics, Barcode, Row9, 10f, row8Height);
                 //ROW10
                 var row10Height = Draw(graphics, Barcode, Row10, 10f, row9Height);
                 //ROW11
@@ -52,8 +50,7 @@ namespace LabelPrinter.ViewModel
                 //ROW14
                 var row14Height = Draw(graphics, Barcode, Row14, 10f, row13Height);
                 //ROW15
-                var row15Height = Draw(graphics, Barcode, Row15 , 10f, row14Height);
-
+                var row15Height = Draw(graphics, Barcode, Row15, 10f, row14Height);
             }
 
             using (var ms = new MemoryStream())
@@ -81,144 +78,26 @@ namespace LabelPrinter.ViewModel
         /// <returns>Returns the Next Rows starting point of Y coordinate</returns>
         float Draw(Graphics graphics, Barcode barcode, LabelRow row, float x, float y)
         {
-            var labels = GetLabels(row.Text);
+            var placeholers = GetPlaceholders(row.Text);
 
             var rowHeight = 10;
 
-            foreach (var label in labels)
+            var strategySelector = new StrategySelector();
+
+            foreach (var placeholer in placeholers)
             {
+                var drawingStrategy = strategySelector.GetStrategy(placeholer);
 
-                if (Regex.IsMatch(label, "^<BAR.*>"))
-                {
-                    var s = new StrategySelector().GetStrategy(label).Draw(graphics, barcode, row, x, y);
-
-                    //using (var barcodeHelper = new BarcodeHelper())
-                    //{
-                    //    var barcodeImage = barcodeHelper.GetBarcode(barcode,label, CodeSize, HeightOfCode);
-                    //    graphics.DrawImage(barcodeImage, x, y, barcodeImage.Width, barcodeImage.Height);
-
-                    //    x += barcodeImage.Width;
-
-                    //    if (barcodeImage.Height > rowHeight)
-                    //    {
-                    //        rowHeight = barcodeImage.Height;
-                    //    }
-                    //}
-                }
-                else if (Regex.IsMatch(label, "^<IMG.*>"))
-                {
-                    var imageLabel = Regex.Replace(label, "<IMG|>", "");
-
-                    if (File.Exists($"{imageLabel}.bmp"))
-                    {
-                        var image = Image.FromFile($"{imageLabel}.bmp");
-                        graphics.DrawImage(image, x, y, image.Width, image.Height);
-
-                        x += image.Width;
-
-                        if (image.Height > rowHeight)
-                        {
-                            rowHeight = image.Height;
-                        }
-                    }
-                    else if (label == "<IMG>")
-                    {
-                        var image = Image.FromFile("Norsel.bmp");
-                        graphics.DrawImage(image, x, y, image.Width, image.Height);
-
-                        x += image.Width;
-
-                        if (image.Height > rowHeight)
-                        {
-                            rowHeight = image.Height;
-                        }
-                    }
-                    else
-                    {
-                        var font = GetRowFont(row.IsBold, row.IsUnderlined, row.IsHigh, row.SelectedCharWidth);
-
-                        graphics.DrawString("<?>", font, Brushes.Black, new PointF(x, y));
-
-                        x += label.Length * font.Size;
-                    }
-                }
-                else if (label == "<WEIGHT>")
-                {
-                    var font = GetRowFont(row.IsBold, row.IsUnderlined , row.IsHigh, row.SelectedCharWidth);
-
-                    graphics.DrawString("0.0", font, Brushes.Black, new PointF(x, y));
-
-                    x += label.Length * font.Size;
-
-                    if (font.Height > rowHeight)
-                    {
-                        rowHeight = font.Height;
-                    }
-                }
-                else if (label == "<TIMESTAMP>")
-                {
-                    string timestamp = DateTime.Now.ToString("h:mm");
-
-                    var font = GetRowFont(row.IsBold, row.IsUnderlined, row.IsHigh, row.SelectedCharWidth);
-
-                    graphics.DrawString(timestamp, font, Brushes.Black, new PointF(x, y));
-
-                    x += label.Length * font.Size;
-
-                    if (font.Height > rowHeight)
-                    {
-                        rowHeight = font.Height;
-                    }
-                }
-                else if (label == "<TIME>")
-                {
-                    string time = DateTime.Now.ToString("HH:mm:ss tt");
-
-                    var font = GetRowFont(row.IsBold, row.IsUnderlined, row.IsHigh, row.SelectedCharWidth);
-
-                    graphics.DrawString(time, font, Brushes.Black, new PointF(x, y));
-
-                    x += label.Length * font.Size;
-
-                    if (font.Height > rowHeight)
-                    {
-                        rowHeight = font.Height;
-                    }
-                }
-                else if (label == "<DATE>")
-                {
-                    string date = DateTime.Now.ToString("dd-MM-yyyy");
-
-                    var font = GetRowFont(row.IsBold, row.IsUnderlined, row.IsHigh, row.SelectedCharWidth);
-
-                    graphics.DrawString(date, font, Brushes.Black, new PointF(x, y));
-
-                    x += label.Length * font.Size;
-
-                    if (font.Height > rowHeight)
-                    {
-                        rowHeight = font.Height;
-                    }
-                }
-                else
-                {
-                    var font = GetRowFont(row.IsBold, row.IsUnderlined, row.IsHigh, row.SelectedCharWidth);
-
-                    graphics.DrawString(label, font, Brushes.Black, new PointF(x, y));
-
-                    x += label.Length * font.Size;
-
-                    if (font.Height > rowHeight)
-                    {
-                        rowHeight = font.Height;
-                    }
-                }
+                drawingStrategy.Draw(graphics, barcode, row, ref rowHeight, ref x, y);
             }
 
             return rowHeight + y;
         }
-        List<string> GetLabels(string input)
+
+        List<string> GetPlaceholders(string input)
         {
+            var placeholderPattern = "<[A-Z]+?>";
+
             var results = new List<string>();
 
             if (string.IsNullOrEmpty(input))
@@ -226,7 +105,7 @@ namespace LabelPrinter.ViewModel
                 return results;
             }
 
-            var matches = Regex.Matches(input, "<.+?>");
+            var matches = Regex.Matches(input, placeholderPattern);
 
             if (matches.Count == 0)
             {
@@ -249,28 +128,16 @@ namespace LabelPrinter.ViewModel
 
                 input = input.Substring(idx + matches[i].Value.Length);
 
-                if (!Regex.IsMatch(input, "<.+?>"))
+                if (!Regex.IsMatch(input, placeholderPattern))
                 {
                     if (!string.IsNullOrEmpty(input))
                         results.Add(input);
                 }
             }
+
             return results;
         }
 
-        Font GetRowFont(bool isBold, bool isUnderLine, bool isHigh, int selectedCharwidth)
-        {
-            FontStyle style = FontStyle.Regular;
-            if (isBold) style |= FontStyle.Bold;
-            if (isUnderLine) style |= FontStyle.Underline;
-            if (isHigh)
-            {
-                selectedCharwidth = selectedCharwidth * 2;
-            }
-            var font = new Font("Arial", selectedCharwidth, style | style);
-
-            return font;
-        }
         void UpdateLabel()
         {
 
