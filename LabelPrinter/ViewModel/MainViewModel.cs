@@ -88,7 +88,7 @@ namespace LabelPrinter.ViewModel
                 Barcode = barcode,
                 LabelRow = row
             };
-
+           
             foreach (var placeholer in placeholers)
             {
                 var drawingStrategy = strategySelector.GetStrategy(placeholer);
