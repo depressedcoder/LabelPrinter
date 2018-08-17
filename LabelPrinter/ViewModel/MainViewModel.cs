@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using LabelPrinter.LabelDrawingStrategy;
 using LabelPrinter.Model;
 using System.Linq;
+using LabelPrinter.DataConnectionStrategy;
 
 namespace LabelPrinter.ViewModel
 {
@@ -15,6 +16,11 @@ namespace LabelPrinter.ViewModel
     {
         public void PreviewLabel()
         {
+            //Testing StrategySelectorForDataConnection with the Label Name ComboBox.
+            string lName = SelectedLabelName;
+            var strategy = new StrategySelectorForDataConnection();
+            strategy.getConnectionStrategy(lName);
+
             using (var bitmap = new Bitmap(LabelWidth, LabelHeight))
             {
                 var rowHeight = 10f;
@@ -24,7 +30,7 @@ namespace LabelPrinter.ViewModel
                     graphics.Clear(Color.White);
 
                     //Find all rows
-                    var rows = GetType().GetProperties()
+                    var rows = this.GetType().GetProperties()
                         .Where(p => p.GetValue(this, new object[] { })?.GetType() == typeof(LabelRow))
                         .Select(p => (LabelRow)p.GetValue(this, new object[] { }));
 

@@ -125,7 +125,7 @@ namespace LabelPrinter.ViewModel
         /// <summary>
         /// List of all LabelNames
         /// </summary>
-        public List<string> LabelName { get; set; } = new List<string> { "NorselGHI", "NorselABC" };
+        public List<string> LabelName { get; set; } = new List<string> { "Text Files", "Data Base Oracle", "Data Base MySQL", "Data Base MySQL Server"};
         private string _selectedLabelName;
         /// <summary>
         /// Selected Label Name From ComboBox
@@ -185,7 +185,7 @@ namespace LabelPrinter.ViewModel
                 HeightOfCode = 5,
                 SelectedBarCode = BarCodes.FirstOrDefault()
             };
-
+            SelectedLabelName = "Text Files";
 
             SaveButtonCommand = new RelayCommand(SaveCommand);
             NewButtonCommand = new RelayCommand(NewCommand);
