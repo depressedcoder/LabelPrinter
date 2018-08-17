@@ -79,7 +79,7 @@ namespace LabelPrinter.ViewModel
 
         List<string> GetPlaceholders(string input)
         {
-            var placeholderPattern = "<[A-Z].*?>";
+            var placeholderPattern = "<([a-zA-Z0-9_.-])+?>";
 
             var results = new List<string>();
 
