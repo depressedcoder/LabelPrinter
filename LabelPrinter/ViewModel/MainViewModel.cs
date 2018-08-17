@@ -164,22 +164,74 @@ namespace LabelPrinter.ViewModel
 
         void NewCommand()
         {
-            var desiredText = File.ReadAllLines("NORSEL-IMPORT.txt");
-            if (desiredText.Length > 0)
-                Row1.Text = desiredText[0];
-            if (desiredText.Length > 1)
-                Row2.Text = desiredText[1];
-            if (desiredText.Length > 2)
-                Row3.Text = desiredText[2];
+            //var numberOfCopies = HowManyCoppies.ToString();
+
+            if(File.Exists("NORSEL-IMPORT.txt"))
+            {
+                var desiredText = File.ReadAllLines("NORSEL-IMPORT.txt");
+                if (desiredText.Length > 0)
+                    SelectedLabelName = desiredText[0];
+                if (desiredText.Length > 1)
+                    HowManyCoppies = Int32.Parse(desiredText[1]);
+                if (desiredText.Length > 2)
+                    Row1.Text = desiredText[2];
+                if (desiredText.Length > 3)
+                    Row2.Text = desiredText[3];
+                if (desiredText.Length > 4)
+                    Row3.Text = desiredText[4];
+                if (desiredText.Length > 5)
+                    Row4.Text = desiredText[5];
+                if (desiredText.Length > 6)
+                    Row5.Text = desiredText[6];
+                if (desiredText.Length > 7)
+                    Row6.Text = desiredText[7];
+                if (desiredText.Length > 8)
+                    Row7.Text = desiredText[8];
+                if (desiredText.Length > 9)
+                    Row8.Text = desiredText[9];
+                if (desiredText.Length > 10)
+                    Row9.Text = desiredText[10];
+                if (desiredText.Length > 11)
+                    Row10.Text = desiredText[11];
+                if (desiredText.Length > 12)
+                    Row11.Text = desiredText[12];
+                if (desiredText.Length > 13)
+                    Row12.Text = desiredText[13];
+                if (desiredText.Length > 14)
+                    Row13.Text = desiredText[14];
+                if (desiredText.Length > 15)
+                    Row14.Text = desiredText[15];
+                if (desiredText.Length > 16)
+                    Row15.Text = desiredText[16];
+            }
+            else
+            {
+                MessageBox.Show("No file exist");
+            }
+
         }
 
         void SaveCommand()
         {
             using (StreamWriter objWriter = new StreamWriter("NORSEL-IMPORT.txt"))
             {
+                objWriter.Write(SelectedLabelName+"\n");
+                objWriter.Write(HowManyCoppies + "\n");
                 objWriter.Write(Row1.Text + "\n");
                 objWriter.Write(Row2.Text + "\n");
-                objWriter.Write(Row3.Text);
+                objWriter.Write(Row3.Text + "\n");
+                objWriter.Write(Row4.Text + "\n");
+                objWriter.Write(Row5.Text + "\n");
+                objWriter.Write(Row6.Text + "\n");
+                objWriter.Write(Row7.Text + "\n");
+                objWriter.Write(Row8.Text + "\n");
+                objWriter.Write(Row9.Text + "\n");
+                objWriter.Write(Row10.Text + "\n");
+                objWriter.Write(Row11.Text + "\n");
+                objWriter.Write(Row12.Text + "\n");
+                objWriter.Write(Row13.Text + "\n");
+                objWriter.Write(Row14.Text + "\n");
+                objWriter.Write(Row15.Text + "\n");
                 MessageBox.Show("Details have been saved");
             }
         }

@@ -71,7 +71,7 @@ namespace LabelPrinter.ViewModel
             set
             {
                 _isAutomaticCuttingDevice = value;
-                RaisePropertyChanged("IsAutomaticCuttingDevice");
+                RaisePropertyChanged(nameof(IsAutomaticCuttingDevice));
             }
         }
         int labelWidth = 315;
@@ -119,6 +119,24 @@ namespace LabelPrinter.ViewModel
             {
                 _distanceFromLeft = value;
                 RaisePropertyChanged(nameof(DistanceFromLeft));
+            }
+        }
+
+        /// <summary>
+        /// List of all LabelNames
+        /// </summary>
+        public List<string> LabelName { get; set; } = new List<string> { "NorselGHI", "NorselABC" };
+        private string _selectedLabelName;
+        /// <summary>
+        /// Selected Label Name From ComboBox
+        /// </summary>
+        public string SelectedLabelName
+        {
+            get { return _selectedLabelName; }
+            set {
+                _selectedLabelName = value;
+                RaisePropertyChanged("SelectedLabelName");
+                PreviewLabel();
             }
         }
 
