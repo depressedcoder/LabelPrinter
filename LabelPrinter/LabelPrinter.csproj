@@ -111,8 +111,6 @@
     </ApplicationDefinition>
     <Compile Include="EZioApi.cs" />
     <Compile Include="GodexPrinter.cs" />
-    <Compile Include="Helpers\BarcodeHelper.cs" />
-    <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="LabelDrawingStrategy\BarcodeStategy.cs" />
     <Compile Include="LabelDrawingStrategy\DrawingStrategy.cs" />
     <Compile Include="LabelDrawingStrategy\DateTimeStrategy.cs" />

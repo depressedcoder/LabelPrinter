@@ -8,35 +8,34 @@ namespace LabelPrinter.LabelDrawingStrategy
         /// <summary>
         /// Used For Drawing the Barcodes,Images and texts
         /// </summary>
-        /// <param name="graphics"></param>
-        /// <param name="barcode">Design of the barcode</param>
         /// <param name="x">Drawing position of the Label</param>
         /// <param name="y">Drawing position of the Label</param>
         /// <returns>Returns the Next Rows starting point of Y coordinate</returns>
         public abstract void Draw(
-             Graphics graphics,
-             Barcode barcode,
-             LabelRow row,
             ref int rowHeight,
             ref float x,
              float y);
 
         public string Placeholder { get; set; }
 
-        protected Font GetRowFont(bool isBold, bool isUnderLine, bool isHigh, int selectedCharwidth)
+        public Graphics Graphics { get; set; }
+        public Barcode Barcode { get; set; }
+        public LabelRow LabelRow { get; set; }
+
+        protected Font GetRowFont()
         {
             FontStyle style = FontStyle.Regular;
 
-            if (isBold) style |= FontStyle.Bold;
+            if (LabelRow.IsBold) style |= FontStyle.Bold;
 
-            if (isUnderLine) style |= FontStyle.Underline;
+            if (LabelRow.IsUnderlined) style |= FontStyle.Underline;
 
-            if (isHigh)
+            if (LabelRow.IsHigh)
             {
-                selectedCharwidth = selectedCharwidth * 2;
+                LabelRow.SelectedCharWidth *= 2;
             }
 
-            var font = new Font("Arial", selectedCharwidth, style | style);
+            var font = new Font("Arial", LabelRow.SelectedCharWidth, style | style);
 
             return font;
         }

@@ -1,15 +1,14 @@
 ﻿using System.Drawing;
-using LabelPrinter.Model;
 
 namespace LabelPrinter.LabelDrawingStrategy
 {
     public class TextStrategy : DrawingStrategy
     {
-        public override void Draw(Graphics graphics, Barcode barcode, LabelRow row, ref int rowHeight, ref float x, float y)
+        public override void Draw(ref int rowHeight, ref float x, float y)
         {
-            using (var font = GetRowFont(row.IsBold, row.IsUnderlined, row.IsHigh, row.SelectedCharWidth))
+            using (var font = GetRowFont())
             {
-                graphics.DrawString(Placeholder, font, Brushes.Black, new PointF(x, y));
+                Graphics.DrawString(Placeholder, font, Brushes.Black, new PointF(x, y));
 
                 x += Placeholder.Length * font.Size;
 

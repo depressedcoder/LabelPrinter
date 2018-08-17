@@ -82,13 +82,18 @@ namespace LabelPrinter.ViewModel
 
             var rowHeight = 10;
 
-            var strategySelector = new StrategySelector();
+            var strategySelector = new StrategySelector
+            {
+                Graphics = graphics,
+                Barcode = barcode,
+                LabelRow = row
+            };
 
             foreach (var placeholer in placeholers)
             {
                 var drawingStrategy = strategySelector.GetStrategy(placeholer);
 
-                drawingStrategy.Draw(graphics, barcode, row, ref rowHeight, ref x, y);
+                drawingStrategy.Draw(ref rowHeight, ref x, y);
             }
 
             return rowHeight + y;
@@ -96,7 +101,7 @@ namespace LabelPrinter.ViewModel
 
         List<string> GetPlaceholders(string input)
         {
-            var placeholderPattern = "<[A-Z]+?>";
+            var placeholderPattern = "<[A-Z].*?>";
 
             var results = new List<string>();
 

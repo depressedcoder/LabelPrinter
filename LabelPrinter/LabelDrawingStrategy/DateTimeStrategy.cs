@@ -1,33 +1,32 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
-using LabelPrinter.Model;
 
 namespace LabelPrinter.LabelDrawingStrategy
 {
     public class DateTimeStrategy : DrawingStrategy
     {
-        public override void Draw(Graphics graphics, Barcode barcode, LabelRow row, ref int rowHeight, ref float x, float y)
+        readonly Dictionary<string, string> _datetimeFormat;
+
+        public DateTimeStrategy()
         {
-            var timestamp = string.Empty;
-
-            switch (Placeholder)
+            _datetimeFormat = new Dictionary<string, string>
             {
-                case "<TIMESTAMP>":
-                    timestamp = DateTime.Now.ToString("h:mm");
-                    break;
-                case "<TIME>":
-                    timestamp = DateTime.Now.ToString("HH:mm:ss tt");
-                    break;
-                case "<DATE>":
-                    timestamp = DateTime.Now.ToString("dd-mm-yyyy");
-                    break;
-            }
+                {"<TIMESTAMP>","h:mm" },
+                {"<TIME>", "HH:mm:ss tt" },
+                {"<DATE>",  "dd-mm-yyyy"}
+            };
+        }
 
-            using(var font = GetRowFont(row.IsBold, row.IsUnderlined, row.IsHigh, row.SelectedCharWidth))
+        public override void Draw(ref int rowHeight, ref float x, float y)
+        {
+            using (var font = GetRowFont())
             {
-                graphics.DrawString(timestamp, font, Brushes.Black, new PointF(x, y));
+                var datetime = DateTime.Now.ToString(_datetimeFormat[Placeholder]);
 
-                x += timestamp.Length * font.Size;
+                Graphics.DrawString(datetime, font, Brushes.Black, new PointF(x, y));
+
+                x += datetime.Length * font.Size;
 
                 if (font.Height > rowHeight)
                 {
