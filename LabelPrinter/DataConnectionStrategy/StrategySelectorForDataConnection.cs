@@ -32,7 +32,7 @@ namespace LabelPrinter.DataConnectionStrategy
                     con = new DataBaseMySQLServerStrategy();
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException(strategyName);
+                    break;
             }
             con.unknownMethod();
         }
