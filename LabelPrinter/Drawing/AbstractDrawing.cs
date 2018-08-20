@@ -1,9 +1,9 @@
-﻿using LabelPrinter.Model;
-using System.Drawing;
+﻿using System.Drawing;
+using LabelPrinter.Model;
 
-namespace LabelPrinter.LabelDrawingStrategy
+namespace LabelPrinter.Drawing
 {
-    public abstract class DrawingStrategy
+    public abstract class AbstractDrawing
     {
         public abstract void Draw(
             ref int rowHeight,

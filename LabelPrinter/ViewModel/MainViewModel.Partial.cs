@@ -80,7 +80,7 @@ namespace LabelPrinter.ViewModel
         /// </summary>
         public int LabelWidth
         {
-            get { return labelWidth; }
+            get => labelWidth;
             set
             {
                 if (value != labelWidth)
@@ -97,7 +97,7 @@ namespace LabelPrinter.ViewModel
 
         public int LabelHeight
         {
-            get { return labelHeight; }
+            get => labelHeight;
             set
             {
                 if (value != labelHeight)
@@ -114,7 +114,7 @@ namespace LabelPrinter.ViewModel
         /// </summary>
         public int DistanceFromLeft
         {
-            get { return _distanceFromLeft; }
+            get => _distanceFromLeft;
             set
             {
                 _distanceFromLeft = value;
@@ -132,7 +132,7 @@ namespace LabelPrinter.ViewModel
         /// </summary>
         public string SelectedLabelName
         {
-            get { return _selectedLabelName; }
+            get => _selectedLabelName;
             set {
                 _selectedLabelName = value;
                 RaisePropertyChanged("SelectedLabelName");
