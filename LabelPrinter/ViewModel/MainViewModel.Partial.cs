@@ -24,13 +24,13 @@ namespace LabelPrinter.ViewModel
         public LabelRow Row13 { get; set; }
         public LabelRow Row14 { get; set; }
         public LabelRow Row15 { get; set; }
-        public RelayCommand SaveButtonCommand { get; private set; }
-        public RelayCommand NewButtonCommand { get; private set; }
-        public RelayCommand SetUpButtonCommand { get; private set; }
-        public RelayCommand PrintButtonCommand { get; private set; }
-        public RelayCommand PrintJobsButtonCommand { get; private set; }
-        public RelayCommand ExitButtonCommand { get; private set; }
-        public RelayCommand UpdateLabelCommand { get; private set; }
+        public RelayCommand SaveButtonCommand { get; }
+        public RelayCommand NewButtonCommand { get; }
+        public RelayCommand SetUpButtonCommand { get; }
+        public RelayCommand PrintButtonCommand { get; }
+        public RelayCommand PrintJobsButtonCommand { get; }
+        public RelayCommand ExitButtonCommand { get; }
+        public RelayCommand UpdateLabelCommand { get; }
 
         public Barcode Barcode { get; set; }
 
@@ -38,10 +38,7 @@ namespace LabelPrinter.ViewModel
 
         public BitmapImage BitmapImage
         {
-            get
-            {
-                return _bitmapImage;
-            }
+            get => _bitmapImage;
             set
             {
                 _bitmapImage = value;
@@ -56,7 +53,7 @@ namespace LabelPrinter.ViewModel
         /// </summary>
         public int HowManyCoppies
         {
-            get { return _howManyCopies; }
+            get => _howManyCopies;
             set
             {
                 _howManyCopies = value;
@@ -67,42 +64,42 @@ namespace LabelPrinter.ViewModel
         bool _isAutomaticCuttingDevice;
         public bool IsAutomaticCuttingDevice
         {
-            get { return _isAutomaticCuttingDevice; }
+            get => _isAutomaticCuttingDevice;
             set
             {
                 _isAutomaticCuttingDevice = value;
                 RaisePropertyChanged(nameof(IsAutomaticCuttingDevice));
             }
         }
-        int labelWidth = 315;
+        int _labelWidth = 315;
         /// <summary>
         /// Used For The Width of Label
         /// </summary>
         public int LabelWidth
         {
-            get => labelWidth;
+            get => _labelWidth;
             set
             {
-                if (value != labelWidth)
+                if (value != _labelWidth)
                 {
-                    labelWidth = value;
+                    _labelWidth = value;
                     RaisePropertyChanged(nameof(LabelWidth));
                 }
             }
         }
-        int labelHeight = 423;
+        int _labelHeight = 423;
         /// <summary>
         /// used for the height of Label
         /// </summary>
 
         public int LabelHeight
         {
-            get => labelHeight;
+            get => _labelHeight;
             set
             {
-                if (value != labelHeight)
+                if (value != _labelHeight)
                 {
-                    labelHeight = value;
+                    _labelHeight = value;
                     RaisePropertyChanged(nameof(LabelHeight));
                 }
             }

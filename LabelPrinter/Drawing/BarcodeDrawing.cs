@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Text.RegularExpressions;
 using iTextSharp.text.pdf;
+using BarcodeLib;
 
 namespace LabelPrinter.Drawing
 {
@@ -11,25 +12,25 @@ namespace LabelPrinter.Drawing
     {
         const string BarcodeMatchingPattern = "<BAR|\\++>|>";
 
-        readonly Dictionary<string, BarcodeLib.TYPE> _barcodeTypes;
+        readonly Dictionary<string, TYPE> _barcodeTypes;
 
         readonly BarcodeLib.Barcode _barcode;
 
         public BarcodeDrawing()
         {
-            _barcodeTypes = new Dictionary<string, BarcodeLib.TYPE>
+            _barcodeTypes = new Dictionary<string, TYPE>
             {
-                {"Code39",  BarcodeLib.TYPE.CODE39},
-                {"Code128",  BarcodeLib.TYPE.CODE128},
-                {"EAN13",  BarcodeLib.TYPE.EAN13},
-                {"EAN8", BarcodeLib.TYPE.EAN8},
-                {"2/5 Interleaved",  BarcodeLib.TYPE.Interleaved2of5}
+                {"Code39",  TYPE.CODE39},
+                {"Code128",  TYPE.CODE128},
+                {"EAN13",  TYPE.EAN13},
+                {"EAN8", TYPE.EAN8},
+                {"2/5 Interleaved",  TYPE.Interleaved2of5}
             };
 
             _barcode = new BarcodeLib.Barcode
             {
-                Alignment = BarcodeLib.AlignmentPositions.LEFT,
-                LabelPosition = BarcodeLib.LabelPositions.BOTTOMCENTER
+                Alignment = AlignmentPositions.LEFT,
+                LabelPosition = LabelPositions.BOTTOMCENTER
             };
         }
 
@@ -80,19 +81,19 @@ namespace LabelPrinter.Drawing
             if (string.IsNullOrEmpty(label))
                 label = "0";
 
-            if (barcodeType == BarcodeLib.TYPE.EAN13)
+            if (barcodeType == TYPE.EAN13)
             {
                 _barcode.IncludeLabel = true;
                 label = label.Substring(0, Math.Min(13, label.Length)).PadLeft(13, '0');
             }
 
-            if (barcodeType == BarcodeLib.TYPE.EAN8)
+            if (barcodeType == TYPE.EAN8)
             {
                 _barcode.IncludeLabel = true;
                 label = label.Substring(0, Math.Min(8, label.Length)).PadLeft(8, '0');
             }
 
-            if (barcodeType == BarcodeLib.TYPE.Interleaved2of5)
+            if (barcodeType == TYPE.Interleaved2of5)
             {
                 if (label.Length % 2 != 0)
                 {
