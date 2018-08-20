@@ -2,20 +2,20 @@
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace LabelPrinter.LabelDrawingStrategy
+namespace LabelPrinter.Drawing
 {
-    public class ImageStrategy : DrawingStrategy
+    public class ImageDrawing : AbstractDrawing
     {
-        const string defaultImage = "Norsel";
-        const string imageNotFound = "<?>";
-        const string imageNamePattern = "<IMG|>";
+        const string DefaultImage = "Norsel";
+        const string ImageNotFound = "<?>";
+        const string ImageNamePattern = "<IMG|>";
 
         public override void Draw(ref int rowHeight, ref float x, float y)
         {
-            var imageLabel = Regex.Replace(Placeholder, imageNamePattern, string.Empty);
+            var imageLabel = Regex.Replace(Placeholder, ImageNamePattern, string.Empty);
 
             if (string.IsNullOrEmpty(imageLabel))
-                imageLabel = defaultImage;
+                imageLabel = DefaultImage;
 
             if (File.Exists($"{imageLabel}.bmp"))
             {
@@ -35,9 +35,9 @@ namespace LabelPrinter.LabelDrawingStrategy
             {
                 using (var font = GetRowFont())
                 {
-                    Graphics.DrawString(imageNotFound, font, Brushes.Black, new PointF(x, y));
+                    Graphics.DrawString(ImageNotFound, font, Brushes.Black, new PointF(x, y));
 
-                    x += Graphics.MeasureString(imageNotFound, font).Width;
+                    x += Graphics.MeasureString(ImageNotFound, font).Width;
                 }
             }
         }

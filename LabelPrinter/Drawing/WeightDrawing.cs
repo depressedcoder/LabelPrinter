@@ -1,16 +1,18 @@
 ﻿using System.Drawing;
 
-namespace LabelPrinter.LabelDrawingStrategy
+namespace LabelPrinter.Drawing
 {
-    public class TextStrategy : DrawingStrategy
+    public class WeightDrawing : AbstractDrawing
     {
+        const string ConvertedWeight = "0.0";
+
         public override void Draw(ref int rowHeight, ref float x, float y)
         {
             using (var font = GetRowFont())
             {
-                Graphics.DrawString(Placeholder, font, Brushes.Black, new PointF(x, y));
-
-                x += Graphics.MeasureString(Placeholder, font).Width;
+                Graphics.DrawString(ConvertedWeight, font, Brushes.Black, new PointF(x, y));
+                
+                x +=  Graphics.MeasureString(ConvertedWeight, font).Width;
 
                 if (font.Height > rowHeight)
                 {

@@ -1,21 +1,21 @@
-﻿using iTextSharp.text.pdf;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Text.RegularExpressions;
+using iTextSharp.text.pdf;
 
-namespace LabelPrinter.LabelDrawingStrategy
+namespace LabelPrinter.Drawing
 {
-    public class BarcodeStategy : DrawingStrategy
+    public class BarcodeDrawing : AbstractDrawing
     {
-        const string _barcodeMatchingPattern = "<BAR|\\++>|>";
+        const string BarcodeMatchingPattern = "<BAR|\\++>|>";
 
         readonly Dictionary<string, BarcodeLib.TYPE> _barcodeTypes;
 
         readonly BarcodeLib.Barcode _barcode;
 
-        public BarcodeStategy()
+        public BarcodeDrawing()
         {
             _barcodeTypes = new Dictionary<string, BarcodeLib.TYPE>
             {
@@ -56,7 +56,7 @@ namespace LabelPrinter.LabelDrawingStrategy
             width = width * 100;
             height = height * 20;
 
-            var label = Regex.Replace(Regex.Replace(barCodeLabel, _barcodeMatchingPattern, ""), @"\D", "0");
+            var label = Regex.Replace(Regex.Replace(barCodeLabel, BarcodeMatchingPattern, ""), @"\D", "0");
 
             if (!_barcodeTypes.ContainsKey(selectedBarcode))
             {

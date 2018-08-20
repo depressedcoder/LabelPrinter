@@ -5,10 +5,9 @@ using System.IO;
 using System.Drawing.Imaging;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using LabelPrinter.LabelDrawingStrategy;
 using LabelPrinter.Model;
 using System.Linq;
-using LabelPrinter.DataConnectionStrategy;
+using LabelPrinter.Drawing;
 
 namespace LabelPrinter.ViewModel
 {
@@ -16,11 +15,6 @@ namespace LabelPrinter.ViewModel
     {
         public void PreviewLabel()
         {
-            //Testing StrategySelectorForDataConnection with the Label Name ComboBox.
-            string lName = SelectedLabelName;
-            var strategy = new StrategySelectorForDataConnection();
-            strategy.getConnectionStrategy(lName);
-
             using (var bitmap = new Bitmap(LabelWidth, LabelHeight))
             {
                 var rowHeight = 10f;
@@ -64,7 +58,7 @@ namespace LabelPrinter.ViewModel
 
             var rowHeight = 10;
 
-            var strategySelector = new StrategySelector
+            var strategySelector = new DrawingSelector
             {
                 Graphics = graphics,
                 Barcode = Barcode,

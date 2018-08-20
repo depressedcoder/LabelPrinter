@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace LabelPrinter.LabelDrawingStrategy
+namespace LabelPrinter.Drawing
 {
-    public class DateTimeStrategy : DrawingStrategy
+    public class DateTimeDrawing : AbstractDrawing
     {
         readonly Dictionary<string, string> _datetimeFormat;
 
-        public DateTimeStrategy()
+        public DateTimeDrawing()
         {
             _datetimeFormat = new Dictionary<string, string>
             {

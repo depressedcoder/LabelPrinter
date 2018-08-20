@@ -109,23 +109,24 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="DataConnectionStrategy\ConnectionStrategy.cs" />
-    <Compile Include="DataConnectionStrategy\DataBaseMySQLServerStrategy.cs" />
-    <Compile Include="DataConnectionStrategy\DataBaseMySQLStrategy.cs" />
-    <Compile Include="DataConnectionStrategy\DataBaseOracleStrategy.cs" />
-    <Compile Include="DataConnectionStrategy\StrategySelectorForDataConnection.cs" />
-    <Compile Include="DataConnectionStrategy\TextFileStategy.cs" />
     <Compile Include="EZioApi.cs" />
     <Compile Include="GodexPrinter.cs" />
-    <Compile Include="LabelDrawingStrategy\BarcodeStategy.cs" />
-    <Compile Include="LabelDrawingStrategy\DrawingStrategy.cs" />
-    <Compile Include="LabelDrawingStrategy\DateTimeStrategy.cs" />
-    <Compile Include="LabelDrawingStrategy\ImageStrategy.cs" />
-    <Compile Include="LabelDrawingStrategy\StrategySelector.cs" />
-    <Compile Include="LabelDrawingStrategy\TextStrategy.cs" />
-    <Compile Include="LabelDrawingStrategy\WeightStrategy.cs" />
+    <Compile Include="Drawing\BarcodeDrawing.cs" />
+    <Compile Include="Drawing\AbstractDrawing.cs" />
+    <Compile Include="Drawing\DateTimeDrawing.cs" />
+    <Compile Include="Drawing\ImageDrawing.cs" />
+    <Compile Include="Drawing\DrawingSelector.cs" />
+    <Compile Include="Drawing\TextDrawing.cs" />
+    <Compile Include="Drawing\WeightDrawing.cs" />
     <Compile Include="Model\Barcode.cs" />
     <Compile Include="Model\LabelRow.cs" />
+    <Compile Include="Storage\AbstractStorage.cs" />
+    <Compile Include="Storage\MsSqlStorage.cs" />
+    <Compile Include="Storage\MySqlStorage.cs" />
+    <Compile Include="Storage\OracleStorage.cs" />
+    <Compile Include="Storage\StorageSelector.cs" />
+    <Compile Include="Storage\StorageTypes.cs" />
+    <Compile Include="Storage\TextStorage.cs" />
     <Compile Include="SetUpWindow.xaml.cs">
       <DependentUpon>SetUpWindow.xaml</DependentUpon>
     </Compile>
