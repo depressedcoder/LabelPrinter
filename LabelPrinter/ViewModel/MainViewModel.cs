@@ -149,7 +149,8 @@ namespace LabelPrinter.ViewModel
 
         void SetUpCommand()
         {
-            //Set Up Button
+            var window = new SetUpWindow();
+            window.ShowDialog();
         }
 
         void NewCommand()

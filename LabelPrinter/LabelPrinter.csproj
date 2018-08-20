@@ -126,9 +126,13 @@
     <Compile Include="LabelDrawingStrategy\WeightStrategy.cs" />
     <Compile Include="Model\Barcode.cs" />
     <Compile Include="Model\LabelRow.cs" />
+    <Compile Include="SetUpWindow.xaml.cs">
+      <DependentUpon>SetUpWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ValidationRules\MinMaxValidationRule.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.Partial.cs" />
+    <Compile Include="ViewModel\SetUpViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -144,6 +148,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="SetUpWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
