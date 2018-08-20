@@ -1,8 +1,4 @@
-﻿using EzioDll;
-using LabelPrinter.ViewModel;
-using System;
-using System.IO;
-using System.Linq;
+﻿using LabelPrinter.ViewModel;
 using System.Windows;
 
 namespace LabelPrinter

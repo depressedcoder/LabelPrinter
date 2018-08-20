@@ -139,8 +139,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="External\EZioApi.cs" />
-    <Compile Include="External\GodexPrinter.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -226,7 +224,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\error.png" />
-    <Content Include="External\EZio32.dll" />
     <Content Include="EZio32.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
