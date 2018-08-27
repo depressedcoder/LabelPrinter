@@ -1,8 +1,9 @@
 ﻿using GalaSoft.MvvmLight;
-using System;
+using GalaSoft.MvvmLight.Command;
+using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.IO;
+using System.Windows;
 
 namespace LabelPrinter.ViewModel
 {
@@ -10,7 +11,7 @@ namespace LabelPrinter.ViewModel
     {
         public List<string> ScalesModel { get; set; } = new List<string> { "None", "METTLER-TOLEDO", "DINI ARGEO DFW-DFWK", "ESSAE SI-810" };
         private string _selectedScalesModel;
-       
+
         public string SelectedScalesModel
         {
             get { return _selectedScalesModel; }
@@ -21,7 +22,7 @@ namespace LabelPrinter.ViewModel
             }
         }
 
-        public List<string> ScalesPort { get; set; } = new List<string> { "None", "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9", "COM10", "COM11", "COM12", "COM13", "COM14", "COM15"};
+        public List<string> ScalesPort { get; set; } = new List<string> { "None", "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9", "COM10", "COM11", "COM12", "COM13", "COM14", "COM15" };
         private string _selectedScalesPort;
 
         public string SelectedScalesPort
@@ -29,7 +30,7 @@ namespace LabelPrinter.ViewModel
             get { return _selectedScalesPort; }
             set
             {
-                _selectedScalesModel = value;
+                _selectedScalesPort = value;
                 RaisePropertyChanged("SelectedScalesPort");
             }
         }
@@ -46,22 +47,146 @@ namespace LabelPrinter.ViewModel
                 RaisePropertyChanged("SelectedPrinter");
             }
         }
+        public List<string> PrinterPort { get; set; } = new List<string> { "USB", "LPT1", "LPT2", "LPT3" };
+        private string _selectedPrinterport;
 
+        public string SelectedPrinterPort
+        {
+            get { return _selectedPrinterport; }
+            set
+            {
+                _selectedPrinterport = value;
+                RaisePropertyChanged("SelectedPrinterPort");
+            }
+        }
+        public List<string> DataConnection { get; set; } = new List<string> { "None", "Text Files", "Data Base Oracle", "Data Base MySQL", "Data Base MySQL Server" };
+        private string _selectedDateConnection;
+
+        public string SelectedDataConnection
+        {
+            get { return _selectedDateConnection; }
+            set
+            {
+                _selectedDateConnection = value;
+                RaisePropertyChanged("DateConnection");
+            }
+        }
+        private int _density;
+
+        public int Density
+        {
+            get { return _density; }
+            set
+            {
+                _density = value;
+                RaisePropertyChanged(nameof(Density));
+            }
+        }
+        private int _speed;
+
+        public int Speed
+        {
+            get { return _speed; }
+            set
+            {
+                _speed = value;
+                RaisePropertyChanged(nameof(Speed));
+            }
+        }
         string _text1;
 
         public string BlackLineText
         {
             get { return _text1; }
-            set {
+            set
+            {
                 _text1 = value;
                 RaisePropertyChanged(nameof(BlackLineText));
             }
         }
+        string _text2;
 
+        public string GapControlText
+        {
+            get { return _text2; }
+            set
+            {
+                _text2 = value;
+                RaisePropertyChanged(nameof(GapControlText));
+            }
+        }
+        private string _locationOfFile;
+
+        public string LocationOfFile
+        {
+            get { return _locationOfFile; }
+            set {
+                _locationOfFile = value;
+                RaisePropertyChanged(nameof(LocationOfFile));
+            }
+        }
+        private string _odbcConnection;
+
+        public string ODBCConnectionString
+        {
+            get { return _odbcConnection; }
+            set
+            {
+                _odbcConnection = value;
+                RaisePropertyChanged(nameof(ODBCConnectionString));
+            }
+        }
+        private bool _isCreateOrExport;
+
+        public bool IsCreateOrExport
+        {
+            get { return _isCreateOrExport; }
+            set
+            {
+                _isCreateOrExport = value;
+                RaisePropertyChanged(nameof(IsCreateOrExport));
+            }
+        }
+        public RelayCommand SaveButtonCommand { get; private set; }
+        public RelayCommand ExitButtonCommand { get; private set; }
         public SetUpViewModel()
         {
-            SelectedScalesModel = "ESSAE SI-810";
+           
+           SelectedScalesModel = "ESSAE SI-810";
+           SelectedScalesPort = "None";
+           SelectedDataConnection = "None";
+
+            SaveButtonCommand = new RelayCommand(SaveCommand);
+            ExitButtonCommand = new RelayCommand(ExitCommand);
+        }
+        
+        private void ExitCommand()
+        {
+            MessageBox.Show("You Press on Exit button.");
+        }
+
+        private void SaveCommand()
+        {
+            string strJsonResult = JsonConvert.SerializeObject(
+            new
+            {
+                SelectedScalesModel,
+                SelectedScalesPort,
+                SelectedPrinter,
+                SelectedPrinterPort,
+                SelectedDataConnection,
+                Density,
+                Speed,
+                BlackLineText,
+                GapControlText,
+                LocationOfFile,
+                ODBCConnectionString,
+                IsCreateOrExport
+            }
+            );
             
+            File.WriteAllText("Configure.json", strJsonResult);
+            MessageBox.Show("File saved in Configure.json");
         }
     }
 }

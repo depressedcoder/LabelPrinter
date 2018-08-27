@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:LabelPrinter"
+        xmlns:local="clr-namespace:LabelPrinter.ValidationRules"
         mc:Ignorable="d"
         Height="590"
         Width="550"
@@ -71,7 +71,9 @@
                     SelectedItem="{Binding SelectedPrinter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     Grid.Column="1" Width="250" Height="20" HorizontalAlignment="Left" VerticalAlignment="Center" IsEditable="True" Cursor="Hand"/>
                 <TextBlock Grid.Column="2" Text="Printer Port:" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                <ComboBox Grid.Column="3" Width="60"  Height="20" HorizontalAlignment="Left" VerticalAlignment="Center" IsEditable="True" Cursor="Hand" Margin="0,0,10,0"/>
+                <ComboBox FontSize="11"
+                    ItemsSource="{Binding PrinterPort}" 
+                    SelectedItem="{Binding SelectedPrinterPort, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="3" Width="60"  Height="20" HorizontalAlignment="Left" VerticalAlignment="Center" IsEditable="True" Cursor="Hand" Margin="0,0,10,0"/>
             </Grid>
             <TextBlock Grid.Row="1" Text="Thermotransfer Settings" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="15,0,0,0"/>
             <Grid Grid.Row="2">
@@ -83,9 +85,9 @@
                     <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Column="0" Text="Density=" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                <TextBlock Grid.Column="1" Text="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <TextBlock Grid.Column="1" Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ElementName=densitySlider}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 <TextBlock Grid.Column="2" Text="Light" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                <Slider Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="130" Height="25"/>
+                <Slider x:Name="densitySlider" Value="{Binding Density}" IsSnapToTickEnabled="True" TickFrequency="1" Minimum="1" Maximum="10" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="130" Height="25"/>
                 <TextBlock Grid.Column="4" Text="Dark" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             </Grid>
             <Grid Grid.Row="3">
@@ -97,9 +99,9 @@
                     <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Column="0" Text="Speed=" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                <TextBlock Grid.Column="1" Text="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <TextBlock Grid.Column="1" Text="{Binding  Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=Value,ElementName=speedSlider}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 <TextBlock Grid.Column="2" Text="Slow" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                <Slider Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="130" Height="25"/>
+                <Slider x:Name="speedSlider" Value="{Binding Speed}" IsSnapToTickEnabled="True" TickFrequency="1" Minimum="1" Maximum="10" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="130" Height="25"/>
                 <TextBlock Grid.Column="4" Text="Fast" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             </Grid>
             <Grid Grid.Row="4">
@@ -111,11 +113,11 @@
                     <ColumnDefinition Width="25*"/>
                     <ColumnDefinition Width="203*"/>
                 </Grid.ColumnDefinitions>
-                <RadioButton Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Height="14" Margin="0,10" Width="15"/>
+                <RadioButton GroupName="Mode" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Height="14" Margin="0,10" Width="15"/>
                 <TextBlock Grid.Column="1" Text="Continious label" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,7,0,7" Height="20" Width="107"/>
-                <RadioButton Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right" Height="14" Margin="0,10" Width="15"/>
-                <TextBlock Grid.Column="3" Text="Black Line" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,7,0,7" Height="20" Width="65"/>
-                <RadioButton Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Right" Height="14" Margin="0,10" Width="15"/>
+                <RadioButton GroupName="Mode" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right" Height="14" Margin="0,10" Width="15"/>
+                <TextBlock Grid.Column="3" Text="Black Line" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,7,0,7" Height="20" Width="78"/>
+                <RadioButton GroupName="Mode" Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Right" Height="14" Margin="0,10" Width="15"/>
                 <TextBlock Grid.Column="5" Text="Gap Control" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,7,0,7" Height="20" Width="80"/>
             </Grid>
             <Grid Grid.Row="5">
@@ -125,9 +127,40 @@
                     <ColumnDefinition Width="51*"/>
                     <ColumnDefinition Width="246*"/>
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" HorizontalAlignment="Right" Text="{Binding BlackLineText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Width="30" Height="25"/>
+                <!--<TextBox
+            Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Margin="5"
+                    TextChanged="UpdateLabelEvent">
+                <Binding Path="LabelHeight" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
+                    <Binding.ValidationRules>
+                        <local:MinMaxValidationRule MaxValue="1000" MinValue="100"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox>-->
+
+                <TextBox Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
+                         Grid.Column="0" HorizontalAlignment="Right"
+                         VerticalAlignment="Center" Width="30" Height="25">
+                    <Binding Path="BlackLineText" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
+                        <Binding.ValidationRules>
+                            <local:MinMaxValidationRule MaxValue="100" MinValue="0"/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox>
                 <TextBlock Grid.Column="1" Text="mm" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,0,0,0"/>
-                <TextBox Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Width="30" Height="25"/>
+                <!--<TextBox Grid.Column="2" Text="{Binding GapControlText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Right" VerticalAlignment="Center" Width="30" Height="25"/>-->
+                <TextBox
+                    Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
+                    Grid.Column="2"
+                    HorizontalAlignment="Right" VerticalAlignment="Center" Width="30" Height="25">
+                    <Binding Path="GapControlText" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
+                        <Binding.ValidationRules>
+                            <local:MinMaxValidationRule MaxValue="100" MinValue="0"/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox>
                 <TextBlock Grid.Column="3" Text="mm" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,0,0,0"/>
             </Grid>
         </Grid>
@@ -148,15 +181,19 @@
                     <ColumnDefinition Width="399*"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Column="0" Text="Data Connection :" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="15,0,0,0"/>
-                <ComboBox Grid.Column="1" Height="25" Width="200" HorizontalAlignment="Left" VerticalAlignment="Center" IsEditable="True" Cursor="Hand"/>
+                <ComboBox
+                    FontSize="11"
+                    ItemsSource="{Binding DataConnection}" 
+                    SelectedItem="{Binding SelectedDataConnection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Grid.Column="1" Height="25" Width="200" HorizontalAlignment="Left" VerticalAlignment="Center" IsEditable="True" Cursor="Hand"/>
             </Grid>
-            <TextBlock Grid.Row="1" Text="Location Of Files" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="25,8.5,0,8.5" Height="20" Width="109"/>
+            <TextBlock Grid.Row="1" Text="Location Of Files" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="25,8.5,0,8.5" Height="20" Width="124"/>
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="427*"/>
                     <ColumnDefinition Width="123*"/>
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" Width="390" Height="25" Margin="25,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <TextBox Text="{Binding LocationOfFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="0" Width="390" Height="25" Margin="25,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                 <Button Grid.Column="1" Content="Change" Height="25" Width="100" HorizontalAlignment="Left" VerticalAlignment="top"/>
             </Grid>
             <Grid Grid.Row="3">
@@ -164,7 +201,7 @@
                     <ColumnDefinition Width="47*"/>
                     <ColumnDefinition Width="503*"/>
                 </Grid.ColumnDefinitions>
-                <CheckBox Grid.Column="0" VerticalAlignment="Top" Margin="25,0,0,0" Height="15"/>
+                <CheckBox IsChecked="{Binding IsCreateOrExport}" Cursor="Hand" Grid.Column="0" VerticalAlignment="Top" Margin="25,0,0,0" Height="15"/>
                 <TextBlock Grid.Column="1" Text="Create EXPORT file when label is printed" VerticalAlignment="Top"/>
             </Grid>
             <TextBlock Grid.Row="4" Text="ODBC Connection String" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="25,6.5,0,6.5" Height="20" Width="163"/>
@@ -173,12 +210,12 @@
                     <ColumnDefinition Width="197*"/>
                     <ColumnDefinition Width="78*"/>
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" Width="360" Height="25" Margin="25,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+                <TextBox Grid.Column="0" Width="360" Height="25" Text="{Binding ODBCConnectionString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="25,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
                 <Button Grid.Column="1" Content="Test Connection" Height="25" Width="120" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,0,0,0"/>
                 <TextBlock Grid.Column="0" FontSize="12" Text="(Example: DSN=Oracle;UID=LABEL;PWD=label)" VerticalAlignment="Bottom" Margin="25,0,0,0"/>
             </Grid>
-            <Button Grid.Row="7" Width="120" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Save" Margin="15,0,0,0"/>
-            <Button Grid.Row="7" Width="120" Height="25" HorizontalAlignment="Right" VerticalAlignment="Top" Content="Exit" Margin="0,0,25,0"/>
+            <Button Grid.Row="7" Width="120" Height="25" Command="{Binding SaveButtonCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Save" Margin="15,0,0,0"/>
+            <Button Grid.Row="7" Width="120" Height="25" Command="{Binding ExitButtonCommand}" HorizontalAlignment="Right" VerticalAlignment="Top" Content="Exit" Margin="0,0,25,0"/>
         </Grid>
     </Grid>
 </Window>
