@@ -198,7 +198,7 @@
                     <ColumnDefinition Width="123*"/>
                 </Grid.ColumnDefinitions>
                 <TextBox Text="{Binding LocationOfFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="0" Width="390" Height="25" Margin="25,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                <Button Grid.Column="1" Content="Change" Height="25" Width="100" HorizontalAlignment="Left" VerticalAlignment="top"/>
+                <Button Grid.Column="1" Content="Change" Height="25" Command="{Binding ChangeButtonCommand}" Width="100" HorizontalAlignment="Left" VerticalAlignment="top"/>
             </Grid>
             <Grid Grid.Row="3">
                 <Grid.ColumnDefinitions>
@@ -215,7 +215,7 @@
                     <ColumnDefinition Width="78*"/>
                 </Grid.ColumnDefinitions>
                 <TextBox Grid.Column="0" Width="360" Height="25" Text="{Binding ODBCConnectionString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="25,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
-                <Button Grid.Column="1" Content="Test Connection" Height="25" Width="120" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,0,0,0"/>
+                <Button Grid.Column="1" Content="Test Connection" Command="{Binding TestConnectionButtonCommand}" Height="25" Width="120" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,0,0,0"/>
                 <TextBlock Grid.Column="0" FontSize="12" Text="(Example: DSN=Oracle;UID=LABEL;PWD=label)" VerticalAlignment="Bottom" Margin="25,0,0,0"/>
             </Grid>
             <Button Grid.Row="7" Width="120" Height="25" Command="{Binding SaveButtonCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Save" Margin="15,0,0,0"/>

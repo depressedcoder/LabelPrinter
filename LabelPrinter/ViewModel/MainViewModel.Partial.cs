@@ -1,8 +1,13 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using LabelPrinter.Model;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Media.Imaging;
 
 namespace LabelPrinter.ViewModel
@@ -125,7 +130,7 @@ namespace LabelPrinter.ViewModel
         /// <summary>
         /// List of all LabelNames
         /// </summary>
-        public List<string> LabelName { get; set; } = new List<string> { "Text Files", "Data Base Oracle", "Data Base MySQL", "Data Base MySQL Server"};
+        public List<string> LabelName { get; set; }
         private string _selectedLabelName;
         /// <summary>
         /// Selected Label Name From ComboBox
@@ -135,7 +140,7 @@ namespace LabelPrinter.ViewModel
             get => _selectedLabelName;
             set {
                 _selectedLabelName = value;
-                RaisePropertyChanged("SelectedLabelName");
+                RaisePropertyChanged(nameof(SelectedLabelName));
                 PreviewLabel();
             }
         }
@@ -185,7 +190,9 @@ namespace LabelPrinter.ViewModel
                 HeightOfCode = 5,
                 SelectedBarCode = BarCodes.FirstOrDefault()
             };
-            SelectedLabelName = "Text Files";
+
+            //Getting label names from the folder based on Selected Data Connection
+            getLabelNames();
 
             SaveButtonCommand = new RelayCommand(SaveCommand);
             NewButtonCommand = new RelayCommand(NewCommand);

@@ -20,7 +20,14 @@ namespace LabelPrinter
             main = new MainViewModel();
             DataContext = main;
         }
-
+        void LabelNameUpdateEvent(object sender,RoutedEventArgs e)
+        {
+            var pm = DataContext as MainViewModel;
+            if(pm != null)
+            {
+                pm.ValueUpdate();
+            }
+        }
         void UpdateLabelEvent(object sender, RoutedEventArgs e)
         {
             var vm = DataContext as MainViewModel;

@@ -150,10 +150,7 @@ namespace LabelPrinter.ViewModel
         private int _radioButtonValue = 0;
         public int RadioButtonValue
         {
-            get
-            {
-                return _radioButtonValue;
-            }
+            get{ return _radioButtonValue; }
             set
             {
                 _radioButtonValue = value;
@@ -163,6 +160,9 @@ namespace LabelPrinter.ViewModel
 
         public RelayCommand SaveButtonCommand { get; private set; }
         public RelayCommand ExitButtonCommand { get; private set; }
+        public RelayCommand ChangeButtonCommand { get; private set; }
+        public RelayCommand TestConnectionButtonCommand { get; private set; }
+
         public SetUpViewModel()
         {
             SelectedScalesModel = "ESSAE SI-810";
@@ -171,6 +171,10 @@ namespace LabelPrinter.ViewModel
 
             SaveButtonCommand = new RelayCommand(SaveCommand);
             ExitButtonCommand = new RelayCommand(ExitCommand);
+            ChangeButtonCommand = new RelayCommand(ChangeCommand);
+            TestConnectionButtonCommand = new RelayCommand(TestConnectionCommand);
         }
+
+        
     }
 }
