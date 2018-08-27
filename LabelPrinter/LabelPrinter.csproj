@@ -112,6 +112,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\RadioBoolToIntConverter.cs" />
     <Compile Include="EZioApi.cs" />
     <Compile Include="GodexPrinter.cs" />
     <Compile Include="Drawing\BarcodeDrawing.cs" />
@@ -137,6 +138,7 @@
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.Partial.cs" />
     <Compile Include="ViewModel\SetUpViewModel.cs" />
+    <Compile Include="ViewModel\SetUpViewModel.Partial.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
