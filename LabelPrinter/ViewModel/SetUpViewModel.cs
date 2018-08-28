@@ -1,10 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
-using Microsoft.Win32;
 using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.IO;
 using System.Windows;
+using System.IO;
 
 namespace LabelPrinter.ViewModel
 {
@@ -20,13 +17,14 @@ namespace LabelPrinter.ViewModel
         {
             MessageBox.Show("Clicked on Test Connection Command.");
         }
-        private void ExitCommand()
+        void ExitCommand()
         {
-            MessageBox.Show("You Press on Exit button.");
+          
         }
 
         private void SaveCommand()
         {
+            //saving all info to Configure.json File
             string strJsonResult = JsonConvert.SerializeObject(
             new
             {
@@ -48,6 +46,7 @@ namespace LabelPrinter.ViewModel
             
             File.WriteAllText("Configure.json", strJsonResult);
             MessageBox.Show("File saved in Configure.json");
+           
         }
     }
 }

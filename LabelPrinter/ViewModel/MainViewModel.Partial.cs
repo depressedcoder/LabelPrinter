@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Windows;
 using System.Windows.Media.Imaging;
 
 namespace LabelPrinter.ViewModel
@@ -201,6 +202,11 @@ namespace LabelPrinter.ViewModel
             PrintJobsButtonCommand = new RelayCommand(PrintJobsCommand);
             ExitButtonCommand = new RelayCommand(ExitCommand);
             UpdateLabelCommand = new RelayCommand(UpdateLabel);
+        }
+
+        public static implicit operator Window(MainViewModel v)
+        {
+            throw new NotImplementedException();
         }
     }
 }

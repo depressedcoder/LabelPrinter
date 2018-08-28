@@ -20,6 +20,11 @@ namespace LabelPrinter
             main = new MainViewModel();
             DataContext = main;
         }
+        /// <summary>
+        /// For Showing all the row values by selecting a file through Label Name ComboBox
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void LabelNameUpdateEvent(object sender,RoutedEventArgs e)
         {
             var pm = DataContext as MainViewModel;

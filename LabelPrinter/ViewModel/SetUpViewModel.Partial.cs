@@ -8,6 +8,9 @@ namespace LabelPrinter.ViewModel
 {
     public partial class SetUpViewModel
     {
+        /// <summary>
+        /// For Scales model combobox
+        /// </summary>
         public List<string> ScalesModel { get; set; } = new List<string> { "None", "METTLER-TOLEDO", "DINI ARGEO DFW-DFWK", "ESSAE SI-810" };
         private string _selectedScalesModel;
 
@@ -21,6 +24,9 @@ namespace LabelPrinter.ViewModel
             }
         }
 
+        /// <summary>
+        /// For Scales Port Combobox
+        /// </summary>
         public List<string> ScalesPort { get; set; } = new List<string> { "None", "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9", "COM10", "COM11", "COM12", "COM13", "COM14", "COM15" };
         private string _selectedScalesPort;
 
@@ -33,7 +39,9 @@ namespace LabelPrinter.ViewModel
                 RaisePropertyChanged("SelectedScalesPort");
             }
         }
-
+        /// <summary>
+        /// For Printer Combobox
+        /// </summary>
         public List<string> Printer { get; set; } = new List<string> { "None", "FAX", "Microsoft Print to PDF", "Microsoft XPS Document Writer", "Nitro PDF Creator (Pro 10)", "Send To OneNote 2013" };
         private string _selectedPrinter;
 
@@ -46,6 +54,9 @@ namespace LabelPrinter.ViewModel
                 RaisePropertyChanged("SelectedPrinter");
             }
         }
+        /// <summary>
+        /// For printer Port Combobox
+        /// </summary>
         public List<string> PrinterPort { get; set; } = new List<string> { "USB", "LPT1", "LPT2", "LPT3" };
         private string _selectedPrinterport;
 
@@ -58,6 +69,9 @@ namespace LabelPrinter.ViewModel
                 RaisePropertyChanged("SelectedPrinterPort");
             }
         }
+        /// <summary>
+        /// For Date Connection ComboBox
+        /// </summary>
         public List<string> DataConnection { get; set; } = new List<string> { "None", "Text Files", "Data Base Oracle", "Data Base MySQL", "Data Base MySQL Server" };
         private string _selectedDateConnection;
 
@@ -70,6 +84,9 @@ namespace LabelPrinter.ViewModel
                 RaisePropertyChanged("DateConnection");
             }
         }
+        /// <summary>
+        /// Slider Value for Density
+        /// </summary>
         private int _density;
 
         public int Density
@@ -81,6 +98,9 @@ namespace LabelPrinter.ViewModel
                 RaisePropertyChanged(nameof(Density));
             }
         }
+        /// <summary>
+        /// Slider Value for Speed
+        /// </summary>
         private int _speed;
 
         public int Speed
@@ -92,6 +112,9 @@ namespace LabelPrinter.ViewModel
                 RaisePropertyChanged(nameof(Speed));
             }
         }
+        /// <summary>
+        /// For Textbox under the Blackline Text Radio Button
+        /// </summary>
         string _text1;
 
         public string BlackLineText
@@ -103,6 +126,9 @@ namespace LabelPrinter.ViewModel
                 RaisePropertyChanged(nameof(BlackLineText));
             }
         }
+        /// <summary>
+        /// For TextBox under the GapControl Text Radio Button
+        /// </summary>
         string _text2;
 
         public string GapControlText
@@ -114,6 +140,9 @@ namespace LabelPrinter.ViewModel
                 RaisePropertyChanged(nameof(GapControlText));
             }
         }
+        /// <summary>
+        /// For location of file textbox
+        /// </summary>
         private string _locationOfFile;
 
         public string LocationOfFile
@@ -125,6 +154,9 @@ namespace LabelPrinter.ViewModel
                 RaisePropertyChanged(nameof(LocationOfFile));
             }
         }
+        /// <summary>
+        /// For ODBC Connection String Textbox
+        /// </summary>
         private string _odbcConnection;
 
         public string ODBCConnectionString
@@ -136,6 +168,9 @@ namespace LabelPrinter.ViewModel
                 RaisePropertyChanged(nameof(ODBCConnectionString));
             }
         }
+        /// <summary>
+        /// For Create or Export Textbox
+        /// </summary>
         private bool _isCreateOrExport;
 
         public bool IsCreateOrExport
@@ -147,6 +182,9 @@ namespace LabelPrinter.ViewModel
                 RaisePropertyChanged(nameof(IsCreateOrExport));
             }
         }
+        /// <summary>
+        /// Three Radio buttons Value presented in int value
+        /// </summary>
         private int _radioButtonValue = 0;
         public int RadioButtonValue
         {
@@ -174,7 +212,6 @@ namespace LabelPrinter.ViewModel
             ChangeButtonCommand = new RelayCommand(ChangeCommand);
             TestConnectionButtonCommand = new RelayCommand(TestConnectionCommand);
         }
-
         
     }
 }

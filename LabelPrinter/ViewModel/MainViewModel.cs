@@ -9,13 +9,18 @@ using LabelPrinter.Model;
 using System.Linq;
 using LabelPrinter.Drawing;
 using Newtonsoft.Json;
+using static System.Net.Mime.MediaTypeNames;
+using Newtonsoft.Json.Linq;
 
 namespace LabelPrinter.ViewModel
 {
     public partial class MainViewModel
     {
+        
+        //Showing all the values of rows by selecting the file from label name ComboBox
         public void ValueUpdate()
         {
+            string jsonFile = SelectedLabelName + ".json";
             SelectedLabelName += "-IMPORT.txt";
             if (File.Exists(SelectedLabelName))
             {
@@ -55,9 +60,25 @@ namespace LabelPrinter.ViewModel
                 if (desiredText.Length > 16)
                     Row15.Text = desiredText[16];
             }
-            else
+
+            //For getting the value of selected Char width,ishigh,isbold,isunderline from the json file
+            if (File.Exists(jsonFile))
             {
-                System.Windows.MessageBox.Show("No file exist");
+                using (StreamReader r = new StreamReader(jsonFile))
+                {
+                    string json = r.ReadToEnd();
+                    //LabelRow setUp = JsonConvert.DeserializeObject<LabelRow>(json);
+                    JArray array = JArray.Parse(json);
+                    foreach (JObject obj in array.Children<JObject>())
+                    {
+                        foreach (JProperty singleProp in obj.Properties())
+                        {
+                            string name = singleProp.Name;
+                            string value = singleProp.Value.ToString();
+                            //Assign value the combobox and checkboxes.
+                        }
+                    }
+                }
             }
 
         }
@@ -176,7 +197,7 @@ namespace LabelPrinter.ViewModel
 
         void ExitCommand()
         {
-            //Exit Button
+            System.Windows.Application.Current.MainWindow.Close();
         }
 
         void PrintJobsCommand()
@@ -191,13 +212,28 @@ namespace LabelPrinter.ViewModel
 
         void SetUpCommand()
         {
-            var window = new SetUpWindow();
+            SetUpWindow window = new SetUpWindow();
             window.ShowDialog();
         }
 
         void NewCommand()
         {
-            
+            SelectedLabelName = "";
+            Row1.Text = "";
+            Row2.Text = "";
+            Row3.Text = "";
+            Row4.Text = "";
+            Row5.Text = "";
+            Row6.Text = "";
+            Row7.Text = "";
+            Row8.Text = "";
+            Row9.Text = "";
+            Row10.Text = "";
+            Row11.Text = "";
+            Row12.Text = "";
+            Row13.Text = "";
+            Row14.Text = "";
+            Row15.Text = "";
         }
 
         void SaveCommand()
@@ -205,10 +241,11 @@ namespace LabelPrinter.ViewModel
             SaveFileDialog save = new SaveFileDialog();
 
             save.Filter = "Text files (*.txt)|*-IMPORT.txt|All files (*.*)|*.*";
-            
+
             if (save.ShowDialog() == DialogResult.OK)
             {
-                using (StreamWriter objWriter = new StreamWriter(File.Create(save.FileName)))
+                string fileName = Regex.Replace(save.FileName, ".txt", "-IMPORT.txt");
+                using (StreamWriter objWriter = new StreamWriter(File.Create(fileName)))
                 {
                     objWriter.WriteLine(SelectedLabelName);
                     objWriter.WriteLine(HowManyCoppies);
@@ -229,6 +266,32 @@ namespace LabelPrinter.ViewModel
                     objWriter.WriteLine(Row15.Text);
                     System.Windows.MessageBox.Show("Details have been saved");
                 }
+
+                //Saving all Rows isHigh,isBold,IsUnderline,Selected CharWidth in json file
+                string strJsonResult = JsonConvert.SerializeObject(
+                 new[]
+                 {
+                         new{Row1.SelectedCharWidth, Row1.IsHigh, Row1.IsBold, Row1.IsUnderlined},
+                         new{Row2.SelectedCharWidth, Row2.IsHigh, Row2.IsBold, Row2.IsUnderlined},
+                         new{Row3.SelectedCharWidth, Row3.IsHigh, Row3.IsBold, Row3.IsUnderlined},
+                         new{Row4.SelectedCharWidth, Row4.IsHigh, Row4.IsBold, Row4.IsUnderlined},
+                         new{Row5.SelectedCharWidth, Row5.IsHigh, Row5.IsBold, Row5.IsUnderlined},
+                         new{Row6.SelectedCharWidth, Row6.IsHigh, Row6.IsBold, Row6.IsUnderlined},
+                         new{Row7.SelectedCharWidth, Row7.IsHigh, Row7.IsBold, Row7.IsUnderlined},
+                         new{Row8.SelectedCharWidth, Row8.IsHigh, Row8.IsBold, Row8.IsUnderlined},
+                         new{Row9.SelectedCharWidth, Row9.IsHigh, Row9.IsBold, Row9.IsUnderlined},
+                         new{Row10.SelectedCharWidth, Row10.IsHigh, Row10.IsBold, Row10.IsUnderlined},
+                         new{Row11.SelectedCharWidth, Row11.IsHigh, Row11.IsBold, Row11.IsUnderlined},
+                         new{Row12.SelectedCharWidth, Row12.IsHigh, Row12.IsBold, Row12.IsUnderlined},
+                         new{Row13.SelectedCharWidth, Row13.IsHigh, Row13.IsBold, Row13.IsUnderlined},
+                         new{Row14.SelectedCharWidth, Row14.IsHigh, Row14.IsBold, Row14.IsUnderlined},
+                         new{Row15.SelectedCharWidth, Row14.IsHigh, Row15.IsBold, Row15.IsUnderlined}
+                   
+                 }
+           );
+                string trimmed = Regex.Replace(fileName, "-IMPORT.txt", "");
+                trimmed += ".json";
+                File.WriteAllText(trimmed, strJsonResult);
             }
         }
         void getLabelNames()
@@ -236,12 +299,17 @@ namespace LabelPrinter.ViewModel
             using (StreamReader r = new StreamReader("Configure.json"))
             {
                 string json = r.ReadToEnd();
-                SetUpViewModel account = JsonConvert.DeserializeObject<SetUpViewModel>(json);
-                if (account.SelectedDataConnection == "Text Files")
+                SetUpViewModel setUp = JsonConvert.DeserializeObject<SetUpViewModel>(json);
+                if (setUp.SelectedDataConnection == "Text Files")
                 {
+                    //if the no path is selected
                     DirectoryInfo d = new DirectoryInfo(@"C:\Users\BS229\Source\Repos\LabelPrinter2\LabelPrinter\bin\Debug");
+
+                    //getting all the txt file that named with IMPORT
                     FileInfo[] Files = d.GetFiles("*-IMPORT.txt");
-                    LabelName = new List<string>();
+                    LabelName = new List<string> { "" };
+
+                    //adding all the file names in Label Name Combobox
                     foreach (FileInfo file in Files)
                     {
                         var item = file.Name;

@@ -9,6 +9,7 @@ namespace LabelPrinter.Converters
 {
     public class RadioBoolToIntConverter : IValueConverter
     {
+        //SETUPWINDOW radio buttons converter to int value
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             int integer = (int)value;
