@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System.Windows;
 using System.IO;
+using System.Windows.Forms;
 
 namespace LabelPrinter.ViewModel
 {
@@ -9,13 +10,13 @@ namespace LabelPrinter.ViewModel
     {
         private void ChangeCommand()
         {
-            //OpenFileDialog openFileDialog = new OpenFileDialog();
-            //if (openFileDialog.ShowDialog() == true)
-            //    LocationOfFile = openFileDialog.FileName;
+            FolderBrowserDialog openFolderDialog = new FolderBrowserDialog();
+            if (openFolderDialog.ShowDialog() == DialogResult.OK)
+                LocationOfFile = openFolderDialog.SelectedPath;
         }
         private void TestConnectionCommand()
         {
-            MessageBox.Show("Clicked on Test Connection Command.");
+            System.Windows.MessageBox.Show("Clicked on Test Connection Command.");
         }
         void ExitCommand()
         {
@@ -45,7 +46,7 @@ namespace LabelPrinter.ViewModel
             );
             
             File.WriteAllText("Configure.json", strJsonResult);
-            MessageBox.Show("File saved in Configure.json");
+            System.Windows.MessageBox.Show("File saved in Configure.json");
            
         }
     }

@@ -303,18 +303,38 @@ namespace LabelPrinter.ViewModel
                 if (setUp.SelectedDataConnection == "Text Files")
                 {
                     //if the no path is selected
-                    DirectoryInfo d = new DirectoryInfo(@"C:\Users\BS229\Source\Repos\LabelPrinter2\LabelPrinter\bin\Debug");
-
-                    //getting all the txt file that named with IMPORT
-                    FileInfo[] Files = d.GetFiles("*-IMPORT.txt");
-                    LabelName = new List<string> { "" };
-
-                    //adding all the file names in Label Name Combobox
-                    foreach (FileInfo file in Files)
+                    if(setUp.LocationOfFile == null)
                     {
-                        var item = file.Name;
-                        string trimmed = Regex.Replace(item, "-IMPORT.txt", "");
-                        LabelName.Add(trimmed);
+                        DirectoryInfo d = new DirectoryInfo(@"C:\Users\BS229\Source\Repos\LabelPrinter2\LabelPrinter\bin\Debug");
+
+                        //getting all the txt file that named with IMPORT
+                        FileInfo[] Files = d.GetFiles("*-IMPORT.txt");
+                        LabelName = new List<string> { "" };
+
+                        //adding all the file names in Label Name Combobox
+                        foreach (FileInfo file in Files)
+                        {
+                            var item = file.Name;
+                            string trimmed = Regex.Replace(item, "-IMPORT.txt", "");
+                            LabelName.Add(trimmed);
+                        }
+                    }
+                    else
+                    {
+                        DirectoryInfo d = new DirectoryInfo(setUp.LocationOfFile);
+
+                        //getting all the txt file that named with IMPORT
+                        FileInfo[] Files = d.GetFiles("*-IMPORT.txt");
+                        LabelName = new List<string> { "" };
+
+                        //adding all the file names in Label Name Combobox
+                        foreach (FileInfo file in Files)
+                        {
+                            var item = file.Name;
+                            string trimmed = Regex.Replace(item, "-IMPORT.txt", "");
+                            LabelName.Add(trimmed);
+                        }
+
                     }
                 }
             }
