@@ -305,7 +305,7 @@ namespace LabelPrinter.ViewModel
                     //if the no path is selected
                     if(setUp.LocationOfFile == null)
                     {
-                        DirectoryInfo d = new DirectoryInfo(@"C:\Users\BS229\Source\Repos\LabelPrinter2\LabelPrinter\bin\Debug");
+                        DirectoryInfo d = new DirectoryInfo(System.AppDomain.CurrentDomain.BaseDirectory);
 
                         //getting all the txt file that named with IMPORT
                         FileInfo[] Files = d.GetFiles("*-IMPORT.txt");
