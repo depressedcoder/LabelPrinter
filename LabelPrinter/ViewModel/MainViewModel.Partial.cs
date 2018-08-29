@@ -132,6 +132,16 @@ namespace LabelPrinter.ViewModel
         /// List of all LabelNames
         /// </summary>
         public List<string> LabelName { get; set; }
+        private string comBoxLabelName;
+
+        public string ComBoxLabelName
+        {
+            get { return comBoxLabelName; }
+            set { comBoxLabelName = value;
+                RaisePropertyChanged(nameof(ComBoxLabelName));
+                    }
+        }
+
         private string _selectedLabelName;
         /// <summary>
         /// Selected Label Name From ComboBox
@@ -202,11 +212,6 @@ namespace LabelPrinter.ViewModel
             PrintJobsButtonCommand = new RelayCommand(PrintJobsCommand);
             ExitButtonCommand = new RelayCommand(ExitCommand);
             UpdateLabelCommand = new RelayCommand(UpdateLabel);
-        }
-
-        public static implicit operator Window(MainViewModel v)
-        {
-            throw new NotImplementedException();
         }
     }
 }

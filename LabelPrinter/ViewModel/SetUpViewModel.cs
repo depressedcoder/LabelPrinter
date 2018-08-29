@@ -1,6 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
 using Newtonsoft.Json;
-using System.Windows;
 using System.IO;
 using System.Windows.Forms;
 
@@ -20,7 +19,7 @@ namespace LabelPrinter.ViewModel
         }
         void ExitCommand()
         {
-          
+
         }
 
         private void SaveCommand()
@@ -47,7 +46,8 @@ namespace LabelPrinter.ViewModel
             
             File.WriteAllText("Configure.json", strJsonResult);
             System.Windows.MessageBox.Show("File saved in Configure.json");
-           
+
+            
         }
     }
 }

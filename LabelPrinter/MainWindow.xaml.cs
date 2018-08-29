@@ -27,10 +27,10 @@ namespace LabelPrinter
         /// <param name="e"></param>
         void LabelNameUpdateEvent(object sender,RoutedEventArgs e)
         {
-            var pm = DataContext as MainViewModel;
-            if(pm != null)
+            var vm = DataContext as MainViewModel;
+            if(vm != null)
             {
-                pm.ValueUpdate();
+                vm.ValueUpdate();
             }
         }
         void UpdateLabelEvent(object sender, RoutedEventArgs e)

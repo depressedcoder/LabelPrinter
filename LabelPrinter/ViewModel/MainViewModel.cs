@@ -9,8 +9,8 @@ using LabelPrinter.Model;
 using System.Linq;
 using LabelPrinter.Drawing;
 using Newtonsoft.Json;
-using static System.Net.Mime.MediaTypeNames;
 using Newtonsoft.Json.Linq;
+using System;
 
 namespace LabelPrinter.ViewModel
 {
@@ -67,7 +67,7 @@ namespace LabelPrinter.ViewModel
                 using (StreamReader r = new StreamReader(jsonFile))
                 {
                     string json = r.ReadToEnd();
-                    //LabelRow setUp = JsonConvert.DeserializeObject<LabelRow>(json);
+                   // MainViewModel main = JsonConvert.DeserializeObject<MainViewModel>(json);
                     JArray array = JArray.Parse(json);
                     foreach (JObject obj in array.Children<JObject>())
                     {
@@ -238,16 +238,19 @@ namespace LabelPrinter.ViewModel
 
         void SaveCommand()
         {
-            SaveFileDialog save = new SaveFileDialog();
+            //SaveFileDialog save = new SaveFileDialog();
 
-            save.Filter = "Text files (*.txt)|*-IMPORT.txt|All files (*.*)|*.*";
+            //save.Filter = "Text files (*.txt)|*-IMPORT.txt|All files (*.*)|*.*";
 
-            if (save.ShowDialog() == DialogResult.OK)
+            //if (save.ShowDialog() == DialogResult.OK)
+            //{
+            string fileName = ComBoxLabelName + "-IMPORT.txt";
+                //string fileName = Regex.Replace(save.FileName, ".txt", "-IMPORT.txt
+            if(!File.Exists(fileName))
             {
-                string fileName = Regex.Replace(save.FileName, ".txt", "-IMPORT.txt");
                 using (StreamWriter objWriter = new StreamWriter(File.Create(fileName)))
                 {
-                    objWriter.WriteLine(SelectedLabelName);
+                    objWriter.WriteLine(ComBoxLabelName);
                     objWriter.WriteLine(HowManyCoppies);
                     objWriter.WriteLine(Row1.Text);
                     objWriter.WriteLine(Row2.Text);
@@ -285,14 +288,19 @@ namespace LabelPrinter.ViewModel
                          new{Row12.SelectedCharWidth, Row12.IsHigh, Row12.IsBold, Row12.IsUnderlined},
                          new{Row13.SelectedCharWidth, Row13.IsHigh, Row13.IsBold, Row13.IsUnderlined},
                          new{Row14.SelectedCharWidth, Row14.IsHigh, Row14.IsBold, Row14.IsUnderlined},
-                         new{Row15.SelectedCharWidth, Row14.IsHigh, Row15.IsBold, Row15.IsUnderlined}
-                   
+                         new{Row15.SelectedCharWidth, Row15.IsHigh, Row15.IsBold, Row15.IsUnderlined}
+
                  }
            );
                 string trimmed = Regex.Replace(fileName, "-IMPORT.txt", "");
                 trimmed += ".json";
                 File.WriteAllText(trimmed, strJsonResult);
             }
+            else
+            {
+                System.Windows.MessageBox.Show(fileName + " exists!! Change the file name.");
+            }
+            //}
         }
         void getLabelNames()
         {
@@ -334,7 +342,6 @@ namespace LabelPrinter.ViewModel
                             string trimmed = Regex.Replace(item, "-IMPORT.txt", "");
                             LabelName.Add(trimmed);
                         }
-
                     }
                 }
             }

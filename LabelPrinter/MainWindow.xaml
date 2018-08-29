@@ -27,6 +27,7 @@
             <TextBlock Width="100" Height="35" Text="Label Name :"  DockPanel.Dock="Left"/>
             <ComboBox  ItemsSource="{Binding LabelName}" 
                 SelectedItem="{Binding SelectedLabelName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                Text="{Binding ComBoxLabelName,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"      
                 SelectionChanged="LabelNameUpdateEvent" Width="200" Height="35" DockPanel.Dock="Right" IsEditable="True"/>
         </DockPanel>
 
