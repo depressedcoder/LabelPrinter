@@ -5,7 +5,12 @@ namespace LabelPrinter.Storage
 {
     public class MySqlStorage : AbstractStorage
     {
-        public override List<string> GetLabels()
+        public override List<string> GetLabelNames()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void GetLabelDetails(string labelName)
         {
             throw new NotImplementedException();
         }

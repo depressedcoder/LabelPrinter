@@ -17,7 +17,7 @@ namespace LabelPrinter.ViewModel
 {
     public partial class MainViewModel
     {
-        
+
         //Showing all the values of rows by selecting the file from label name ComboBox
         public void ValueUpdate()
         {
@@ -65,21 +65,24 @@ namespace LabelPrinter.ViewModel
             //For getting the value of selected Char width,ishigh,isbold,isunderline from the json file
             if (File.Exists(jsonFile))
             {
-                using (StreamReader r = new StreamReader(jsonFile))
-                {
-                    string json = r.ReadToEnd();
-                   // MainViewModel main = JsonConvert.DeserializeObject<MainViewModel>(json);
-                    JArray array = JArray.Parse(json);
-                    foreach (JObject obj in array.Children<JObject>())
-                    {
-                        foreach (JProperty singleProp in obj.Properties())
-                        {
-                            string name = singleProp.Name;
-                            string value = singleProp.Value.ToString();
-                            //Assign value the combobox and checkboxes.
-                        }
-                    }
-                }
+                var rowInfo = JsonConvert.DeserializeObject<IList<LabelRow>>(File.ReadAllText(jsonFile));
+                //using (StreamReader r = new StreamReader(jsonFile))
+                //{
+                //    string json = r.ReadToEnd();
+                //    // MainViewModel main = JsonConvert.DeserializeObject<MainViewModel>(json);
+                //    JArray array = JArray.Parse(json);
+                //    foreach (JObject obj in array.Children<JObject>())
+                //    {
+                //        foreach (JProperty singleProp in obj.Properties())
+                //        {
+                //            string name = singleProp.Name;
+                //            string value = singleProp.Value.ToString();
+                //            //Assign value the combobox and checkboxes.
+                //        }
+                //    }
+                //}
+
+
             }
 
         }
@@ -239,63 +242,25 @@ namespace LabelPrinter.ViewModel
 
         void SaveCommand()
         {
-            //SaveFileDialog save = new SaveFileDialog();
-
-            //save.Filter = "Text files (*.txt)|*-IMPORT.txt|All files (*.*)|*.*";
-
-            //if (save.ShowDialog() == DialogResult.OK)
-            //{
             string fileName = ComBoxLabelName + "-IMPORT.txt";
-                //string fileName = Regex.Replace(save.FileName, ".txt", "-IMPORT.txt
-            if(!File.Exists(fileName))
+
+            if (!File.Exists(fileName))
             {
-                using (StreamWriter objWriter = new StreamWriter(File.Create(fileName)))
-                {
-                    objWriter.WriteLine(ComBoxLabelName);
-                    objWriter.WriteLine(HowManyCoppies);
-                    objWriter.WriteLine(Row1.Text);
-                    objWriter.WriteLine(Row2.Text);
-                    objWriter.WriteLine(Row3.Text);
-                    objWriter.WriteLine(Row4.Text);
-                    objWriter.WriteLine(Row5.Text);
-                    objWriter.WriteLine(Row6.Text);
-                    objWriter.WriteLine(Row7.Text);
-                    objWriter.WriteLine(Row8.Text);
-                    objWriter.WriteLine(Row9.Text);
-                    objWriter.WriteLine(Row10.Text);
-                    objWriter.WriteLine(Row11.Text);
-                    objWriter.WriteLine(Row12.Text);
-                    objWriter.WriteLine(Row13.Text);
-                    objWriter.WriteLine(Row14.Text);
-                    objWriter.WriteLine(Row15.Text);
-                    System.Windows.MessageBox.Show("Details have been saved");
-                }
+                var allLines = GetType().GetProperties()
+                    .Where(p => p.GetValue(this, new object[] { })?.GetType() == typeof(LabelRow))
+                    .Select(p => (LabelRow)p.GetValue(this, new object[] { }));
 
-                //Saving all Rows isHigh,isBold,IsUnderline,Selected CharWidth in json file
-                string strJsonResult = JsonConvert.SerializeObject(
-                 new[]
-                 {
-                         new{Row1.SelectedCharWidth, Row1.IsHigh, Row1.IsBold, Row1.IsUnderlined},
-                         new{Row2.SelectedCharWidth, Row2.IsHigh, Row2.IsBold, Row2.IsUnderlined},
-                         new{Row3.SelectedCharWidth, Row3.IsHigh, Row3.IsBold, Row3.IsUnderlined},
-                         new{Row4.SelectedCharWidth, Row4.IsHigh, Row4.IsBold, Row4.IsUnderlined},
-                         new{Row5.SelectedCharWidth, Row5.IsHigh, Row5.IsBold, Row5.IsUnderlined},
-                         new{Row6.SelectedCharWidth, Row6.IsHigh, Row6.IsBold, Row6.IsUnderlined},
-                         new{Row7.SelectedCharWidth, Row7.IsHigh, Row7.IsBold, Row7.IsUnderlined},
-                         new{Row8.SelectedCharWidth, Row8.IsHigh, Row8.IsBold, Row8.IsUnderlined},
-                         new{Row9.SelectedCharWidth, Row9.IsHigh, Row9.IsBold, Row9.IsUnderlined},
-                         new{Row10.SelectedCharWidth, Row10.IsHigh, Row10.IsBold, Row10.IsUnderlined},
-                         new{Row11.SelectedCharWidth, Row11.IsHigh, Row11.IsBold, Row11.IsUnderlined},
-                         new{Row12.SelectedCharWidth, Row12.IsHigh, Row12.IsBold, Row12.IsUnderlined},
-                         new{Row13.SelectedCharWidth, Row13.IsHigh, Row13.IsBold, Row13.IsUnderlined},
-                         new{Row14.SelectedCharWidth, Row14.IsHigh, Row14.IsBold, Row14.IsUnderlined},
-                         new{Row15.SelectedCharWidth, Row15.IsHigh, Row15.IsBold, Row15.IsUnderlined}
+                File.WriteAllText(fileName, ComBoxLabelName + Environment.NewLine + 
+                                            HowManyCoppies + Environment.NewLine + 
+                                            string.Join(Environment.NewLine, allLines.Select(m=>m.Text).ToArray()));
+                
+                var rowInfo = JsonConvert.SerializeObject(allLines);
 
-                 }
-           );
                 string trimmed = Regex.Replace(fileName, "-IMPORT.txt", "");
+
                 trimmed += ".json";
-                File.WriteAllText(trimmed, strJsonResult);
+
+                File.WriteAllText(trimmed, rowInfo);
             }
             else
             {
@@ -311,9 +276,9 @@ namespace LabelPrinter.ViewModel
                 string json = r.ReadToEnd();
                 SetUpViewModel setUp = JsonConvert.DeserializeObject<SetUpViewModel>(json);
                 var storageStrategy = StrategySelector.GetStorage(setUp.SelectedDataConnection);
-                LabelName = storageStrategy.GetLabels();
+                LabelName = storageStrategy.GetLabelNames();
             }
-            
+
             //using (StreamReader r = new StreamReader("Configure.json"))
             //{
             //    string json = r.ReadToEnd();

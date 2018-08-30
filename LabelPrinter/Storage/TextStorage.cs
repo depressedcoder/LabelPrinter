@@ -8,7 +8,7 @@ namespace LabelPrinter.Storage
 {
     public class TextStorage : AbstractStorage
     {
-        public override List<string> GetLabels()
+        public override List<string> GetLabelNames()
         {
             DirectoryInfo d = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
 
@@ -23,6 +23,11 @@ namespace LabelPrinter.Storage
                 LabelName.Add(trimmed);
             }
             return LabelName;
+        }
+
+        public override void GetLabelDetails(string labelName)
+        {
+            throw new NotImplementedException();
         }
 
         public override void SaveLabel()
