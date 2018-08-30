@@ -11,6 +11,7 @@ using LabelPrinter.Drawing;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using LabelPrinter.Storage;
 
 namespace LabelPrinter.ViewModel
 {
@@ -302,49 +303,59 @@ namespace LabelPrinter.ViewModel
             }
             //}
         }
-        void getLabelNames()
+        void GetLabelNames()
         {
+            var StrategySelector = new StorageSelector();
             using (StreamReader r = new StreamReader("Configure.json"))
             {
                 string json = r.ReadToEnd();
                 SetUpViewModel setUp = JsonConvert.DeserializeObject<SetUpViewModel>(json);
-                if (setUp.SelectedDataConnection == "Text Files")
-                {
-                    //if the no path is selected
-                    if(setUp.LocationOfFile == null)
-                    {
-                        DirectoryInfo d = new DirectoryInfo(System.AppDomain.CurrentDomain.BaseDirectory);
-
-                        //getting all the txt file that named with IMPORT
-                        FileInfo[] Files = d.GetFiles("*-IMPORT.txt");
-                        LabelName = new List<string> { "" };
-
-                        //adding all the file names in Label Name Combobox
-                        foreach (FileInfo file in Files)
-                        {
-                            var item = file.Name;
-                            string trimmed = Regex.Replace(item, "-IMPORT.txt", "");
-                            LabelName.Add(trimmed);
-                        }
-                    }
-                    else
-                    {
-                        DirectoryInfo d = new DirectoryInfo(setUp.LocationOfFile);
-
-                        //getting all the txt file that named with IMPORT
-                        FileInfo[] Files = d.GetFiles("*-IMPORT.txt");
-                        LabelName = new List<string> { "" };
-
-                        //adding all the file names in Label Name Combobox
-                        foreach (FileInfo file in Files)
-                        {
-                            var item = file.Name;
-                            string trimmed = Regex.Replace(item, "-IMPORT.txt", "");
-                            LabelName.Add(trimmed);
-                        }
-                    }
-                }
+                var storageStrategy = StrategySelector.GetStorage(setUp.SelectedDataConnection);
+                storageStrategy.GetLabels();
             }
+
+
+            //using (StreamReader r = new StreamReader("Configure.json"))
+            //{
+            //    string json = r.ReadToEnd();
+            //    SetUpViewModel setUp = JsonConvert.DeserializeObject<SetUpViewModel>(json);
+            //    if (setUp.SelectedDataConnection == "Text Files")
+            //    {
+            //        //if the no path is selected
+            //        if (setUp.LocationOfFile == null)
+            //        {
+            //            DirectoryInfo d = new DirectoryInfo(System.AppDomain.CurrentDomain.BaseDirectory);
+
+            //            //getting all the txt file that named with IMPORT
+            //            FileInfo[] Files = d.GetFiles("*-IMPORT.txt");
+            //            LabelName = new List<string> { "" };
+
+            //            //adding all the file names in Label Name Combobox
+            //            foreach (FileInfo file in Files)
+            //            {
+            //                var item = file.Name;
+            //                string trimmed = Regex.Replace(item, "-IMPORT.txt", "");
+            //                LabelName.Add(trimmed);
+            //            }
+            //        }
+            //        else
+            //        {
+            //            DirectoryInfo d = new DirectoryInfo(setUp.LocationOfFile);
+
+            //            //getting all the txt file that named with IMPORT
+            //            FileInfo[] Files = d.GetFiles("*-IMPORT.txt");
+            //            LabelName = new List<string> { "" };
+
+            //            //adding all the file names in Label Name Combobox
+            //            foreach (FileInfo file in Files)
+            //            {
+            //                var item = file.Name;
+            //                string trimmed = Regex.Replace(item, "-IMPORT.txt", "");
+            //                LabelName.Add(trimmed);
+            //            }
+            //        }
+            //    }
+            //}
         }
     }
 }

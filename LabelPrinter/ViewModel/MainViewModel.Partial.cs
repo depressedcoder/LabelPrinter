@@ -203,7 +203,7 @@ namespace LabelPrinter.ViewModel
             };
 
             //Getting label names from the folder based on Selected Data Connection
-            getLabelNames();
+            GetLabelNames();
 
             SaveButtonCommand = new RelayCommand(SaveCommand);
             NewButtonCommand = new RelayCommand(NewCommand);
