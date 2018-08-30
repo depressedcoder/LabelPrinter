@@ -21,11 +21,14 @@ namespace LabelPrinter.ViewModel
         //Showing all the values of rows by selecting the file from label name ComboBox
         public void ValueUpdate()
         {
-            string jsonFile = SelectedLabelName + ".json";
-            SelectedLabelName += "-IMPORT.txt";
-            if (File.Exists(SelectedLabelName))
+            var StrategySelector = new StorageSelector();
+            using (StreamReader r = new StreamReader("Configure.json"))
             {
-                var desiredText = File.ReadAllLines(SelectedLabelName);
+                string json = r.ReadToEnd();
+                Config con = JsonConvert.DeserializeObject<Config>(json);
+                var storageStrategy = StrategySelector.GetStorage(con.SelectedDataConnection);
+                string[] desiredText = storageStrategy.GetLabelDetails(SelectedLabelName);
+
                 if (desiredText.Length > 0)
                     SelectedLabelName = desiredText[0];
                 if (desiredText.Length > 1)
@@ -62,28 +65,28 @@ namespace LabelPrinter.ViewModel
                     Row15.Text = desiredText[16];
             }
 
-            //For getting the value of selected Char width,ishigh,isbold,isunderline from the json file
-            if (File.Exists(jsonFile))
-            {
-                var rowInfo = JsonConvert.DeserializeObject<IList<LabelRow>>(File.ReadAllText(jsonFile));
-                //using (StreamReader r = new StreamReader(jsonFile))
-                //{
-                //    string json = r.ReadToEnd();
-                //    // MainViewModel main = JsonConvert.DeserializeObject<MainViewModel>(json);
-                //    JArray array = JArray.Parse(json);
-                //    foreach (JObject obj in array.Children<JObject>())
-                //    {
-                //        foreach (JProperty singleProp in obj.Properties())
-                //        {
-                //            string name = singleProp.Name;
-                //            string value = singleProp.Value.ToString();
-                //            //Assign value the combobox and checkboxes.
-                //        }
-                //    }
-                //}
+            ////For getting the value of selected Char width,ishigh,isbold,isunderline from the json file
+            //if (File.Exists(jsonFile))
+            //{
+            //    var rowInfo = JsonConvert.DeserializeObject<IList<LabelRow>>(File.ReadAllText(jsonFile));
+            //    //using (StreamReader r = new StreamReader(jsonFile))
+            //    //{
+            //    //    string json = r.ReadToEnd();
+            //    //    // MainViewModel main = JsonConvert.DeserializeObject<MainViewModel>(json);
+            //    //    JArray array = JArray.Parse(json);
+            //    //    foreach (JObject obj in array.Children<JObject>())
+            //    //    {
+            //    //        foreach (JProperty singleProp in obj.Properties())
+            //    //        {
+            //    //            string name = singleProp.Name;
+            //    //            string value = singleProp.Value.ToString();
+            //    //            //Assign value the combobox and checkboxes.
+            //    //        }
+            //    //    }
+            //    //}
 
 
-            }
+            //}
 
         }
         public void PreviewLabel()
@@ -242,40 +245,29 @@ namespace LabelPrinter.ViewModel
 
         void SaveCommand()
         {
-            string fileName = ComBoxLabelName + "-IMPORT.txt";
-
-            if (!File.Exists(fileName))
+            var StrategySelector = new StorageSelector();
+            using (StreamReader r = new StreamReader("Configure.json"))
             {
+                string json = r.ReadToEnd();
+                Config setUp = JsonConvert.DeserializeObject<Config>(json);
+                var storageStrategy = StrategySelector.GetStorage(setUp.SelectedDataConnection);
+
                 var allLines = GetType().GetProperties()
                     .Where(p => p.GetValue(this, new object[] { })?.GetType() == typeof(LabelRow))
                     .Select(p => (LabelRow)p.GetValue(this, new object[] { }));
-
-                File.WriteAllText(fileName, ComBoxLabelName + Environment.NewLine + 
-                                            HowManyCoppies + Environment.NewLine + 
-                                            string.Join(Environment.NewLine, allLines.Select(m=>m.Text).ToArray()));
                 
-                var rowInfo = JsonConvert.SerializeObject(allLines);
-
-                string trimmed = Regex.Replace(fileName, "-IMPORT.txt", "");
-
-                trimmed += ".json";
-
-                File.WriteAllText(trimmed, rowInfo);
+                storageStrategy.SaveLabel(ComBoxLabelName, HowManyCoppies,allLines);
             }
-            else
-            {
-                System.Windows.MessageBox.Show(fileName + " exists!! Change the file name.");
-            }
-            //}
         }
+
         void GetLabelNames()
         {
             var StrategySelector = new StorageSelector();
             using (StreamReader r = new StreamReader("Configure.json"))
             {
                 string json = r.ReadToEnd();
-                SetUpViewModel setUp = JsonConvert.DeserializeObject<SetUpViewModel>(json);
-                var storageStrategy = StrategySelector.GetStorage(setUp.SelectedDataConnection);
+                Config con = JsonConvert.DeserializeObject<Config>(json);
+                var storageStrategy = StrategySelector.GetStorage(con.SelectedDataConnection);
                 LabelName = storageStrategy.GetLabelNames();
             }
 

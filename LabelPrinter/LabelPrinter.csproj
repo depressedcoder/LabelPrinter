@@ -123,6 +123,7 @@
     <Compile Include="Drawing\TextDrawing.cs" />
     <Compile Include="Drawing\WeightDrawing.cs" />
     <Compile Include="Model\Barcode.cs" />
+    <Compile Include="Model\Config.cs" />
     <Compile Include="Model\LabelRow.cs" />
     <Compile Include="Storage\AbstractStorage.cs" />
     <Compile Include="Storage\MsSqlStorage.cs" />
