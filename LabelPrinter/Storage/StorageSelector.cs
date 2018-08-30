@@ -20,7 +20,11 @@ namespace LabelPrinter.Storage
 
         public AbstractStorage GetStorage(string storageKey)
         {
-            return _storage.FirstOrDefault(x => x.Key == storageKey).Value ?? new TextStorage();
+            var strategy = _storage.FirstOrDefault(x => x.Key == storageKey).Value ?? new TextStorage();
+
+            strategy.ConnectionName = storageKey;
+
+            return strategy;
         }
     }
 }

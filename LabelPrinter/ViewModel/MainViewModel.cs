@@ -311,10 +311,9 @@ namespace LabelPrinter.ViewModel
                 string json = r.ReadToEnd();
                 SetUpViewModel setUp = JsonConvert.DeserializeObject<SetUpViewModel>(json);
                 var storageStrategy = StrategySelector.GetStorage(setUp.SelectedDataConnection);
-                storageStrategy.GetLabels();
+                LabelName = storageStrategy.GetLabels();
             }
-
-
+            
             //using (StreamReader r = new StreamReader("Configure.json"))
             //{
             //    string json = r.ReadToEnd();

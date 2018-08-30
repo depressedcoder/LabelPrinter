@@ -8,20 +8,21 @@ namespace LabelPrinter.Storage
 {
     public class TextStorage : AbstractStorage
     {
-        public override void GetLabels()
+        public override List<string> GetLabels()
         {
             DirectoryInfo d = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
 
             FileInfo[] Files = d.GetFiles("*-IMPORT.txt");
-            var m = new MainViewModel();
-            m.LabelName = new List<string> { "" };
+            
+            var LabelName = new List<string> { "" };
 
             foreach (FileInfo file in Files)
             {
                 var item = file.Name;
                 string trimmed = Regex.Replace(item, "-IMPORT.txt", "");
-                m.LabelName.Add(trimmed);
+                LabelName.Add(trimmed);
             }
+            return LabelName;
         }
 
         public override void SaveLabel()

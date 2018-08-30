@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace LabelPrinter.Storage
 {
     public class MySqlStorage : AbstractStorage
     {
-        public override void GetLabels()
+        public override List<string> GetLabels()
         {
             throw new NotImplementedException();
         }
