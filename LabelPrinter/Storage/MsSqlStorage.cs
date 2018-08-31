@@ -11,7 +11,7 @@ namespace LabelPrinter.Storage
             throw new NotImplementedException();
         }
 
-        public override List<LabelRow> GetLabelDetails(string labelName)
+        public override LabelDetails GetLabelDetails(string labelName)
         {
             throw new NotImplementedException();
         }

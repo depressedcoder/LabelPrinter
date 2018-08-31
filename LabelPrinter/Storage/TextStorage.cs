@@ -21,7 +21,7 @@ namespace LabelPrinter.Storage
                 .ToList();
         }
 
-        public override List<LabelRow> GetLabelDetails(string labelName)
+        public override LabelDetails GetLabelDetails(string labelName)
         {
             var fileNameOfLabel = $"{GetConnectionString()}{labelName}{TextExtension}";
 
@@ -33,27 +33,32 @@ namespace LabelPrinter.Storage
             if(!File.Exists(labelMetadataFile))
                 throw new ArgumentException("Invalid label name");
 
-            var labelRowLines = File.ReadAllText(fileNameOfLabel).Split(Environment.NewLine.ToCharArray());
+            var labelRowLines = File.ReadAllText(fileNameOfLabel).Split('\n');
 
             var labelRows = JsonConvert.DeserializeObject<List<LabelRow>>(File.ReadAllText(labelMetadataFile));
 
             foreach (var labelRow in labelRows)
             {
-                var idx = labelRows.IndexOf(labelRow);
+                var idx = labelRows.IndexOf(labelRow) + 2; //First two lines are labelName & number of copies
 
                 labelRow.Text = labelRowLines.ElementAtOrDefault(idx);
             }
 
-            return labelRows;
+            return new LabelDetails
+            {
+                LabelRows = labelRows,
+                Name = labelRowLines.ElementAtOrDefault(0),
+                NumberOfCopies = int.Parse(labelRowLines.ElementAtOrDefault(1) ?? throw new ArgumentException("Invalid number of copies.") )
+            };
         }
 
         public override void SaveLabel(string labelName, int numberOfCopies, IEnumerable<LabelRow> labelRows)
         {
             //Save all labels
             var fileName = $"{GetConnectionString()}{labelName}{TextExtension}";
-            File.WriteAllText(fileName, labelName + Environment.NewLine +
-                numberOfCopies + Environment.NewLine +
-                string.Join(Environment.NewLine, labelRows.Select(m => m.Text).ToArray()));
+            File.WriteAllText(fileName, labelName + '\n' +
+                numberOfCopies + '\n' +
+                string.Join("\n", labelRows.Select(m => m.Text).ToArray()));
 
             //Save metadata of labels
             var labelRowsMetadata = JsonConvert.SerializeObject(labelRows, Formatting.Indented);

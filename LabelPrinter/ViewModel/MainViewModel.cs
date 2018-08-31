@@ -16,7 +16,7 @@ namespace LabelPrinter.ViewModel
         {
             var storage = _storageSelector.GetStorage();
 
-            var labelRowDetails = storage.GetLabelDetails(SelectedLabelName);
+            var labelDetails = storage.GetLabelDetails(SelectedLabelName);
 
             var labelRows = GetType().GetProperties()
                 .Where(p => p.GetValue(this, new object[] { })?.GetType() == typeof(LabelRow))
@@ -26,7 +26,7 @@ namespace LabelPrinter.ViewModel
             {
                 var idx = labelRows.IndexOf(labelRow);
 
-                var labelRowDetail = labelRowDetails.ElementAtOrDefault(idx);
+                var labelRowDetail = labelDetails.LabelRows.ElementAtOrDefault(idx);
 
                 if (labelRowDetail != null)
                 {
@@ -37,6 +37,8 @@ namespace LabelPrinter.ViewModel
                     labelRow.IsUnderlined = labelRowDetail.IsUnderlined;
                 }
             }
+
+            HowManyCoppies = labelDetails.NumberOfCopies;
         }
 
         public void PreviewLabel()

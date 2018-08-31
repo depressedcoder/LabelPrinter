@@ -11,7 +11,7 @@ namespace LabelPrinter.Model
         /// </summary>
         public string Text
         {
-            get { return _text; }
+            get => _text;
             set
             {
                 _text = value;
@@ -29,7 +29,7 @@ namespace LabelPrinter.Model
         /// </summary>
         public int SelectedCharWidth
         {
-            get { return _selectedCharWidth; }
+            get => _selectedCharWidth;
             set
             {
                 _selectedCharWidth = value;
@@ -52,7 +52,7 @@ namespace LabelPrinter.Model
         /// </summary>
         public bool IsHigh
         {
-            get { return _isHigh; }
+            get => _isHigh;
             set
             {
                 _isHigh = value;
@@ -74,7 +74,7 @@ namespace LabelPrinter.Model
         /// </summary>
         public bool IsBold
         {
-            get { return _isBold; }
+            get => _isBold;
             set
             {
                 _isBold = value;
@@ -88,7 +88,7 @@ namespace LabelPrinter.Model
         /// </summary>
         public bool IsUnderlined
         {
-            get { return _isUnderLined; }
+            get => _isUnderLined;
             set
             {
                 _isUnderLined = value;
@@ -103,10 +103,7 @@ namespace LabelPrinter.Model
         /// </summary>
         public int CharWidth
         {
-            get
-            {
-                return _charWidth;
-            }
+            get => _charWidth;
 
             set
             {
