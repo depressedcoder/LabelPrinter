@@ -21,41 +21,43 @@ namespace LabelPrinter.Storage
                 .ToList();
         }
 
-        public override string[] GetLabelDetails(string labelName)
+        public override List<LabelRow> GetLabelDetails(string labelName)
         {
+            var fileNameOfLabel = $"{GetConnectionString()}{labelName}{TextExtension}";
 
-            labelName += TextExtension;
+            if(!File.Exists(fileNameOfLabel))
+                throw new ArgumentException($"{labelName} does not exist.");
 
-            if (File.Exists(labelName))
+            var labelMetadataFile = $"{GetConnectionString()}{labelName}.json";
+
+            if(!File.Exists(labelMetadataFile))
+                throw new ArgumentException("Invalid label name");
+
+            var labelRowLines = File.ReadAllText(fileNameOfLabel).Split(Environment.NewLine.ToCharArray());
+
+            var labelRows = JsonConvert.DeserializeObject<List<LabelRow>>(File.ReadAllText(labelMetadataFile));
+
+            foreach (var labelRow in labelRows)
             {
-                var data = File.ReadAllLines(labelName);
+                var idx = labelRows.IndexOf(labelRow);
 
-                return data;
-
+                labelRow.Text = labelRowLines.ElementAtOrDefault(idx);
             }
 
-            return new string[0];
+            return labelRows;
         }
 
-        public override void SaveLabel(string labelName, int howManyCoppies, IEnumerable<LabelRow> labelRows)
+        public override void SaveLabel(string labelName, int numberOfCopies, IEnumerable<LabelRow> labelRows)
         {
             //Save all labels
             var fileName = $"{GetConnectionString()}{labelName}{TextExtension}";
             File.WriteAllText(fileName, labelName + Environment.NewLine +
-                howManyCoppies + Environment.NewLine +
+                numberOfCopies + Environment.NewLine +
                 string.Join(Environment.NewLine, labelRows.Select(m => m.Text).ToArray()));
 
             //Save metadata of labels
             var labelRowsMetadata = JsonConvert.SerializeObject(labelRows, Formatting.Indented);
             File.WriteAllText($"{GetConnectionString()}{labelName}.json", labelRowsMetadata);
-        }
-
-        public override List<string> GetLabelDetailsJson(string labelName)
-        {
-            //string jsonFile = labelName + ".json";
-            //IList<LabelRow> rowInfo = JsonConvert.DeserializeObject<IList<LabelRow>>(File.ReadAllText(jsonFile));
-            //return rowInfo;
-            throw new NotImplementedException();
         }
 
         protected override string GetConnectionString()
@@ -70,7 +72,7 @@ namespace LabelPrinter.Storage
             if (!string.IsNullOrEmpty(connectionString))
                 Directory.CreateDirectory(connectionString);
 
-            return connectionString;
+            return connectionString ?? AppDomain.CurrentDomain.BaseDirectory + "\\";
         }
     }
 }

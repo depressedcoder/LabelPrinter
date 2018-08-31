@@ -12,78 +12,33 @@ namespace LabelPrinter.ViewModel
 {
     public partial class MainViewModel
     {
-
-        //Showing all the values of rows by selecting the file from label name ComboBox
         public void SetLabel()
         {
-            //var StrategySelector = new StorageSelector();
-            //using (StreamReader r = new StreamReader("Configure.json"))
-            //{
-            //    string json = r.ReadToEnd();
-            //    Config con = JsonConvert.DeserializeObject<Config>(json);
-            //    var storageStrategy = StrategySelector.GetStorage(con.SelectedDataConnection);
-            //    string[] desiredText = storageStrategy.GetLabelDetails(SelectedLabelName);
+            var storage = _storageSelector.GetStorage();
 
-            //    if (desiredText.Length > 0)
-            //        SelectedLabelName = desiredText[0];
-            //    if (desiredText.Length > 1)
-            //        HowManyCoppies = int.Parse(desiredText[1]);
-            //    if (desiredText.Length > 2)
-            //        Row1.Text = desiredText[2];
-            //    if (desiredText.Length > 3)
-            //        Row2.Text = desiredText[3];
-            //    if (desiredText.Length > 4)
-            //        Row3.Text = desiredText[4];
-            //    if (desiredText.Length > 5)
-            //        Row4.Text = desiredText[5];
-            //    if (desiredText.Length > 6)
-            //        Row5.Text = desiredText[6];
-            //    if (desiredText.Length > 7)
-            //        Row6.Text = desiredText[7];
-            //    if (desiredText.Length > 8)
-            //        Row7.Text = desiredText[8];
-            //    if (desiredText.Length > 9)
-            //        Row8.Text = desiredText[9];
-            //    if (desiredText.Length > 10)
-            //        Row9.Text = desiredText[10];
-            //    if (desiredText.Length > 11)
-            //        Row10.Text = desiredText[11];
-            //    if (desiredText.Length > 12)
-            //        Row11.Text = desiredText[12];
-            //    if (desiredText.Length > 13)
-            //        Row12.Text = desiredText[13];
-            //    if (desiredText.Length > 14)
-            //        Row13.Text = desiredText[14];
-            //    if (desiredText.Length > 15)
-            //        Row14.Text = desiredText[15];
-            //    if (desiredText.Length > 16)
-            //        Row15.Text = desiredText[16];
-            //}
+            var labelRowDetails = storage.GetLabelDetails(SelectedLabelName);
 
-            ////For getting the value of selected Char width,ishigh,isbold,isunderline from the json file
-            //if (File.Exists(jsonFile))
-            //{
-            //    var rowInfo = JsonConvert.DeserializeObject<IList<LabelRow>>(File.ReadAllText(jsonFile));
-            //    //using (StreamReader r = new StreamReader(jsonFile))
-            //    //{
-            //    //    string json = r.ReadToEnd();
-            //    //    // MainViewModel main = JsonConvert.DeserializeObject<MainViewModel>(json);
-            //    //    JArray array = JArray.Parse(json);
-            //    //    foreach (JObject obj in array.Children<JObject>())
-            //    //    {
-            //    //        foreach (JProperty singleProp in obj.Properties())
-            //    //        {
-            //    //            string name = singleProp.Name;
-            //    //            string value = singleProp.Value.ToString();
-            //    //            //Assign value the combobox and checkboxes.
-            //    //        }
-            //    //    }
-            //    //}
+            var labelRows = GetType().GetProperties()
+                .Where(p => p.GetValue(this, new object[] { })?.GetType() == typeof(LabelRow))
+                .Select(p => (LabelRow)p.GetValue(this, new object[] { })).ToList();
 
+            foreach (var labelRow in labelRows)
+            {
+                var idx = labelRows.IndexOf(labelRow);
 
-            //}
+                var labelRowDetail = labelRowDetails.ElementAtOrDefault(idx);
 
+                if (labelRowDetail != null)
+                {
+                    labelRow.Text = labelRowDetail.Text;
+                    labelRow.CharWidth = labelRowDetail.CharWidth;
+                    labelRow.IsHigh = labelRowDetail.IsHigh;
+                    labelRow.IsBold = labelRowDetail.IsBold;
+                    labelRow.IsUnderlined = labelRowDetail.IsUnderlined;
+                }
+            }
         }
+
         public void PreviewLabel()
         {
             using (var bitmap = new Bitmap(LabelWidth, LabelHeight))
@@ -236,11 +191,11 @@ namespace LabelPrinter.ViewModel
         {
             var storage = _storageSelector.GetStorage();
 
-            var allLines = GetType().GetProperties()
+            var labelRows = GetType().GetProperties()
                 .Where(p => p.GetValue(this, new object[] { })?.GetType() == typeof(LabelRow))
                 .Select(p => (LabelRow)p.GetValue(this, new object[] { }));
 
-            storage.SaveLabel(SelectedLabelName, HowManyCoppies, allLines);
+            storage.SaveLabel(SelectedLabelName, HowManyCoppies, labelRows);
 
             LabelSource = storage.GetLabelNames();
         }

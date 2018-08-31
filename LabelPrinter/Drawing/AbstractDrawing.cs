@@ -18,7 +18,7 @@ namespace LabelPrinter.Drawing
 
         protected Font GetRowFont()
         {
-            FontStyle style = FontStyle.Regular;
+            var style = FontStyle.Regular;
 
             var charWidth = LabelRow.SelectedCharWidth;
 
