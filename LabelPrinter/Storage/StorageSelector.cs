@@ -9,7 +9,6 @@ namespace LabelPrinter.Storage
     public class StorageSelector
     {
         readonly Dictionary<string, AbstractStorage> _storage;
-        readonly Config _config;
 
         public StorageSelector()
         {
@@ -20,16 +19,16 @@ namespace LabelPrinter.Storage
                 {StorageTypes.Oracle, new OracleStorage() },
                 {StorageTypes.MsSql, new MsSqlStorage() }
             };
-
-            if (!File.Exists("Config.json"))
-                throw new ArgumentException("Configuration file is missing");
-
-            _config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("Config.json"));
         }
 
         public AbstractStorage GetStorage()
         {
-            var selectedStorage = _config?.SelectedDataConnection;
+            if (!File.Exists("Config.json"))
+                throw new ArgumentException("Configuration file is missing");
+
+            var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("Config.json"));
+
+            var selectedStorage = config?.SelectedConnection;
 
             var strategy = _storage.FirstOrDefault(x => x.Key == selectedStorage).Value ?? new TextStorage();
 

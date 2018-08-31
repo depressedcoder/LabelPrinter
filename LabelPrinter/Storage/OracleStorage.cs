@@ -16,12 +16,17 @@ namespace LabelPrinter.Storage
             throw new NotImplementedException();
         }
 
-        public override void SaveLabel(string file, int howManyCoppies, IEnumerable<LabelRow> allLines)
+        public override void SaveLabel(string labelName, int howManyCoppies, IEnumerable<LabelRow> labelRows)
         {
             throw new NotImplementedException();
         }
 
         public override List<string> GetLabelDetailsJson(string labelName)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override string GetConnectionString()
         {
             throw new NotImplementedException();
         }

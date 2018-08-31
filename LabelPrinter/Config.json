@@ -10,6 +10,9 @@
   "BlackLineText": null,
   "GapControlText": null,
   "LocationOfFile": null,
-  "ODBCConnectionString": null,
+  "OracleConnection": null,
+  "MySqlConnection": null,
+  "MssqlConnection": null,
+  "TextConnection": null, 
   "IsCreateOrExport": false
 }

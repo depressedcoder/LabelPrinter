@@ -4,69 +4,50 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace LabelPrinter.Storage
 {
     public class TextStorage : AbstractStorage
     {
+        const string TextExtension = "-IMPORT.txt";
+
         public override List<string> GetLabelNames()
         {
-            DirectoryInfo d = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
+            var directoryInfo = new DirectoryInfo(GetConnectionString());
 
-            FileInfo[] Files = d.GetFiles("*-IMPORT.txt");
-            
-            var LabelName = new List<string> { "" };
-
-            foreach (FileInfo file in Files)
-            {
-                var item = file.Name;
-                string trimmed = Regex.Replace(item, "-IMPORT.txt", "");
-                LabelName.Add(trimmed);
-            }
-            return LabelName;
+            return directoryInfo
+                .GetFiles($"*{TextExtension}")
+                .Select(m => m.Name.Replace(TextExtension, ""))
+                .ToList();
         }
 
         public override string[] GetLabelDetails(string labelName)
         {
-            
-            labelName += "-IMPORT.txt";
 
-            if(File.Exists(labelName))
+            labelName += TextExtension;
+
+            if (File.Exists(labelName))
             {
                 var data = File.ReadAllLines(labelName);
 
                 return data;
 
             }
-            
+
             return new string[0];
         }
 
-        public override void SaveLabel(string ComBoxLabelName, int howManyCoppies, IEnumerable<LabelRow> allLines)
+        public override void SaveLabel(string labelName, int howManyCoppies, IEnumerable<LabelRow> labelRows)
         {
-            string fileName = ComBoxLabelName + "-IMPORT.txt";
+            //Save all labels
+            var fileName = $"{GetConnectionString()}{labelName}{TextExtension}";
+            File.WriteAllText(fileName, labelName + Environment.NewLine +
+                howManyCoppies + Environment.NewLine +
+                string.Join(Environment.NewLine, labelRows.Select(m => m.Text).ToArray()));
 
-            if (!File.Exists(fileName))
-            {
-
-                File.WriteAllText(fileName, ComBoxLabelName + Environment.NewLine +
-                    howManyCoppies + Environment.NewLine +
-                    string.Join(Environment.NewLine, allLines.Select(m => m.Text).ToArray()));
-
-                var rowInfo = JsonConvert.SerializeObject(allLines);
-
-                string trimmed = Regex.Replace(fileName, "-IMPORT.txt", "");
-
-                trimmed += ".json";
-
-                File.WriteAllText(trimmed, rowInfo);
-                System.Windows.MessageBox.Show("File Saved Successfully");
-            }
-            else
-            {
-                System.Windows.MessageBox.Show(fileName + " exists!! Change the file name.");
-            }
+            //Save metadata of labels
+            var labelRowsMetadata = JsonConvert.SerializeObject(labelRows, Formatting.Indented);
+            File.WriteAllText($"{GetConnectionString()}{labelName}.json", labelRowsMetadata);
         }
 
         public override List<string> GetLabelDetailsJson(string labelName)
@@ -75,6 +56,21 @@ namespace LabelPrinter.Storage
             //IList<LabelRow> rowInfo = JsonConvert.DeserializeObject<IList<LabelRow>>(File.ReadAllText(jsonFile));
             //return rowInfo;
             throw new NotImplementedException();
+        }
+
+        protected override string GetConnectionString()
+        {
+            if (!File.Exists("Config.json"))
+                throw new ArgumentException("Configuration file is missing");
+
+            var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("Config.json"));
+
+            var connectionString = config?.TextConnection;
+
+            if (!string.IsNullOrEmpty(connectionString))
+                Directory.CreateDirectory(connectionString);
+
+            return connectionString;
         }
     }
 }

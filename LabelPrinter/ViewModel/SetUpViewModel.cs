@@ -7,47 +7,34 @@ namespace LabelPrinter.ViewModel
 {
     public partial class SetUpViewModel : ViewModelBase
     {
-        private void ChangeCommand()
+        void ChangeCommand()
         {
             FolderBrowserDialog openFolderDialog = new FolderBrowserDialog();
             if (openFolderDialog.ShowDialog() == DialogResult.OK)
-                LocationOfFile = openFolderDialog.SelectedPath;
+                LocationOfFile = openFolderDialog.SelectedPath + "\\";
         }
-        private void TestConnectionCommand()
+
+        void TestConnectionCommand()
         {
             System.Windows.MessageBox.Show("Clicked on Test Connection Command.");
         }
+
         void ExitCommand()
         {
 
         }
 
-        private void SaveCommand()
+        void SaveCommand()
         {
-            //saving all info to Configure.json File
-            string strJsonResult = JsonConvert.SerializeObject(
-            new
+            var config = new Config
             {
-                SelectedScalesModel,
-                SelectedScalesPort,
-                SelectedPrinter,
-                SelectedPrinterPort,
-                SelectedDataConnection,
-                Density,
-                Speed,
-                RadioButtonValue,
-                BlackLineText,
-                GapControlText,
-                LocationOfFile,
-                ODBCConnectionString,
-                IsCreateOrExport
-            }
-            );
-            
-            File.WriteAllText("Configure.json", strJsonResult);
-            System.Windows.MessageBox.Show("File saved in Configure.json");
+                SelectedConnection = SelectedDataConnection,
+                TextConnection = LocationOfFile
+            };
 
-            
+            File.WriteAllText("Config.json", JsonConvert.SerializeObject(config, Formatting.Indented));
+
+            System.Windows.MessageBox.Show("File saved");
         }
     }
 }
