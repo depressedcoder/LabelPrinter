@@ -4,14 +4,9 @@ using System.Drawing;
 using System.IO;
 using System.Drawing.Imaging;
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
 using LabelPrinter.Model;
 using System.Linq;
 using LabelPrinter.Drawing;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
-using LabelPrinter.Storage;
 
 namespace LabelPrinter.ViewModel
 {
@@ -19,51 +14,51 @@ namespace LabelPrinter.ViewModel
     {
 
         //Showing all the values of rows by selecting the file from label name ComboBox
-        public void ValueUpdate()
+        public void SetLabel()
         {
-            var StrategySelector = new StorageSelector();
-            using (StreamReader r = new StreamReader("Configure.json"))
-            {
-                string json = r.ReadToEnd();
-                Config con = JsonConvert.DeserializeObject<Config>(json);
-                var storageStrategy = StrategySelector.GetStorage(con.SelectedDataConnection);
-                string[] desiredText = storageStrategy.GetLabelDetails(SelectedLabelName);
+            //var StrategySelector = new StorageSelector();
+            //using (StreamReader r = new StreamReader("Configure.json"))
+            //{
+            //    string json = r.ReadToEnd();
+            //    Config con = JsonConvert.DeserializeObject<Config>(json);
+            //    var storageStrategy = StrategySelector.GetStorage(con.SelectedDataConnection);
+            //    string[] desiredText = storageStrategy.GetLabelDetails(SelectedLabelName);
 
-                if (desiredText.Length > 0)
-                    SelectedLabelName = desiredText[0];
-                if (desiredText.Length > 1)
-                    HowManyCoppies = int.Parse(desiredText[1]);
-                if (desiredText.Length > 2)
-                    Row1.Text = desiredText[2];
-                if (desiredText.Length > 3)
-                    Row2.Text = desiredText[3];
-                if (desiredText.Length > 4)
-                    Row3.Text = desiredText[4];
-                if (desiredText.Length > 5)
-                    Row4.Text = desiredText[5];
-                if (desiredText.Length > 6)
-                    Row5.Text = desiredText[6];
-                if (desiredText.Length > 7)
-                    Row6.Text = desiredText[7];
-                if (desiredText.Length > 8)
-                    Row7.Text = desiredText[8];
-                if (desiredText.Length > 9)
-                    Row8.Text = desiredText[9];
-                if (desiredText.Length > 10)
-                    Row9.Text = desiredText[10];
-                if (desiredText.Length > 11)
-                    Row10.Text = desiredText[11];
-                if (desiredText.Length > 12)
-                    Row11.Text = desiredText[12];
-                if (desiredText.Length > 13)
-                    Row12.Text = desiredText[13];
-                if (desiredText.Length > 14)
-                    Row13.Text = desiredText[14];
-                if (desiredText.Length > 15)
-                    Row14.Text = desiredText[15];
-                if (desiredText.Length > 16)
-                    Row15.Text = desiredText[16];
-            }
+            //    if (desiredText.Length > 0)
+            //        SelectedLabelName = desiredText[0];
+            //    if (desiredText.Length > 1)
+            //        HowManyCoppies = int.Parse(desiredText[1]);
+            //    if (desiredText.Length > 2)
+            //        Row1.Text = desiredText[2];
+            //    if (desiredText.Length > 3)
+            //        Row2.Text = desiredText[3];
+            //    if (desiredText.Length > 4)
+            //        Row3.Text = desiredText[4];
+            //    if (desiredText.Length > 5)
+            //        Row4.Text = desiredText[5];
+            //    if (desiredText.Length > 6)
+            //        Row5.Text = desiredText[6];
+            //    if (desiredText.Length > 7)
+            //        Row6.Text = desiredText[7];
+            //    if (desiredText.Length > 8)
+            //        Row7.Text = desiredText[8];
+            //    if (desiredText.Length > 9)
+            //        Row8.Text = desiredText[9];
+            //    if (desiredText.Length > 10)
+            //        Row9.Text = desiredText[10];
+            //    if (desiredText.Length > 11)
+            //        Row10.Text = desiredText[11];
+            //    if (desiredText.Length > 12)
+            //        Row11.Text = desiredText[12];
+            //    if (desiredText.Length > 13)
+            //        Row12.Text = desiredText[13];
+            //    if (desiredText.Length > 14)
+            //        Row13.Text = desiredText[14];
+            //    if (desiredText.Length > 15)
+            //        Row14.Text = desiredText[15];
+            //    if (desiredText.Length > 16)
+            //        Row15.Text = desiredText[16];
+            //}
 
             ////For getting the value of selected Char width,ishigh,isbold,isunderline from the json file
             //if (File.Exists(jsonFile))
@@ -100,7 +95,7 @@ namespace LabelPrinter.ViewModel
                     graphics.Clear(Color.White);
 
                     //Find all rows
-                    var rows = this.GetType().GetProperties()
+                    var rows = GetType().GetProperties()
                         .Where(p => p.GetValue(this, new object[] { })?.GetType() == typeof(LabelRow))
                         .Select(p => (LabelRow)p.GetValue(this, new object[] { }));
 
@@ -225,93 +220,35 @@ namespace LabelPrinter.ViewModel
 
         void NewCommand()
         {
-            SelectedLabelName = "";
-            Row1.Text = "";
-            Row2.Text = "";
-            Row3.Text = "";
-            Row4.Text = "";
-            Row5.Text = "";
-            Row6.Text = "";
-            Row7.Text = "";
-            Row8.Text = "";
-            Row9.Text = "";
-            Row10.Text = "";
-            Row11.Text = "";
-            Row12.Text = "";
-            Row13.Text = "";
-            Row14.Text = "";
-            Row15.Text = "";
+            SelectedLabelName = string.Empty;
+
+            var rows = GetType().GetProperties()
+                .Where(p => p.GetValue(this, new object[] { })?.GetType() == typeof(LabelRow))
+                .Select(p => (LabelRow)p.GetValue(this, new object[] { }));
+
+            foreach (var labelRow in rows)
+            {
+                labelRow.Text = string.Empty;
+            }
         }
 
         void SaveCommand()
         {
-            var StrategySelector = new StorageSelector();
-            using (StreamReader r = new StreamReader("Configure.json"))
-            {
-                string json = r.ReadToEnd();
-                Config setUp = JsonConvert.DeserializeObject<Config>(json);
-                var storageStrategy = StrategySelector.GetStorage(setUp.SelectedDataConnection);
+            var storage = _storageSelector.GetStorage();
 
-                var allLines = GetType().GetProperties()
-                    .Where(p => p.GetValue(this, new object[] { })?.GetType() == typeof(LabelRow))
-                    .Select(p => (LabelRow)p.GetValue(this, new object[] { }));
-                
-                storageStrategy.SaveLabel(ComBoxLabelName, HowManyCoppies,allLines);
-            }
+            var allLines = GetType().GetProperties()
+                .Where(p => p.GetValue(this, new object[] { })?.GetType() == typeof(LabelRow))
+                .Select(p => (LabelRow)p.GetValue(this, new object[] { }));
+
+            storage.SaveLabel(SelectedLabelName, HowManyCoppies, allLines);
+
+            LabelSource = storage.GetLabelNames();
         }
 
         void GetLabelNames()
         {
-            var StrategySelector = new StorageSelector();
-            using (StreamReader r = new StreamReader("Configure.json"))
-            {
-                string json = r.ReadToEnd();
-                Config con = JsonConvert.DeserializeObject<Config>(json);
-                var storageStrategy = StrategySelector.GetStorage(con.SelectedDataConnection);
-                LabelName = storageStrategy.GetLabelNames();
-            }
-
-            //using (StreamReader r = new StreamReader("Configure.json"))
-            //{
-            //    string json = r.ReadToEnd();
-            //    SetUpViewModel setUp = JsonConvert.DeserializeObject<SetUpViewModel>(json);
-            //    if (setUp.SelectedDataConnection == "Text Files")
-            //    {
-            //        //if the no path is selected
-            //        if (setUp.LocationOfFile == null)
-            //        {
-            //            DirectoryInfo d = new DirectoryInfo(System.AppDomain.CurrentDomain.BaseDirectory);
-
-            //            //getting all the txt file that named with IMPORT
-            //            FileInfo[] Files = d.GetFiles("*-IMPORT.txt");
-            //            LabelName = new List<string> { "" };
-
-            //            //adding all the file names in Label Name Combobox
-            //            foreach (FileInfo file in Files)
-            //            {
-            //                var item = file.Name;
-            //                string trimmed = Regex.Replace(item, "-IMPORT.txt", "");
-            //                LabelName.Add(trimmed);
-            //            }
-            //        }
-            //        else
-            //        {
-            //            DirectoryInfo d = new DirectoryInfo(setUp.LocationOfFile);
-
-            //            //getting all the txt file that named with IMPORT
-            //            FileInfo[] Files = d.GetFiles("*-IMPORT.txt");
-            //            LabelName = new List<string> { "" };
-
-            //            //adding all the file names in Label Name Combobox
-            //            foreach (FileInfo file in Files)
-            //            {
-            //                var item = file.Name;
-            //                string trimmed = Regex.Replace(item, "-IMPORT.txt", "");
-            //                LabelName.Add(trimmed);
-            //            }
-            //        }
-            //    }
-            //}
+            var storage = _storageSelector.GetStorage();
+            LabelSource = storage.GetLabelNames();
         }
     }
 }

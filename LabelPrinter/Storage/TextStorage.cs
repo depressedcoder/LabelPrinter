@@ -1,5 +1,4 @@
 ﻿using LabelPrinter.Model;
-using LabelPrinter.ViewModel;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

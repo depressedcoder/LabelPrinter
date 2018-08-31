@@ -25,9 +25,9 @@
 
         <DockPanel Grid.Column="0" Grid.Row="0">
             <TextBlock Width="100" Height="35" Text="Label Name :"  DockPanel.Dock="Left"/>
-            <ComboBox  ItemsSource="{Binding LabelName}" 
+            <ComboBox  ItemsSource="{Binding LabelSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                 SelectedItem="{Binding SelectedLabelName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                Text="{Binding ComBoxLabelName,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"      
+                Text="{Binding SelectedLabelName, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"      
                 SelectionChanged="LabelNameUpdateEvent" Width="200" Height="35" DockPanel.Dock="Right" IsEditable="True"/>
         </DockPanel>
 

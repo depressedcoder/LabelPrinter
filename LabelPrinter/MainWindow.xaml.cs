@@ -1,8 +1,4 @@
-﻿using EzioDll;
-using LabelPrinter.ViewModel;
-using System;
-using System.IO;
-using System.Linq;
+﻿using LabelPrinter.ViewModel;
 using System.Windows;
 
 namespace LabelPrinter
@@ -20,6 +16,7 @@ namespace LabelPrinter
             main = new MainViewModel();
             DataContext = main;
         }
+
         /// <summary>
         /// For Showing all the row values by selecting a file through Label Name ComboBox
         /// </summary>
@@ -27,21 +24,19 @@ namespace LabelPrinter
         /// <param name="e"></param>
         void LabelNameUpdateEvent(object sender,RoutedEventArgs e)
         {
-            var vm = DataContext as MainViewModel;
-            if(vm != null)
+            if(DataContext is MainViewModel vm)
             {
-                vm.ValueUpdate();
+                vm.SetLabel();
             }
         }
+
         void UpdateLabelEvent(object sender, RoutedEventArgs e)
         {
             var vm = DataContext as MainViewModel;
 
-            if (vm != null)
-            {
-                vm.PreviewLabel();
-            }
+            vm?.PreviewLabel();
         }
+
         //------------------------------------------------------------------------
         // Label Setup
         //------------------------------------------------------------------------
@@ -55,10 +50,12 @@ namespace LabelPrinter
             Printer.Config.PageNo(1);
             Printer.Config.CopyNo(1);
         }
+
         private void DisconnectPrinter()
         {
             Printer.Close();
         }
+
         private void ButtonPrint_Click(object sender, RoutedEventArgs e)
         {
             int PosX = 10;

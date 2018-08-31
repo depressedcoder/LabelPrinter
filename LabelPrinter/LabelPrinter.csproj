@@ -112,6 +112,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Config.cs" />
     <Compile Include="Converters\RadioBoolToIntConverter.cs" />
     <Compile Include="EZioApi.cs" />
     <Compile Include="GodexPrinter.cs" />
@@ -123,7 +124,6 @@
     <Compile Include="Drawing\TextDrawing.cs" />
     <Compile Include="Drawing\WeightDrawing.cs" />
     <Compile Include="Model\Barcode.cs" />
-    <Compile Include="Model\Config.cs" />
     <Compile Include="Model\LabelRow.cs" />
     <Compile Include="Storage\AbstractStorage.cs" />
     <Compile Include="Storage\MsSqlStorage.cs" />
@@ -232,7 +232,7 @@
     <Resource Include="Fonts\RobotoCondensed-Regular.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <None Include="Configure.json">
+    <None Include="Config.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />

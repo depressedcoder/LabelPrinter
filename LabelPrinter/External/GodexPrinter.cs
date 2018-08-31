@@ -1,12 +1,13 @@
 ﻿//------------------------------------------------------------------------------------------------
 // Create GodexPrinter.cs by Jeffrey 2014/07/14
 //------------------------------------------------------------------------------------------------
+
 using System;
-using System.Text;
 using System.Collections;
 using System.Drawing.Printing;
+using System.Text;
 
-namespace EzioDll
+namespace LabelPrinter.External
 {
     #region Enum Definition
 

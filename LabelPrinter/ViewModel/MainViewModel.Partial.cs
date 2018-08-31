@@ -1,19 +1,14 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using LabelPrinter.Model;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
-using System.Windows;
 using System.Windows.Media.Imaging;
+using LabelPrinter.Storage;
 
 namespace LabelPrinter.ViewModel
 {
-    public partial class MainViewModel: ViewModelBase
+    public partial class MainViewModel : ViewModelBase
     {
         public LabelRow Row1 { get; set; }
         public LabelRow Row2 { get; set; }
@@ -30,13 +25,13 @@ namespace LabelPrinter.ViewModel
         public LabelRow Row13 { get; set; }
         public LabelRow Row14 { get; set; }
         public LabelRow Row15 { get; set; }
-        public RelayCommand SaveButtonCommand { get; private set; }
-        public RelayCommand NewButtonCommand { get; private set; }
-        public RelayCommand SetUpButtonCommand { get; private set; }
-        public RelayCommand PrintButtonCommand { get; private set; }
-        public RelayCommand PrintJobsButtonCommand { get; private set; }
-        public RelayCommand ExitButtonCommand { get; private set; }
-        public RelayCommand UpdateLabelCommand { get; private set; }
+        public RelayCommand SaveButtonCommand { get; }
+        public RelayCommand NewButtonCommand { get; }
+        public RelayCommand SetUpButtonCommand { get; }
+        public RelayCommand PrintButtonCommand { get; }
+        public RelayCommand PrintJobsButtonCommand { get; }
+        public RelayCommand ExitButtonCommand { get; }
+        public RelayCommand UpdateLabelCommand { get; }
 
         public Barcode Barcode { get; set; }
 
@@ -62,7 +57,7 @@ namespace LabelPrinter.ViewModel
         /// </summary>
         public int HowManyCoppies
         {
-            get { return _howManyCopies; }
+            get => _howManyCopies;
             set
             {
                 _howManyCopies = value;
@@ -73,42 +68,42 @@ namespace LabelPrinter.ViewModel
         bool _isAutomaticCuttingDevice;
         public bool IsAutomaticCuttingDevice
         {
-            get { return _isAutomaticCuttingDevice; }
+            get => _isAutomaticCuttingDevice;
             set
             {
                 _isAutomaticCuttingDevice = value;
                 RaisePropertyChanged(nameof(IsAutomaticCuttingDevice));
             }
         }
-        int labelWidth = 315;
+        int _labelWidth = 315;
         /// <summary>
         /// Used For The Width of Label
         /// </summary>
         public int LabelWidth
         {
-            get => labelWidth;
+            get => _labelWidth;
             set
             {
-                if (value != labelWidth)
+                if (value != _labelWidth)
                 {
-                    labelWidth = value;
+                    _labelWidth = value;
                     RaisePropertyChanged(nameof(LabelWidth));
                 }
             }
         }
-        int labelHeight = 423;
+        int _labelHeight = 423;
         /// <summary>
         /// used for the height of Label
         /// </summary>
 
         public int LabelHeight
         {
-            get => labelHeight;
+            get => _labelHeight;
             set
             {
-                if (value != labelHeight)
+                if (value != _labelHeight)
                 {
-                    labelHeight = value;
+                    _labelHeight = value;
                     RaisePropertyChanged(nameof(LabelHeight));
                 }
             }
@@ -128,28 +123,30 @@ namespace LabelPrinter.ViewModel
             }
         }
 
+        List<string> _labelSource;
+
         /// <summary>
         /// List of all LabelNames
         /// </summary>
-        public List<string> LabelName { get; set; }
-        private string comBoxLabelName;
-
-        public string ComBoxLabelName
+        public List<string> LabelSource
         {
-            get { return comBoxLabelName; }
-            set { comBoxLabelName = value;
-                RaisePropertyChanged(nameof(ComBoxLabelName));
-                    }
+            get => _labelSource;
+            set
+            {
+                _labelSource = value;
+                RaisePropertyChanged(nameof(LabelSource));
+            }
         }
 
-        private string _selectedLabelName;
+        string _selectedLabelName;
         /// <summary>
         /// Selected Label Name From ComboBox
         /// </summary>
         public string SelectedLabelName
         {
             get => _selectedLabelName;
-            set {
+            set
+            {
                 _selectedLabelName = value;
                 RaisePropertyChanged(nameof(SelectedLabelName));
                 PreviewLabel();
@@ -160,6 +157,8 @@ namespace LabelPrinter.ViewModel
         /// List of all BarCodes
         /// </summary>
         public List<string> BarCodes { get; set; } = new List<string> { "2/5 Interleaved", "Code128", "Code39", "DataMatrix", "EAN13", "EAN8" };
+
+        readonly StorageSelector _storageSelector;
 
         public MainViewModel()
         {
@@ -179,6 +178,24 @@ namespace LabelPrinter.ViewModel
             Row14 = new LabelRow();
             Row15 = new LabelRow();
 
+            _storageSelector = new StorageSelector();
+
+            SaveButtonCommand = new RelayCommand(SaveCommand);
+            NewButtonCommand = new RelayCommand(NewCommand);
+            SetUpButtonCommand = new RelayCommand(SetUpCommand);
+            PrintButtonCommand = new RelayCommand(PrintCommand);
+            PrintJobsButtonCommand = new RelayCommand(PrintJobsCommand);
+            ExitButtonCommand = new RelayCommand(ExitCommand);
+            UpdateLabelCommand = new RelayCommand(UpdateLabel);
+
+            Barcode = new Barcode
+            {
+                CodeSize = 2,
+                HeightOfCode = 5,
+                SelectedBarCode = BarCodes.FirstOrDefault()
+            };
+
+
             Row1.SelectedCharWidth = Row1.CharWidths.FirstOrDefault();
             Row2.SelectedCharWidth = Row2.CharWidths.FirstOrDefault();
             Row3.SelectedCharWidth = Row3.CharWidths.FirstOrDefault();
@@ -194,24 +211,10 @@ namespace LabelPrinter.ViewModel
             Row13.SelectedCharWidth = Row13.CharWidths.FirstOrDefault();
             Row14.SelectedCharWidth = Row14.CharWidths.FirstOrDefault();
             Row15.SelectedCharWidth = Row15.CharWidths.FirstOrDefault();
+            
+            LabelSource = _storageSelector.GetStorage().GetLabelNames();
 
-            Barcode = new Barcode
-            {
-                CodeSize = 2,
-                HeightOfCode = 5,
-                SelectedBarCode = BarCodes.FirstOrDefault()
-            };
-
-            //Getting label names from the folder based on Selected Data Connection
-            GetLabelNames();
-
-            SaveButtonCommand = new RelayCommand(SaveCommand);
-            NewButtonCommand = new RelayCommand(NewCommand);
-            SetUpButtonCommand = new RelayCommand(SetUpCommand);
-            PrintButtonCommand = new RelayCommand(PrintCommand);
-            PrintJobsButtonCommand = new RelayCommand(PrintJobsCommand);
-            ExitButtonCommand = new RelayCommand(ExitCommand);
-            UpdateLabelCommand = new RelayCommand(UpdateLabel);
+            SelectedLabelName = LabelSource.FirstOrDefault();
         }
     }
 }

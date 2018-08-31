@@ -1,9 +1,10 @@
 ﻿//------------------------------------------------------------------------------------------------
 // Create EZioApi.cs by Jeffrey 2014/07/14
 //------------------------------------------------------------------------------------------------
+
 using System.Runtime.InteropServices;
 
-namespace EzioDll
+namespace LabelPrinter.External
 {
     public class EZioApi
     {

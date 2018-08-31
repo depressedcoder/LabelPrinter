@@ -1,11 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace LabelPrinter.Storage
 {
     public class StorageSelector
     {
         readonly Dictionary<string, AbstractStorage> _storage;
+        readonly Config _config;
 
         public StorageSelector()
         {
@@ -16,13 +20,18 @@ namespace LabelPrinter.Storage
                 {StorageTypes.Oracle, new OracleStorage() },
                 {StorageTypes.MsSql, new MsSqlStorage() }
             };
+
+            if (!File.Exists("Config.json"))
+                throw new ArgumentException("Configuration file is missing");
+
+            _config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("Config.json"));
         }
 
-        public AbstractStorage GetStorage(string storageKey)
+        public AbstractStorage GetStorage()
         {
-            var strategy = _storage.FirstOrDefault(x => x.Key == storageKey).Value ?? new TextStorage();
+            var selectedStorage = _config?.SelectedDataConnection;
 
-            strategy.ConnectionName = storageKey;
+            var strategy = _storage.FirstOrDefault(x => x.Key == selectedStorage).Value ?? new TextStorage();
 
             return strategy;
         }
