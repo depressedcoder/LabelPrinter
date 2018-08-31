@@ -18,7 +18,11 @@ namespace LabelPrinter.ViewModel
         public RelayCommand ExitButtonCommand { get; }
         public RelayCommand UpdateLabelCommand { get; }
 
-        public Label Label { get; set; }
+        Label _label;
+        public Label Label
+        {
+            get => _label;
+            set { _label = value; RaisePropertyChanged(nameof(Label)); }}
 
         BitmapImage _bitmapImage;
 
