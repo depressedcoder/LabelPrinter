@@ -18,7 +18,7 @@ namespace LabelPrinter.Drawing
 
         public Graphics Graphics { get; set; }
         public Barcode Barcode { get; set; }
-        public LabelRow LabelRow { get; set; }
+        public Row Row { get; set; }
 
         public DrawingSelector()
         {
@@ -38,7 +38,7 @@ namespace LabelPrinter.Drawing
             strategy.Placeholder = placeholder;
             strategy.Graphics = Graphics;
             strategy.Barcode = Barcode;
-            strategy.LabelRow = LabelRow;
+            strategy.Row = Row;
 
             return strategy;
         }

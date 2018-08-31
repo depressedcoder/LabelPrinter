@@ -5,9 +5,9 @@ namespace LabelPrinter.Storage
 {
     public abstract class AbstractStorage
     {
-        public abstract void SaveLabel(string labelName, int numberOfCopies, IEnumerable<LabelRow> labelRows);
+        public abstract void SaveLabel(Label label);
         public abstract List<string> GetLabelNames();
-        public abstract LabelDetails GetLabelDetails(string labelName);
+        public abstract Label GetLabel(string labelName);
         protected abstract string GetConnectionString();
     }
 }

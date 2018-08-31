@@ -26,8 +26,8 @@
         <DockPanel Grid.Column="0" Grid.Row="0">
             <TextBlock Width="100" Height="35" Text="Label Name :"  DockPanel.Dock="Left"/>
             <ComboBox  ItemsSource="{Binding LabelSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                SelectedItem="{Binding SelectedLabelName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                Text="{Binding SelectedLabelName, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"      
+                SelectedItem="{Binding Label.SelectedLabelName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                Text="{Binding Label.SelectedLabelName, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"      
                 SelectionChanged="LabelNameUpdateEvent" Width="200" Height="35" DockPanel.Dock="Right" IsEditable="True"/>
         </DockPanel>
 
@@ -52,7 +52,7 @@
                 Grid.Row="0" 
                 Margin="5"
                 TextChanged="UpdateLabelEvent">
-                <Binding Path="LabelWidth" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
+                <Binding Path="Label.LabelWidth" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                     <Binding.ValidationRules>
                         <local:MinMaxValidationRule MaxValue="400" MinValue="50"/>
                     </Binding.ValidationRules>
@@ -67,7 +67,7 @@
                     Grid.Column="1"
                     Margin="5"
                     TextChanged="UpdateLabelEvent">
-                <Binding Path="LabelHeight" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
+                <Binding Path="Label.LabelHeight" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                     <Binding.ValidationRules>
                         <local:MinMaxValidationRule MaxValue="1000" MinValue="100"/>
                     </Binding.ValidationRules>
@@ -83,7 +83,7 @@
         Grid.Column="1"
         Margin="5"
         TextChanged="UpdateLabelEvent">
-                <Binding Path="DistanceFromLeft" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
+                <Binding Path="Label.DistanceFromLeft" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                     <Binding.ValidationRules>
                         <local:MinMaxValidationRule MaxValue="400" MinValue="10"/>
                     </Binding.ValidationRules>
@@ -122,80 +122,80 @@
             </Grid.RowDefinitions>
             <TextBlock Text="Char Width" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="30.443,0,30.443,0.992"/>
 
-            <ComboBox x:Name="CharWidthComboBox0" Cursor="Hand" ItemsSource="{Binding Row1.CharWidths}" SelectedItem="{Binding Row1.SelectedCharWidth}" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="60" Margin="38,0,38,2.616" FontSize="10" Height="17.768" SelectionChanged="UpdateLabelEvent"/>
-            <ComboBox x:Name="CharWidthComboBox1" Cursor="Hand" ItemsSource="{Binding Row2.CharWidths}" SelectedItem="{Binding Row2.SelectedCharWidth}" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Margin ="2" FontSize="10" SelectionChanged="UpdateLabelEvent"/>
-            <ComboBox x:Name="CharWidthComboBox2" Cursor="Hand" ItemsSource="{Binding Row3.CharWidths}" SelectedItem="{Binding Row3.SelectedCharWidth}" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Margin="2" FontSize="10" SelectionChanged="UpdateLabelEvent"/>
-            <ComboBox x:Name="CharWidthComboBox3" Cursor="Hand" ItemsSource="{Binding Row4.CharWidths}" SelectedItem="{Binding Row4.SelectedCharWidth}" Grid.Row="4" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Margin="2" FontSize="10" SelectionChanged="UpdateLabelEvent"/>
-            <ComboBox x:Name="CharWidthComboBox4" Cursor="Hand" ItemsSource="{Binding Row5.CharWidths}" SelectedItem="{Binding Row5.SelectedCharWidth}" Grid.Row="5" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Margin="2" FontSize="10" SelectionChanged="UpdateLabelEvent"/>
-            <ComboBox x:Name="CharWidthComboBox5" Cursor="Hand" ItemsSource="{Binding Row6.CharWidths}" SelectedItem="{Binding Row6.SelectedCharWidth}" Grid.Row="6" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Margin="2" FontSize="10" SelectionChanged="UpdateLabelEvent"/>
-            <ComboBox x:Name="CharWidthComboBox6" Cursor="Hand" ItemsSource="{Binding Row7.CharWidths}" SelectedItem="{Binding Row7.SelectedCharWidth}" Grid.Row="7" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Margin="2" FontSize="10" SelectionChanged="UpdateLabelEvent"/>
-            <ComboBox x:Name="CharWidthComboBox7" Cursor="Hand" ItemsSource="{Binding Row8.CharWidths}" SelectedItem="{Binding Row8.SelectedCharWidth}" Grid.Row="8" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Margin="2" FontSize="10" SelectionChanged="UpdateLabelEvent"/>
-            <ComboBox x:Name="CharWidthComboBox8" Cursor="Hand" ItemsSource="{Binding Row9.CharWidths}" SelectedItem="{Binding Row9.SelectedCharWidth}" Grid.Row="9" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Margin="2" FontSize="10" SelectionChanged="UpdateLabelEvent"/>
-            <ComboBox x:Name="CharWidthComboBox9" Cursor="Hand" ItemsSource="{Binding Row10.CharWidths}" SelectedItem="{Binding Row10.SelectedCharWidth}" Grid.Row="10" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Margin="2" FontSize="10" SelectionChanged="UpdateLabelEvent"/>
-            <ComboBox x:Name="CharWidthComboBox10" Cursor="Hand" ItemsSource="{Binding Row11.CharWidths}" SelectedItem="{Binding Row11.SelectedCharWidth}" Grid.Row="11" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Margin="2" FontSize="10" SelectionChanged="UpdateLabelEvent"/>
-            <ComboBox x:Name="CharWidthComboBox11" Cursor="Hand" ItemsSource="{Binding Row12.CharWidths}" SelectedItem="{Binding Row12.SelectedCharWidth}" Grid.Row="12" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Margin="2" FontSize="10" SelectionChanged="UpdateLabelEvent"/>
-            <ComboBox x:Name="CharWidthComboBox12" Cursor="Hand" ItemsSource="{Binding Row13.CharWidths}" SelectedItem="{Binding Row13.SelectedCharWidth}" Grid.Row="13" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Margin="2" FontSize="10" SelectionChanged="UpdateLabelEvent"/>
-            <ComboBox x:Name="CharWidthComboBox13" Cursor="Hand" ItemsSource="{Binding Row14.CharWidths}" SelectedItem="{Binding Row14.SelectedCharWidth}" Grid.Row="14" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Margin="2" FontSize="10" SelectionChanged="UpdateLabelEvent"/>
-            <ComboBox x:Name="CharWidthComboBox14" Cursor="Hand" ItemsSource="{Binding Row15.CharWidths}" SelectedItem="{Binding Row15.SelectedCharWidth}" Grid.Row="15" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Margin="2" FontSize="10" SelectionChanged="UpdateLabelEvent"/>
+            <ComboBox x:Name="CharWidthComboBox0" Cursor="Hand" ItemsSource="{Binding CharWidths}" SelectedItem="{Binding Label.Rows[0].SelectedCharWidth}" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="60" Margin="38,0,38,2.616" FontSize="10" Height="17.768" SelectionChanged="UpdateLabelEvent"/>
+            <ComboBox x:Name="CharWidthComboBox1" Cursor="Hand" ItemsSource="{Binding CharWidths}" SelectedItem="{Binding Label.Rows[1].SelectedCharWidth}" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Margin ="2" FontSize="10" SelectionChanged="UpdateLabelEvent"/>
+            <ComboBox x:Name="CharWidthComboBox2" Cursor="Hand" ItemsSource="{Binding CharWidths}" SelectedItem="{Binding Label.Rows[2].SelectedCharWidth}" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Margin="2" FontSize="10" SelectionChanged="UpdateLabelEvent"/>
+            <ComboBox x:Name="CharWidthComboBox3" Cursor="Hand" ItemsSource="{Binding CharWidths}" SelectedItem="{Binding Label.Rows[3].SelectedCharWidth}" Grid.Row="4" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Margin="2" FontSize="10" SelectionChanged="UpdateLabelEvent"/>
+            <ComboBox x:Name="CharWidthComboBox4" Cursor="Hand" ItemsSource="{Binding CharWidths}" SelectedItem="{Binding Label.Rows[4].SelectedCharWidth}" Grid.Row="5" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Margin="2" FontSize="10" SelectionChanged="UpdateLabelEvent"/>
+            <ComboBox x:Name="CharWidthComboBox5" Cursor="Hand" ItemsSource="{Binding CharWidths}" SelectedItem="{Binding Label.Rows[5].SelectedCharWidth}" Grid.Row="6" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Margin="2" FontSize="10" SelectionChanged="UpdateLabelEvent"/>
+            <ComboBox x:Name="CharWidthComboBox6" Cursor="Hand" ItemsSource="{Binding CharWidths}" SelectedItem="{Binding Label.Rows[6].SelectedCharWidth}" Grid.Row="7" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Margin="2" FontSize="10" SelectionChanged="UpdateLabelEvent"/>
+            <ComboBox x:Name="CharWidthComboBox7" Cursor="Hand" ItemsSource="{Binding CharWidths}" SelectedItem="{Binding Label.Rows[7].SelectedCharWidth}" Grid.Row="8" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Margin="2" FontSize="10" SelectionChanged="UpdateLabelEvent"/>
+            <ComboBox x:Name="CharWidthComboBox8" Cursor="Hand" ItemsSource="{Binding CharWidths}" SelectedItem="{Binding Label.Rows[8].SelectedCharWidth}" Grid.Row="9" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Margin="2" FontSize="10" SelectionChanged="UpdateLabelEvent"/>
+            <ComboBox x:Name="CharWidthComboBox9" Cursor="Hand" ItemsSource="{Binding CharWidths}" SelectedItem="{Binding Label.Rows[9].SelectedCharWidth}" Grid.Row="10" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Margin="2" FontSize="10" SelectionChanged="UpdateLabelEvent"/>
+            <ComboBox x:Name="CharWidthComboBox10" Cursor="Hand" ItemsSource="{Binding CharWidths}" SelectedItem="{Binding Label.Rows[10].SelectedCharWidth}" Grid.Row="11" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Margin="2" FontSize="10" SelectionChanged="UpdateLabelEvent"/>
+            <ComboBox x:Name="CharWidthComboBox11" Cursor="Hand" ItemsSource="{Binding CharWidths}" SelectedItem="{Binding Label.Rows[11].SelectedCharWidth}" Grid.Row="12" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Margin="2" FontSize="10" SelectionChanged="UpdateLabelEvent"/>
+            <ComboBox x:Name="CharWidthComboBox12" Cursor="Hand" ItemsSource="{Binding CharWidths}" SelectedItem="{Binding Label.Rows[12].SelectedCharWidth}" Grid.Row="13" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Margin="2" FontSize="10" SelectionChanged="UpdateLabelEvent"/>
+            <ComboBox x:Name="CharWidthComboBox13" Cursor="Hand" ItemsSource="{Binding CharWidths}" SelectedItem="{Binding Label.Rows[13].SelectedCharWidth}" Grid.Row="14" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Margin="2" FontSize="10" SelectionChanged="UpdateLabelEvent"/>
+            <ComboBox x:Name="CharWidthComboBox14" Cursor="Hand" ItemsSource="{Binding CharWidths}" SelectedItem="{Binding Label.Rows[14].SelectedCharWidth}" Grid.Row="15" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" Margin="2" FontSize="10" SelectionChanged="UpdateLabelEvent"/>
 
             <TextBlock Text="High" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <CheckBox x:Name="HighCheckBox0" IsChecked="{Binding Row1.IsHigh}" Cursor="Hand" Grid.Row="1" Grid.Column="1" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
-            <CheckBox x:Name="HighCheckBox1" IsChecked="{Binding Row2.IsHigh}" Cursor="Hand" Grid.Row="2" Grid.Column="1" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
-            <CheckBox x:Name="HighCheckBox2" IsChecked="{Binding Row3.IsHigh}" Cursor="Hand" Grid.Row="3" Grid.Column="1" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
-            <CheckBox x:Name="HighCheckBox3" IsChecked="{Binding Row4.IsHigh}" Cursor="Hand" Grid.Row="4" Grid.Column="1" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
-            <CheckBox x:Name="HighCheckBox4" IsChecked="{Binding Row5.IsHigh}" Cursor="Hand" Grid.Row="5" Grid.Column="1" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
-            <CheckBox x:Name="HighCheckBox5" IsChecked="{Binding Row6.IsHigh}" Cursor="Hand" Grid.Row="6" Grid.Column="1" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
-            <CheckBox x:Name="HighCheckBox6" IsChecked="{Binding Row7.IsHigh}" Cursor="Hand" Grid.Row="7" Grid.Column="1" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
-            <CheckBox x:Name="HighCheckBox7" IsChecked="{Binding Row8.IsHigh}" Cursor="Hand" Grid.Row="8" Grid.Column="1" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
-            <CheckBox x:Name="HighCheckBox8" IsChecked="{Binding Row9.IsHigh}" Cursor="Hand" Grid.Row="9" Grid.Column="1" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
-            <CheckBox x:Name="HighCheckBox9" IsChecked="{Binding Row10.IsHigh}" Cursor="Hand" Grid.Row="10" Grid.Column="1" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
-            <CheckBox x:Name="HighCheckBox10" IsChecked="{Binding Row11.IsHigh}" Cursor="Hand" Grid.Row="11" Grid.Column="1" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
-            <CheckBox x:Name="HighCheckBox11" IsChecked="{Binding Row12.IsHigh}" Cursor="Hand" Grid.Row="12" Grid.Column="1" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
-            <CheckBox x:Name="HighCheckBox12" IsChecked="{Binding Row13.IsHigh}" Cursor="Hand" Grid.Row="13" Grid.Column="1" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
-            <CheckBox x:Name="HighCheckBox13" IsChecked="{Binding Row14.IsHigh}" Cursor="Hand" Grid.Row="14" Grid.Column="1" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
-            <CheckBox x:Name="HighCheckBox14" IsChecked="{Binding Row15.IsHigh}" Cursor="Hand" Grid.Row="15" Grid.Column="1" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
+            <CheckBox x:Name="HighCheckBox0" IsChecked="{Binding Label.Rows[0].IsHigh}" Cursor="Hand" Grid.Row="1" Grid.Column="1" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
+            <CheckBox x:Name="HighCheckBox1" IsChecked="{Binding Label.Rows[1].IsHigh}" Cursor="Hand" Grid.Row="2" Grid.Column="1" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
+            <CheckBox x:Name="HighCheckBox2" IsChecked="{Binding Label.Rows[2].IsHigh}" Cursor="Hand" Grid.Row="3" Grid.Column="1" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
+            <CheckBox x:Name="HighCheckBox3" IsChecked="{Binding Label.Rows[3].IsHigh}" Cursor="Hand" Grid.Row="4" Grid.Column="1" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
+            <CheckBox x:Name="HighCheckBox4" IsChecked="{Binding Label.Rows[4].IsHigh}" Cursor="Hand" Grid.Row="5" Grid.Column="1" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
+            <CheckBox x:Name="HighCheckBox5" IsChecked="{Binding Label.Rows[5].IsHigh}" Cursor="Hand" Grid.Row="6" Grid.Column="1" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
+            <CheckBox x:Name="HighCheckBox6" IsChecked="{Binding Label.Rows[6].IsHigh}" Cursor="Hand" Grid.Row="7" Grid.Column="1" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
+            <CheckBox x:Name="HighCheckBox7" IsChecked="{Binding Label.Rows[7].IsHigh}" Cursor="Hand" Grid.Row="8" Grid.Column="1" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
+            <CheckBox x:Name="HighCheckBox8" IsChecked="{Binding Label.Rows[8].IsHigh}" Cursor="Hand" Grid.Row="9" Grid.Column="1" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
+            <CheckBox x:Name="HighCheckBox9" IsChecked="{Binding Label.Rows[9].IsHigh}" Cursor="Hand" Grid.Row="10" Grid.Column="1" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
+            <CheckBox x:Name="HighCheckBox10" IsChecked="{Binding Label.Rows[10].IsHigh}" Cursor="Hand" Grid.Row="11" Grid.Column="1" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
+            <CheckBox x:Name="HighCheckBox11" IsChecked="{Binding Label.Rows[11].IsHigh}" Cursor="Hand" Grid.Row="12" Grid.Column="1" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
+            <CheckBox x:Name="HighCheckBox12" IsChecked="{Binding Label.Rows[12].IsHigh}" Cursor="Hand" Grid.Row="13" Grid.Column="1" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
+            <CheckBox x:Name="HighCheckBox13" IsChecked="{Binding Label.Rows[13].IsHigh}" Cursor="Hand" Grid.Row="14" Grid.Column="1" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
+            <CheckBox x:Name="HighCheckBox14" IsChecked="{Binding Label.Rows[14].IsHigh}" Cursor="Hand" Grid.Row="15" Grid.Column="1" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
 
             <TextBlock Text="Bold" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
-            <CheckBox x:Name="BoldCheckBox15" IsChecked="{Binding Row1.IsBold}" Cursor="Hand" Grid.Row="1" Grid.Column="2" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
-            <CheckBox x:Name="BoldCheckBox16" IsChecked="{Binding Row2.IsBold}" Cursor="Hand" Grid.Row="2" Grid.Column="2" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
-            <CheckBox x:Name="BoldCheckBox17" IsChecked="{Binding Row3.IsBold}" Cursor="Hand" Grid.Row="3" Grid.Column="2" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
-            <CheckBox x:Name="BoldCheckBox18" IsChecked="{Binding Row4.IsBold}" Cursor="Hand" Grid.Row="4" Grid.Column="2" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
-            <CheckBox x:Name="BoldCheckBox19" IsChecked="{Binding Row5.IsBold}" Cursor="Hand" Grid.Row="5" Grid.Column="2" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
-            <CheckBox x:Name="BoldCheckBox20" IsChecked="{Binding Row6.IsBold}" Cursor="Hand" Grid.Row="6" Grid.Column="2" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
-            <CheckBox x:Name="BoldCheckBox21" IsChecked="{Binding Row7.IsBold}" Cursor="Hand" Grid.Row="7" Grid.Column="2" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
-            <CheckBox x:Name="BoldCheckBox22" IsChecked="{Binding Row8.IsBold}" Cursor="Hand" Grid.Row="8" Grid.Column="2" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
-            <CheckBox x:Name="BoldCheckBox23" IsChecked="{Binding Row9.IsBold}" Cursor="Hand" Grid.Row="9" Grid.Column="2" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
-            <CheckBox x:Name="BoldCheckBox24" IsChecked="{Binding Row10.IsBold}" Cursor="Hand" Grid.Row="10" Grid.Column="2" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
-            <CheckBox x:Name="BoldCheckBox25" IsChecked="{Binding Row11.IsBold}" Cursor="Hand" Grid.Row="11" Grid.Column="2" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
-            <CheckBox x:Name="BoldCheckBox26" IsChecked="{Binding Row12.IsBold}" Cursor="Hand" Grid.Row="12" Grid.Column="2" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
-            <CheckBox x:Name="BoldCheckBox27" IsChecked="{Binding Row13.IsBold}" Cursor="Hand" Grid.Row="13" Grid.Column="2" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
-            <CheckBox x:Name="BoldCheckBox28" IsChecked="{Binding Row14.IsBold}" Cursor="Hand" Grid.Row="14" Grid.Column="2" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
-            <CheckBox x:Name="BoldCheckBox29" IsChecked="{Binding Row15.IsBold}" Cursor="Hand" Grid.Row="15" Grid.Column="2" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
+            <CheckBox x:Name="BoldCheckBox15" IsChecked="{Binding Label.Rows[0].IsBold}" Cursor="Hand" Grid.Row="1" Grid.Column="2" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
+            <CheckBox x:Name="BoldCheckBox16" IsChecked="{Binding Label.Rows[1].IsBold}" Cursor="Hand" Grid.Row="2" Grid.Column="2" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
+            <CheckBox x:Name="BoldCheckBox17" IsChecked="{Binding Label.Rows[2].IsBold}" Cursor="Hand" Grid.Row="3" Grid.Column="2" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
+            <CheckBox x:Name="BoldCheckBox18" IsChecked="{Binding Label.Rows[3].IsBold}" Cursor="Hand" Grid.Row="4" Grid.Column="2" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
+            <CheckBox x:Name="BoldCheckBox19" IsChecked="{Binding Label.Rows[4].IsBold}" Cursor="Hand" Grid.Row="5" Grid.Column="2" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
+            <CheckBox x:Name="BoldCheckBox20" IsChecked="{Binding Label.Rows[5].IsBold}" Cursor="Hand" Grid.Row="6" Grid.Column="2" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
+            <CheckBox x:Name="BoldCheckBox21" IsChecked="{Binding Label.Rows[6].IsBold}" Cursor="Hand" Grid.Row="7" Grid.Column="2" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
+            <CheckBox x:Name="BoldCheckBox22" IsChecked="{Binding Label.Rows[7].IsBold}" Cursor="Hand" Grid.Row="8" Grid.Column="2" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
+            <CheckBox x:Name="BoldCheckBox23" IsChecked="{Binding Label.Rows[8].IsBold}" Cursor="Hand" Grid.Row="9" Grid.Column="2" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
+            <CheckBox x:Name="BoldCheckBox24" IsChecked="{Binding Label.Rows[9].IsBold}" Cursor="Hand" Grid.Row="10" Grid.Column="2" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
+            <CheckBox x:Name="BoldCheckBox25" IsChecked="{Binding Label.Rows[10].IsBold}" Cursor="Hand" Grid.Row="11" Grid.Column="2" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
+            <CheckBox x:Name="BoldCheckBox26" IsChecked="{Binding Label.Rows[11].IsBold}" Cursor="Hand" Grid.Row="12" Grid.Column="2" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
+            <CheckBox x:Name="BoldCheckBox27" IsChecked="{Binding Label.Rows[12].IsBold}" Cursor="Hand" Grid.Row="13" Grid.Column="2" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
+            <CheckBox x:Name="BoldCheckBox28" IsChecked="{Binding Label.Rows[13].IsBold}" Cursor="Hand" Grid.Row="14" Grid.Column="2" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
+            <CheckBox x:Name="BoldCheckBox29" IsChecked="{Binding Label.Rows[14].IsBold}" Cursor="Hand" Grid.Row="15" Grid.Column="2" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
 
             <TextBlock Text="Underline" TextDecorations="Underline" Grid.Column="3" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5.435,0.991,5.433,0.992"/>
 
-            <CheckBox x:Name="UnderCheckBox30" IsChecked="{Binding Row1.IsUnderlined}" Cursor="Hand" Grid.Row="1" Grid.Column="3" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
-            <CheckBox x:Name="UnderCheckBox31" IsChecked="{Binding Row2.IsUnderlined}" Cursor="Hand" Grid.Row="2" Grid.Column="3" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
-            <CheckBox x:Name="UnderCheckBox32" IsChecked="{Binding Row3.IsUnderlined}" Cursor="Hand" Grid.Row="3" Grid.Column="3" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
-            <CheckBox x:Name="UnderCheckBox33" IsChecked="{Binding Row4.IsUnderlined}" Cursor="Hand" Grid.Row="4" Grid.Column="3" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
-            <CheckBox x:Name="UnderCheckBox34" IsChecked="{Binding Row5.IsUnderlined}" Cursor="Hand" Grid.Row="5" Grid.Column="3" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
-            <CheckBox x:Name="UnderCheckBox35" IsChecked="{Binding Row6.IsUnderlined}" Cursor="Hand" Grid.Row="6" Grid.Column="3" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
-            <CheckBox x:Name="UnderCheckBox36" IsChecked="{Binding Row7.IsUnderlined}" Cursor="Hand" Grid.Row="7" Grid.Column="3" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
-            <CheckBox x:Name="UnderCheckBox37" IsChecked="{Binding Row8.IsUnderlined}" Cursor="Hand" Grid.Row="8" Grid.Column="3" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
-            <CheckBox x:Name="UnderCheckBox38" IsChecked="{Binding Row9.IsUnderlined}" Cursor="Hand" Grid.Row="9" Grid.Column="3" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
-            <CheckBox x:Name="UnderCheckBox39" IsChecked="{Binding Row10.IsUnderlined}" Cursor="Hand" Grid.Row="10" Grid.Column="3" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
-            <CheckBox x:Name="UnderCheckBox40" IsChecked="{Binding Row11.IsUnderlined}" Cursor="Hand" Grid.Row="11" Grid.Column="3" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
-            <CheckBox x:Name="UnderCheckBox41" IsChecked="{Binding Row12.IsUnderlined}" Cursor="Hand" Grid.Row="12" Grid.Column="3" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
-            <CheckBox x:Name="UnderCheckBox42" IsChecked="{Binding Row13.IsUnderlined}" Cursor="Hand" Grid.Row="13" Grid.Column="3" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
-            <CheckBox x:Name="UnderCheckBox43" IsChecked="{Binding Row14.IsUnderlined}" Cursor="Hand" Grid.Row="14" Grid.Column="3" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
-            <CheckBox x:Name="UnderCheckBox44" IsChecked="{Binding Row15.IsUnderlined}" Cursor="Hand" Grid.Row="15" Grid.Column="3" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
+            <CheckBox x:Name="UnderCheckBox30" IsChecked="{Binding Label.Rows[0].IsUnderlined}" Cursor="Hand" Grid.Row="1" Grid.Column="3" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
+            <CheckBox x:Name="UnderCheckBox31" IsChecked="{Binding Label.Rows[1].IsUnderlined}" Cursor="Hand" Grid.Row="2" Grid.Column="3" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
+            <CheckBox x:Name="UnderCheckBox32" IsChecked="{Binding Label.Rows[2].IsUnderlined}" Cursor="Hand" Grid.Row="3" Grid.Column="3" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
+            <CheckBox x:Name="UnderCheckBox33" IsChecked="{Binding Label.Rows[3].IsUnderlined}" Cursor="Hand" Grid.Row="4" Grid.Column="3" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
+            <CheckBox x:Name="UnderCheckBox34" IsChecked="{Binding Label.Rows[4].IsUnderlined}" Cursor="Hand" Grid.Row="5" Grid.Column="3" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
+            <CheckBox x:Name="UnderCheckBox35" IsChecked="{Binding Label.Rows[5].IsUnderlined}" Cursor="Hand" Grid.Row="6" Grid.Column="3" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
+            <CheckBox x:Name="UnderCheckBox36" IsChecked="{Binding Label.Rows[6].IsUnderlined}" Cursor="Hand" Grid.Row="7" Grid.Column="3" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
+            <CheckBox x:Name="UnderCheckBox37" IsChecked="{Binding Label.Rows[7].IsUnderlined}" Cursor="Hand" Grid.Row="8" Grid.Column="3" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
+            <CheckBox x:Name="UnderCheckBox38" IsChecked="{Binding Label.Rows[8].IsUnderlined}" Cursor="Hand" Grid.Row="9" Grid.Column="3" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
+            <CheckBox x:Name="UnderCheckBox39" IsChecked="{Binding Label.Rows[9].IsUnderlined}" Cursor="Hand" Grid.Row="10" Grid.Column="3" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
+            <CheckBox x:Name="UnderCheckBox40" IsChecked="{Binding Label.Rows[10].IsUnderlined}" Cursor="Hand" Grid.Row="11" Grid.Column="3" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
+            <CheckBox x:Name="UnderCheckBox41" IsChecked="{Binding Label.Rows[11].IsUnderlined}" Cursor="Hand" Grid.Row="12" Grid.Column="3" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
+            <CheckBox x:Name="UnderCheckBox42" IsChecked="{Binding Label.Rows[12].IsUnderlined}" Cursor="Hand" Grid.Row="13" Grid.Column="3" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
+            <CheckBox x:Name="UnderCheckBox43" IsChecked="{Binding Label.Rows[13].IsUnderlined}" Cursor="Hand" Grid.Row="14" Grid.Column="3" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
+            <CheckBox x:Name="UnderCheckBox44" IsChecked="{Binding Label.Rows[14].IsUnderlined}" Cursor="Hand" Grid.Row="15" Grid.Column="3" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Click="UpdateLabelEvent"/>
 
             <TextBlock Text="Barcode:" Grid.Column="0" Grid.Row="17" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="37.863,0.992,37.863,0.991"/>
             <ComboBox 
                 x:Name="BarcodeComboBox" 
                 ItemsSource="{Binding BarCodes}" 
-                SelectedItem="{Binding Barcode.SelectedBarCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                SelectedItem="{Binding Label.Barcode.SelectedBarCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                 SelectionChanged="UpdateLabelEvent"
                 Grid.Row="16" 
                 Grid.Column="1" 
@@ -215,7 +215,7 @@
             Margin="26,0,9.065,0.666"
             Grid.ColumnSpan="2" FontSize="13"
             TextChanged="UpdateLabelEvent">
-                <Binding Path="Barcode.CodeSize" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
+                <Binding Path="Label.Barcode.CodeSize" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                     <Binding.ValidationRules>
                         <local:MinMaxValidationRule MaxValue="9" MinValue="1"/>
                     </Binding.ValidationRules>
@@ -229,7 +229,7 @@
             Margin="26,0,9.065,0"
             Grid.ColumnSpan="2" Height="21.766" VerticalAlignment="Bottom"
             FontSize="13" TextChanged="UpdateLabelEvent">
-                <Binding Path="Barcode.HeightOfCode" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
+                <Binding Path="Label.Barcode.HeightOfCode" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                     <Binding.ValidationRules>
                         <local:MinMaxValidationRule MaxValue="10" MinValue="1"/>
                     </Binding.ValidationRules>
@@ -264,28 +264,28 @@
             <TextBox  Grid.Column="0" 
                       Grid.Row="1" 
                       FontSize="11" 
-                      Text="{Binding Row1.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      Text="{Binding Label.Rows[0].Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       TextChanged="UpdateLabelEvent"
                       />
             <TextBox  Grid.Column="0" 
                       Grid.Row="2" 
                       FontSize="11" 
-                      Text="{Binding Row2.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      Text="{Binding Label.Rows[1].Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       TextChanged="UpdateLabelEvent"
                       />
-            <TextBox  Grid.Column="0" Grid.Row="3" FontSize="11" Text="{Binding Row3.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="UpdateLabelEvent"/>
-            <TextBox  Grid.Column="0" Grid.Row="4" FontSize="11" Text="{Binding Row4.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="UpdateLabelEvent"/>
-            <TextBox  Grid.Column="0" Grid.Row="5" FontSize="11" Text="{Binding Row5.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="UpdateLabelEvent"/>
-            <TextBox  Grid.Column="0" Grid.Row="6" FontSize="11" Text="{Binding Row6.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="UpdateLabelEvent"/>
-            <TextBox  Grid.Column="0" Grid.Row="7" FontSize="11" Text="{Binding Row7.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="UpdateLabelEvent"/>
-            <TextBox  Grid.Column="0" Grid.Row="8" FontSize="11" Text="{Binding Row8.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="UpdateLabelEvent"/>
-            <TextBox  Grid.Column="0" Grid.Row="9" FontSize="11" Text="{Binding Row9.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="UpdateLabelEvent"/>
-            <TextBox  Grid.Column="0" Grid.Row="10" FontSize="11" Text="{Binding Row10.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="UpdateLabelEvent"/>
-            <TextBox  Grid.Column="0" Grid.Row="11" FontSize="11" Text="{Binding Row11.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="UpdateLabelEvent"/>
-            <TextBox  Grid.Column="0" Grid.Row="12" FontSize="11" Text="{Binding Row12.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="UpdateLabelEvent"/>
-            <TextBox  Grid.Column="0" Grid.Row="13" FontSize="11" Text="{Binding Row13.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="UpdateLabelEvent"/>
-            <TextBox  Grid.Column="0" Grid.Row="14" FontSize="11" Text="{Binding Row14.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="UpdateLabelEvent"/>
-            <TextBox  Grid.Column="0" Grid.Row="15" FontSize="11" Text="{Binding Row15.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="UpdateLabelEvent"/>
+            <TextBox  Grid.Column="0" Grid.Row="3" FontSize="11" Text="{Binding Label.Rows[2].Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="UpdateLabelEvent"/>
+            <TextBox  Grid.Column="0" Grid.Row="4" FontSize="11" Text="{Binding Label.Rows[3].Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="UpdateLabelEvent"/>
+            <TextBox  Grid.Column="0" Grid.Row="5" FontSize="11" Text="{Binding Label.Rows[4].Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="UpdateLabelEvent"/>
+            <TextBox  Grid.Column="0" Grid.Row="6" FontSize="11" Text="{Binding Label.Rows[5].Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="UpdateLabelEvent"/>
+            <TextBox  Grid.Column="0" Grid.Row="7" FontSize="11" Text="{Binding Label.Rows[6].Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="UpdateLabelEvent"/>
+            <TextBox  Grid.Column="0" Grid.Row="8" FontSize="11" Text="{Binding Label.Rows[7].Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="UpdateLabelEvent"/>
+            <TextBox  Grid.Column="0" Grid.Row="9" FontSize="11" Text="{Binding Label.Rows[8].Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="UpdateLabelEvent"/>
+            <TextBox  Grid.Column="0" Grid.Row="10" FontSize="11" Text="{Binding Label.Rows[9].Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="UpdateLabelEvent"/>
+            <TextBox  Grid.Column="0" Grid.Row="11" FontSize="11" Text="{Binding Label.Rows[10].Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="UpdateLabelEvent"/>
+            <TextBox  Grid.Column="0" Grid.Row="12" FontSize="11" Text="{Binding Label.Rows[11].Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="UpdateLabelEvent"/>
+            <TextBox  Grid.Column="0" Grid.Row="13" FontSize="11" Text="{Binding Label.Rows[12].Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="UpdateLabelEvent"/>
+            <TextBox  Grid.Column="0" Grid.Row="14" FontSize="11" Text="{Binding Label.Rows[13].Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="UpdateLabelEvent"/>
+            <TextBox  Grid.Column="0" Grid.Row="15" FontSize="11" Text="{Binding Label.Rows[14].Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="UpdateLabelEvent"/>
 
             <Grid Grid.Column="0" Grid.Row="17">
                 <Grid.ColumnDefinitions>
@@ -294,8 +294,8 @@
                     <ColumnDefinition Width=".6*"/>
                     <ColumnDefinition Width=".1*"/>
                 </Grid.ColumnDefinitions>
-                <CheckBox x:Name="AutomaticCuttinCheckBox" IsChecked="{Binding IsAutomaticCuttingDevice}" Cursor="Hand" Grid.Row="0" Grid.Column="0" Content="" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                <TextBlock FontSize="12" Text="Automatic cutting device" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="24.5,3,30.5,3" Grid.ColumnSpan="2"/>
+                <CheckBox x:Name="AutomaticCuttinCheckBox" IsChecked="{Binding Label.IsAutomaticCuttingDevice}" Cursor="Hand" Grid.Row="0" Grid.Column="0" Content="" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <TextBlock FontSize="12" Text="Automatic cutting device" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="24.5,3,30.5,3" Grid.ColumnSpan="2"/>
 
                 <TextBlock FontSize="12" Text="How many coppies" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="155,3,41,3" Grid.ColumnSpan="2"/>
                 <TextBox
@@ -304,7 +304,7 @@
                 Grid.Row="0"
                 FontSize="13"
                 TextChanged="UpdateLabelEvent" Grid.ColumnSpan="2" Margin="120,0,0,0">
-                    <Binding Path="HowManyCoppies" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
+                    <Binding Path="Label.HowManyCoppies" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                         <Binding.ValidationRules>
                             <local:MinMaxValidationRule MaxValue="1000" MinValue="1"/>
                         </Binding.ValidationRules>
@@ -315,14 +315,14 @@
         <Border x:Name="Border"
                 Grid.Row="1" 
                 Grid.Column="2" 
-                Height="{Binding LabelHeight, Mode=TwoWay}"
-                Width="{Binding LabelWidth, Mode=TwoWay}"
+                Height="{Binding Label.LabelHeight, Mode=TwoWay}"
+                Width="{Binding Label.LabelWidth, Mode=TwoWay}"
                 VerticalAlignment="Top"
                 HorizontalAlignment="Left"
                 BorderBrush="Black" 
                 BorderThickness="2"
                 Margin="10">
-            <Image x:Name="image" 
+            <Image x:Name="Image" 
                             HorizontalAlignment="Stretch" 
                             VerticalAlignment="Stretch"
                             Height="{Binding ActualHeight, ElementName=Border}" 

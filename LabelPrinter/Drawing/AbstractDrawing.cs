@@ -14,19 +14,19 @@ namespace LabelPrinter.Drawing
 
         public Graphics Graphics { get; set; }
         public Barcode Barcode { get; set; }
-        public LabelRow LabelRow { get; set; }
+        public Row Row { get; set; }
 
         protected Font GetRowFont()
         {
             var style = FontStyle.Regular;
 
-            var charWidth = LabelRow.SelectedCharWidth;
+            var charWidth = Row.SelectedCharWidth;
 
-            if (LabelRow.IsBold) style |= FontStyle.Bold;
+            if (Row.IsBold) style |= FontStyle.Bold;
 
-            if (LabelRow.IsUnderlined) style |= FontStyle.Underline;
+            if (Row.IsUnderlined) style |= FontStyle.Underline;
 
-            if (LabelRow.IsHigh)
+            if (Row.IsHigh)
             {
                 charWidth *= 2;
             }

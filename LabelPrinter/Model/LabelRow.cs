@@ -3,7 +3,7 @@ using GalaSoft.MvvmLight;
 
 namespace LabelPrinter.Model
 {
-    public class LabelRow: ViewModelBase
+    public class Row: ViewModelBase
     {
         string _text;
         /// <summary>
@@ -18,11 +18,7 @@ namespace LabelPrinter.Model
                 RaisePropertyChanged(nameof(Text));
             }
         }
-        /// <summary>
-        /// Used for the Char Widths ComboBox
-        /// </summary>
-        public List<int> CharWidths { get; set; } = new List<int> { 6, 8, 10, 12, 15, 18, 20, 24 };
-
+        
         int _selectedCharWidth;
         /// <summary>
         /// Used For Selected Char Width

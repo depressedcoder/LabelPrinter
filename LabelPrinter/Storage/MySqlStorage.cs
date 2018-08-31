@@ -11,12 +11,12 @@ namespace LabelPrinter.Storage
             throw new NotImplementedException();
         }
 
-        public override LabelDetails GetLabelDetails(string labelName)
+        public override Label GetLabel(string labelName)
         {
             throw new NotImplementedException();
         }
 
-        public override void SaveLabel(string labelName, int numberOfCopies, IEnumerable<LabelRow> labelRows)
+        public override void SaveLabel(Label label)
         {
             throw new NotImplementedException();
         }

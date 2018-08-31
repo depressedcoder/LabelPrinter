@@ -5,7 +5,6 @@ using System.IO;
 using System.Drawing.Imaging;
 using System.Text.RegularExpressions;
 using LabelPrinter.Model;
-using System.Linq;
 using LabelPrinter.Drawing;
 
 namespace LabelPrinter.ViewModel
@@ -16,34 +15,14 @@ namespace LabelPrinter.ViewModel
         {
             var storage = _storageSelector.GetStorage();
 
-            var labelDetails = storage.GetLabelDetails(SelectedLabelName);
+            var label = storage.GetLabel(Label.SelectedLabelName);
 
-            var labelRows = GetType().GetProperties()
-                .Where(p => p.GetValue(this, new object[] { })?.GetType() == typeof(LabelRow))
-                .Select(p => (LabelRow)p.GetValue(this, new object[] { })).ToList();
-
-            foreach (var labelRow in labelRows)
-            {
-                var idx = labelRows.IndexOf(labelRow);
-
-                var labelRowDetail = labelDetails.LabelRows.ElementAtOrDefault(idx);
-
-                if (labelRowDetail != null)
-                {
-                    labelRow.Text = labelRowDetail.Text;
-                    labelRow.CharWidth = labelRowDetail.CharWidth;
-                    labelRow.IsHigh = labelRowDetail.IsHigh;
-                    labelRow.IsBold = labelRowDetail.IsBold;
-                    labelRow.IsUnderlined = labelRowDetail.IsUnderlined;
-                }
-            }
-
-            HowManyCoppies = labelDetails.NumberOfCopies;
+            Label = label;
         }
 
         public void PreviewLabel()
         {
-            using (var bitmap = new Bitmap(LabelWidth, LabelHeight))
+            using (var bitmap = new Bitmap(Label.LabelWidth, Label.LabelHeight))
             {
                 var rowHeight = 10f;
 
@@ -51,13 +30,8 @@ namespace LabelPrinter.ViewModel
                 {
                     graphics.Clear(Color.White);
 
-                    //Find all rows
-                    var rows = GetType().GetProperties()
-                        .Where(p => p.GetValue(this, new object[] { })?.GetType() == typeof(LabelRow))
-                        .Select(p => (LabelRow)p.GetValue(this, new object[] { }));
-
                     //Draw all rows
-                    foreach (var row in rows)
+                    foreach (var row in Label.Rows)
                     {
                         Draw(graphics, row, 10f, ref rowHeight);
                     }
@@ -80,7 +54,7 @@ namespace LabelPrinter.ViewModel
             }
         }
 
-        void Draw(Graphics graphics, LabelRow row, float x, ref float y)
+        void Draw(Graphics graphics, Row row, float x, ref float y)
         {
             var placeholers = GetPlaceholders(row.Text);
 
@@ -89,8 +63,8 @@ namespace LabelPrinter.ViewModel
             var strategySelector = new DrawingSelector
             {
                 Graphics = graphics,
-                Barcode = Barcode,
-                LabelRow = row
+                Barcode = Label.Barcode,
+                Row = row
             };
 
             //Draw all placeholders
@@ -177,13 +151,9 @@ namespace LabelPrinter.ViewModel
 
         void NewCommand()
         {
-            SelectedLabelName = string.Empty;
+            Label.SelectedLabelName = string.Empty;
 
-            var rows = GetType().GetProperties()
-                .Where(p => p.GetValue(this, new object[] { })?.GetType() == typeof(LabelRow))
-                .Select(p => (LabelRow)p.GetValue(this, new object[] { }));
-
-            foreach (var labelRow in rows)
+            foreach (var labelRow in Label.Rows)
             {
                 labelRow.Text = string.Empty;
             }
@@ -193,11 +163,7 @@ namespace LabelPrinter.ViewModel
         {
             var storage = _storageSelector.GetStorage();
 
-            var labelRows = GetType().GetProperties()
-                .Where(p => p.GetValue(this, new object[] { })?.GetType() == typeof(LabelRow))
-                .Select(p => (LabelRow)p.GetValue(this, new object[] { }));
-
-            storage.SaveLabel(SelectedLabelName, HowManyCoppies, labelRows);
+            storage.SaveLabel(Label);
 
             LabelSource = storage.GetLabelNames();
         }

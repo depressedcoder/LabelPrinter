@@ -21,48 +21,43 @@ namespace LabelPrinter.Storage
                 .ToList();
         }
 
-        public override LabelDetails GetLabelDetails(string labelName)
+        public override Label GetLabel(string labelName)
         {
             var fileNameOfLabel = $"{GetConnectionString()}{labelName}{TextExtension}";
 
             if(!File.Exists(fileNameOfLabel))
                 throw new ArgumentException($"{labelName} does not exist.");
 
-            var labelMetadataFile = $"{GetConnectionString()}{labelName}.json";
+            var labelJsonFile = $"{GetConnectionString()}{labelName}.json";
 
-            if(!File.Exists(labelMetadataFile))
+            if(!File.Exists(labelJsonFile))
                 throw new ArgumentException("Invalid label name");
 
             var labelRowLines = File.ReadAllText(fileNameOfLabel).Split('\n');
 
-            var labelRows = JsonConvert.DeserializeObject<List<LabelRow>>(File.ReadAllText(labelMetadataFile));
+            var label = JsonConvert.DeserializeObject<Label>(File.ReadAllText(labelJsonFile));
 
-            foreach (var labelRow in labelRows)
+            foreach (var labelRow in label.Rows)
             {
-                var idx = labelRows.IndexOf(labelRow) + 2; //First two lines are labelName & number of copies
+                var idx = label.Rows.IndexOf(labelRow) + 2; //First two lines are labelName & number of copies
 
                 labelRow.Text = labelRowLines.ElementAtOrDefault(idx);
             }
 
-            return new LabelDetails
-            {
-                LabelRows = labelRows,
-                Name = labelRowLines.ElementAtOrDefault(0),
-                NumberOfCopies = int.Parse(labelRowLines.ElementAtOrDefault(1) ?? throw new ArgumentException("Invalid number of copies.") )
-            };
+            return label;
         }
 
-        public override void SaveLabel(string labelName, int numberOfCopies, IEnumerable<LabelRow> labelRows)
+        public override void SaveLabel(Label label)
         {
             //Save all labels
-            var fileName = $"{GetConnectionString()}{labelName}{TextExtension}";
-            File.WriteAllText(fileName, labelName + '\n' +
-                numberOfCopies + '\n' +
-                string.Join("\n", labelRows.Select(m => m.Text).ToArray()));
+            var fileName = $"{GetConnectionString()}{label.SelectedLabelName}{TextExtension}";
+            File.WriteAllText(fileName, label.SelectedLabelName + '\n' +
+                                        label.HowManyCoppies + '\n' +
+                string.Join("\n", label.Rows.Select(m => m.Text).ToArray()));
 
             //Save metadata of labels
-            var labelRowsMetadata = JsonConvert.SerializeObject(labelRows, Formatting.Indented);
-            File.WriteAllText($"{GetConnectionString()}{labelName}.json", labelRowsMetadata);
+            var labelRowsMetadata = JsonConvert.SerializeObject(label, Formatting.Indented);
+            File.WriteAllText($"{GetConnectionString()}{label.SelectedLabelName}.json", labelRowsMetadata);
         }
 
         protected override string GetConnectionString()
