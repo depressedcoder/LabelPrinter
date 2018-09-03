@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Drawing.Imaging;
 using System.Text.RegularExpressions;
+using System.Windows;
 using LabelPrinter.Model;
 using LabelPrinter.Drawing;
 
@@ -17,7 +18,8 @@ namespace LabelPrinter.ViewModel
 
             var label = storage.GetLabel(Label.SelectedLabelName);
 
-            Label = label;
+            if(label !=null)
+                Label = label;
         }
 
         public void PreviewLabel()
@@ -166,6 +168,8 @@ namespace LabelPrinter.ViewModel
             storage.SaveLabel(Label);
 
             LabelSource = storage.GetLabelNames();
+
+            MessageBox.Show("Label saved successfully", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         void GetLabelNames()

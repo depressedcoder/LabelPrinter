@@ -25,8 +25,8 @@ namespace LabelPrinter.Storage
         {
             var fileNameOfLabel = $"{GetConnectionString()}{labelName}{TextExtension}";
 
-            if(!File.Exists(fileNameOfLabel))
-                throw new ArgumentException($"{labelName} does not exist.");
+            if (!File.Exists(fileNameOfLabel))
+                return null;
 
             var labelJsonFile = $"{GetConnectionString()}{labelName}.json";
 
