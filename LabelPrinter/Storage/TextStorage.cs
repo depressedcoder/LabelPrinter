@@ -49,15 +49,17 @@ namespace LabelPrinter.Storage
 
         public override void SaveLabel(Label label)
         {
-            //Save all labels
-            var fileName = $"{GetConnectionString()}{label.SelectedLabelName}{TextExtension}";
-            File.WriteAllText(fileName, label.SelectedLabelName + '\n' +
-                                        label.HowManyCoppies + '\n' +
-                string.Join("\n", label.Rows.Select(m => m.Text).ToArray()));
+                        
+                //Save all labels
+                var fileName = $"{GetConnectionString()}{label.SelectedLabelName}{TextExtension}";
+                File.WriteAllText(fileName, label.SelectedLabelName + '\n' +
+                                            label.HowManyCoppies + '\n' +
+                    string.Join("\n", label.Rows.Select(m => m.Text).ToArray()));
 
-            //Save metadata of labels
-            var labelRowsMetadata = JsonConvert.SerializeObject(label, Formatting.Indented);
-            File.WriteAllText($"{GetConnectionString()}{label.SelectedLabelName}.json", labelRowsMetadata);
+                //Save metadata of labels
+                var labelRowsMetadata = JsonConvert.SerializeObject(label, Formatting.Indented);
+                File.WriteAllText($"{GetConnectionString()}{label.SelectedLabelName}.json", labelRowsMetadata);
+            
         }
 
         protected override string GetConnectionString()
