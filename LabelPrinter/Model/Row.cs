@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using GalaSoft.MvvmLight;
+﻿using GalaSoft.MvvmLight;
 
 namespace LabelPrinter.Model
 {
@@ -29,8 +28,6 @@ namespace LabelPrinter.Model
             set
             {
                 _selectedCharWidth = value;
-                RaisePropertyChanged(nameof(SelectedCharWidth));
-
                 if (IsHigh)
                 {
                     CharWidth = value*2;
@@ -39,6 +36,7 @@ namespace LabelPrinter.Model
                 {
                     CharWidth = value;
                 }
+                RaisePropertyChanged(nameof(SelectedCharWidth));
             }
         }
 
