@@ -30,12 +30,18 @@ namespace LabelPrinter.Storage
 
             var labelJsonFile = $"{GetConnectionString()}{labelName}.json";
 
-            if(!File.Exists(labelJsonFile))
+            if (!File.Exists(labelJsonFile))
                 throw new ArgumentException("Invalid label name");
 
             var labelRowLines = File.ReadAllText(fileNameOfLabel).Split('\n');
 
-            var label = JsonConvert.DeserializeObject<Label>(File.ReadAllText(labelJsonFile));
+            var label = JsonConvert.DeserializeObject<Label>(File.ReadAllText(labelJsonFile), new JsonSerializerSettings
+            {
+                Error = (sender, args) => { args.ErrorContext.Handled = true; }
+            });
+
+            if (label == null)
+                return null;
 
             foreach (var labelRow in label.Rows)
             {
