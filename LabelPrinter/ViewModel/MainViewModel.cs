@@ -158,18 +158,28 @@ namespace LabelPrinter.ViewModel
             foreach (var labelRow in Label.Rows)
             {
                 labelRow.Text = string.Empty;
+                labelRow.IsBold = false;
+                labelRow.IsHigh = false;
+                labelRow.IsUnderlined = false;
+                labelRow.SelectedCharWidth = CharWidths[0];
             }
         }
 
         void SaveCommand()
         {
-            var storage = _storageSelector.GetStorage();
+            if (Label.SelectedLabelName != null)
+            {
+                var storage = _storageSelector.GetStorage();
+                storage.SaveLabel(Label);
 
-            storage.SaveLabel(Label);
+                LabelSource = storage.GetLabelNames();
 
-            LabelSource = storage.GetLabelNames();
-
-            MessageBox.Show("Label saved successfully", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Label saved successfully", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show("Please Enter Label Name", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         }
 
         void GetLabelNames()
