@@ -14,6 +14,9 @@ namespace LabelPrinter.ViewModel
     {
         public void SetLabel()
         {
+            if(string.IsNullOrEmpty(Label.SelectedLabelName))
+                return;
+
             var storage = _storageSelector.GetStorage();
 
             var label = storage.GetLabel(Label.SelectedLabelName);
