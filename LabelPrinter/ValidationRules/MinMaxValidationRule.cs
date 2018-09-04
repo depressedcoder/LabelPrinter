@@ -1,7 +1,5 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Windows.Controls;
-using System.Windows.Data;
 
 namespace LabelPrinter.ValidationRules
 {

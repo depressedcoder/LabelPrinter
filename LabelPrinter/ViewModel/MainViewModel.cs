@@ -145,7 +145,47 @@ namespace LabelPrinter.ViewModel
 
         void PrintCommand()
         {
-            //Print Button
+            //Setup
+            PaperMode value = PaperMode.PlainPaperLabel;
+            _printer.Config.LabelMode(value, 40, 3);
+            _printer.Config.LabelWidth(54);
+            _printer.Config.Dark(10);
+            _printer.Config.Speed(3);
+            _printer.Config.PageNo(1);
+            _printer.Config.CopyNo(Label.HowManyCoppies);
+
+            _printer.Open(PortType.USB);
+
+            //Print
+            _printer.Command.Start();
+
+            var posX = 40;
+            var posY = 40;
+            var rowHeight = 10;
+
+            foreach (var labelRow in Label.Rows)
+            {
+                var placeholers = GetPlaceholders(labelRow.Text);
+                
+                var strategySelector = new DrawingSelector
+                {
+                    Graphics = Graphics.FromImage(new Bitmap(Label.LabelWidth, Label.LabelHeight)),
+                    Barcode = Label.Barcode,
+                    Row = labelRow
+                };
+
+                foreach (var placeholer in placeholers)
+                {
+                    var drawingStrategy = strategySelector.GetStrategy(placeholer);
+
+                    drawingStrategy.Print(_printer, ref rowHeight, ref posX, posY);
+                }
+
+                posY += rowHeight;
+            }
+
+            _printer.Command.End();
+            _printer.Close();
         }
 
         void SetUpCommand()
