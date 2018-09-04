@@ -72,7 +72,7 @@ namespace LabelPrinter.ViewModel
         /// <summary>
         /// For Date Connection ComboBox
         /// </summary>
-        public List<string> DataConnection { get; set; } = new List<string> { "None", "Text Files", "Data Base Oracle", "Data Base MySQL", "Data Base MySQL Server" };
+        public List<string> DataConnection { get; set; } = new List<string> { "None", "Text Files", "Data Base Oracle", "Data Base MySQL", "Data Base MS SQL Server" };
         private string _selectedDateConnection;
 
         public string SelectedDataConnection

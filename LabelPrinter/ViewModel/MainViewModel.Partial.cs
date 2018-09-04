@@ -22,7 +22,8 @@ namespace LabelPrinter.ViewModel
         public Label Label
         {
             get => _label;
-            set { _label = value; RaisePropertyChanged(nameof(Label)); }}
+            set { _label = value; RaisePropertyChanged(nameof(Label)); }
+        }
 
         BitmapImage _bitmapImage;
 
@@ -50,7 +51,7 @@ namespace LabelPrinter.ViewModel
             {
                 _labelSource = value;
                 RaisePropertyChanged(nameof(LabelSource));
-            }
+            }   
         }
 
         /// <summary>
