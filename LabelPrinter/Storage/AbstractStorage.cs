@@ -9,5 +9,6 @@ namespace LabelPrinter.Storage
         public abstract List<string> GetLabelNames();
         public abstract Label GetLabel(string labelName);
         protected abstract string GetConnectionString();
+        public abstract string TestConnection(string connectionString);
     }
 }

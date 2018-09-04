@@ -25,5 +25,10 @@ namespace LabelPrinter.Storage
         {
             throw new NotImplementedException();
         }
+
+        public override string TestConnection(string connectionString)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight.Command;
+using LabelPrinter.Storage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,8 @@ namespace LabelPrinter.ViewModel
 {
     public partial class SetUpViewModel
     {
+        
+
         /// <summary>
         /// For Scales model combobox
         /// </summary>
@@ -72,7 +75,7 @@ namespace LabelPrinter.ViewModel
         /// <summary>
         /// For Date Connection ComboBox
         /// </summary>
-        public List<string> DataConnection { get; set; } = new List<string> { "None", "Text Files", "Data Base Oracle", "Data Base MySQL", "Data Base MS SQL Server" };
+        public List<string> DataConnection { get; set; } = new List<string> {"Text Files", "Data Base Oracle", "Data Base MySQL", "Data Base MS SQL Server" };
         private string _selectedDateConnection;
 
         public string SelectedDataConnection
@@ -169,6 +172,21 @@ namespace LabelPrinter.ViewModel
             }
         }
         /// <summary>
+        /// For Test Connection Visibility Convertion
+        /// </summary>
+        private bool _isVisibleBoolean;
+
+        public bool IsVisibleBoolean
+        {
+            get { return _isVisibleBoolean; }
+            set
+            {
+                _isVisibleBoolean = value;
+                RaisePropertyChanged(nameof(IsVisibleBoolean));
+            }
+        }
+
+        /// <summary>
         /// For Create or Export Textbox
         /// </summary>
         private bool _isCreateOrExport;
@@ -203,9 +221,9 @@ namespace LabelPrinter.ViewModel
 
         public SetUpViewModel()
         {
-            SelectedScalesModel = "ESSAE SI-810";
-            SelectedScalesPort = "None";
-            SelectedDataConnection = "None";
+            SelectedScalesModel = ScalesModel.FirstOrDefault();
+            SelectedScalesPort = ScalesPort.FirstOrDefault();
+            SelectedDataConnection = DataConnection.FirstOrDefault();
 
             SaveButtonCommand = new RelayCommand(SaveCommand);
             ExitButtonCommand = new RelayCommand(ExitCommand);

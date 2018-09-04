@@ -82,5 +82,10 @@ namespace LabelPrinter.Storage
 
             return connectionString ?? AppDomain.CurrentDomain.BaseDirectory + "\\";
         }
+
+        public override string TestConnection(string connectionString)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

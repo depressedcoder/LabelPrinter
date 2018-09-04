@@ -14,6 +14,7 @@
         DataContext="{Binding SetUp, Source={StaticResource Locator}}" FontFamily="/LabelPrinter;component/Fonts/#Roboto">
     <Window.Resources>
         <converter:RadioBoolToIntConverter x:Key="radioBoolToIntConverter" />
+        <BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
     </Window.Resources>
     <Grid Height="570" Width="550" HorizontalAlignment="Left" VerticalAlignment="Top">
         <Grid.RowDefinitions>
@@ -187,6 +188,7 @@
                 <TextBlock Grid.Column="0" Text="Data Connection :" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="15,0,0,0"/>
                 <ComboBox
                     FontSize="11"
+                    SelectionChanged="DataConnectionUpdateEvent"
                     ItemsSource="{Binding DataConnection}" 
                     SelectedItem="{Binding SelectedDataConnection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     Grid.Column="1" Height="25" Width="200" HorizontalAlignment="Left" VerticalAlignment="Center" IsEditable="True" Cursor="Hand"/>
@@ -208,15 +210,15 @@
                 <CheckBox IsChecked="{Binding IsCreateOrExport}" Cursor="Hand" Grid.Column="0" VerticalAlignment="Top" Margin="25,0,0,0" Height="15"/>
                 <TextBlock Grid.Column="1" Text="Create EXPORT file when label is printed" VerticalAlignment="Top"/>
             </Grid>
-            <TextBlock Grid.Row="4" Text="ODBC Connection String" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="25,6.5,0,6.5" Height="20" Width="163"/>
+            <TextBlock Visibility="{Binding IsVisibleBoolean, Converter={StaticResource booleanToVisibilityConverter}}" Grid.Row="4" Text="ODBC Connection String" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="25,6.5,0,6.5" Height="20" Width="163"/>
             <Grid Grid.Row="5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="197*"/>
                     <ColumnDefinition Width="78*"/>
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" Width="360" Height="25" Text="{Binding ODBCConnectionString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="25,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
-                <Button Grid.Column="1" Content="Test Connection" Command="{Binding TestConnectionButtonCommand}" Height="25" Width="120" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,0,0,0"/>
-                <TextBlock Grid.Column="0" FontSize="12" Text="(Example: DSN=Oracle;UID=LABEL;PWD=label)" VerticalAlignment="Bottom" Margin="25,0,0,0"/>
+                <TextBox Visibility="{Binding IsVisibleBoolean, Converter={StaticResource booleanToVisibilityConverter}}" Grid.Column="0" Width="360" Height="25" Text="{Binding ODBCConnectionString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="25,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+                <Button Visibility="{Binding IsVisibleBoolean, Converter={StaticResource booleanToVisibilityConverter}}" Grid.Column="1" Content="Test Connection" Command="{Binding TestConnectionButtonCommand}" Height="25" Width="120" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,0,0,0"/>
+                <TextBlock Visibility="{Binding IsVisibleBoolean, Converter={StaticResource booleanToVisibilityConverter}}" Grid.Column="0" FontSize="12" Text="{Binding ODBCConnectionString,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Bottom" Margin="25,0,0,0"/>
             </Grid>
             <Button Grid.Row="7" Width="120" Height="25" Command="{Binding SaveButtonCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Save" Margin="15,0,0,0"/>
             <Button Grid.Row="7" Width="120" Height="25" Command="{Binding ExitButtonCommand}" HorizontalAlignment="Right" VerticalAlignment="Top" Content="Exit" Margin="0,0,25,0"/>

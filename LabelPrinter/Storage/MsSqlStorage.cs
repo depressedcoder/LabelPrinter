@@ -42,23 +42,22 @@ namespace LabelPrinter.Storage
             var rowLines = new List<string>();
             
             string query = "SELECT I1,I2,I3,I4,I5,I6,I7,I8,I9,I10,I11,I12,I13,I14,I15 FROM LABEL_OUT WHERE LABEL_NAME='" + labelName + "'";
-            Label label;
+            //Label label;
             SqlConnection connection = new SqlConnection(GetConnectionString());
             SqlCommand command = new SqlCommand(query, connection);
-
-            SqlDataReader reader;
+            
             try
             {
                 connection.Open();
-                reader = command.ExecuteReader();
-                while (reader.Read())
+                
+                using (SqlDataReader reader = command.ExecuteReader())
                 {
-                    rowLines.Add(reader.GetString(0));
+                    while (reader.Read())
+                    {
+
+                    }
                 }
-                //foreach(var l in label.Rows)
-                //{
-                   
-                //}
+                
             }
             catch (Exception ex)
             {
@@ -78,9 +77,11 @@ namespace LabelPrinter.Storage
                 sep = "','";
             }
             sb.Append("'");
+
+            decimal w = 12;
             try
             {
-                string query = "INSERT INTO LABEL_OUT (LABEL_NAME, QTY, I1, I2, I3, I4, I5, I6, I7, I8, I9, I10, I11, I12, I13, I14, I15) VALUES ('"+ @label.SelectedLabelName+"','"+label.HowManyCoppies+"',"+@sb+")";
+                string query = "INSERT INTO LABEL_IN (LABEL_NAME, DATE_TIME, WEIGHT, LINE1, LINE2, LINE3, LINE4, LINE5, LINE6, LINE7, LINE8, LINE9, LINE10, LINE11, LINE12, LINE13, LINE14, LINE15) VALUES ('" + @label.SelectedLabelName+ "','"+@w+"',"+@sb+")";
                 SqlConnection connection = new SqlConnection(GetConnectionString());
                 SqlCommand command = new SqlCommand(query, connection);
                 connection.Open();
@@ -103,11 +104,32 @@ namespace LabelPrinter.Storage
 
             var connectionString = config?.MssqlConnection;
 
-            //if (!string.IsNullOrEmpty(connectionString))
-            //    Directory.CreateDirectory(connectionString);
-            string con = @"Data Source = BS-229; Initial Catalog = LabelPrinter;Integrated Security=True";
+            return connectionString;
 
-            return connectionString ?? con;
+        }
+
+        public override string TestConnection(string connectionString)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    if (connection.State != ConnectionState.Open)
+                    {
+                        return "Connection failed.";
+                    }
+                    else
+                    {
+                        return "You have been successfully connected to the database!";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+
 
         }
     }

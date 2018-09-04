@@ -1,5 +1,9 @@
 ﻿using GalaSoft.MvvmLight;
+using LabelPrinter.Storage;
 using Newtonsoft.Json;
+using System;
+using System.Data;
+using System.Data.SqlClient;
 using System.IO;
 using System.Windows.Forms;
 
@@ -7,6 +11,17 @@ namespace LabelPrinter.ViewModel
 {
     public partial class SetUpViewModel : ViewModelBase
     {
+        public void DataConnectionUpdate()
+        {
+            if(SelectedDataConnection != "Text Files")
+            {
+                IsVisibleBoolean = true;
+            }
+            else
+            {
+                IsVisibleBoolean = false;
+            }
+        }
         void ChangeCommand()
         {
             FolderBrowserDialog openFolderDialog = new FolderBrowserDialog();
@@ -14,9 +29,17 @@ namespace LabelPrinter.ViewModel
                 LocationOfFile = openFolderDialog.SelectedPath + "\\";
         }
 
+        
+
         void TestConnectionCommand()
         {
-            System.Windows.MessageBox.Show("Clicked on Test Connection Command.");
+            StorageSelector _storageSelector = new StorageSelector();
+            var storage = _storageSelector.GetStorage();
+
+            var msg = storage.TestConnection(ODBCConnectionString);
+
+            MessageBox.Show(msg);
+
         }
 
         void ExitCommand()
@@ -29,7 +52,8 @@ namespace LabelPrinter.ViewModel
             var config = new Config
             {
                 SelectedConnection = SelectedDataConnection,
-                TextConnection = LocationOfFile
+                TextConnection = LocationOfFile,
+                MssqlConnection = ODBCConnectionString
             };
 
             File.WriteAllText("Config.json", JsonConvert.SerializeObject(config, Formatting.Indented));

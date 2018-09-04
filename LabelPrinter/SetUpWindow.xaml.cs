@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using LabelPrinter.ViewModel;
+using System.Windows;
 
 namespace LabelPrinter
 {
@@ -7,9 +8,23 @@ namespace LabelPrinter
     /// </summary>
     public partial class SetUpWindow : Window
     {
+        SetUpViewModel main;
+
         public SetUpWindow()
         {
+            main = new SetUpViewModel();
+            DataContext = main;
             InitializeComponent();
         }
+
+
+        void DataConnectionUpdateEvent(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is SetUpViewModel vm)
+            {
+                vm.DataConnectionUpdate();
+            }
+        }
+
     }
 }
