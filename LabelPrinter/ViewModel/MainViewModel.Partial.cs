@@ -10,6 +10,7 @@ namespace LabelPrinter.ViewModel
 {
     public partial class MainViewModel : ViewModelBase
     {
+        GodexPrinter _printer;
         public RelayCommand SaveButtonCommand { get; }
         public RelayCommand NewButtonCommand { get; }
         public RelayCommand SetUpButtonCommand { get; }
@@ -29,10 +30,7 @@ namespace LabelPrinter.ViewModel
 
         public BitmapImage BitmapImage
         {
-            get
-            {
-                return _bitmapImage;
-            }
+            get => _bitmapImage;
             set
             {
                 _bitmapImage = value;
@@ -68,6 +66,8 @@ namespace LabelPrinter.ViewModel
 
         public MainViewModel()
         {
+            _printer = new GodexPrinter();
+
             _storageSelector = new StorageSelector();
 
             SaveButtonCommand = new RelayCommand(SaveCommand);

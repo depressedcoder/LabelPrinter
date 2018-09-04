@@ -10,6 +10,12 @@ namespace LabelPrinter.Drawing
             ref float x,
              float y);
 
+        public abstract void Print(
+            GodexPrinter printer,
+            ref int rowHeight,
+            ref int x,
+            int y);
+
         public string Placeholder { get; set; }
 
         public Graphics Graphics { get; set; }

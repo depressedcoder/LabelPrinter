@@ -54,7 +54,7 @@
                 TextChanged="UpdateLabelEvent">
                 <Binding Path="Label.LabelWidth" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                     <Binding.ValidationRules>
-                        <local:MinMaxValidationRule MaxValue="400" MinValue="50"/>
+                        <local:MinMaxValidationRule MaxValue="500" MinValue="50"/>
                     </Binding.ValidationRules>
                 </Binding>
             </TextBox>
@@ -69,7 +69,7 @@
                     TextChanged="UpdateLabelEvent">
                 <Binding Path="Label.LabelHeight" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                     <Binding.ValidationRules>
-                        <local:MinMaxValidationRule MaxValue="1000" MinValue="100"/>
+                        <local:MinMaxValidationRule MaxValue="500" MinValue="50"/>
                     </Binding.ValidationRules>
                 </Binding>
             </TextBox>
@@ -337,7 +337,7 @@
         </Grid>
         <Grid Grid.Column="1" Grid.Row="2">
             <Button x:Name="ButtonSetUp" Content="Set Up" Command="{Binding SetUpButtonCommand}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="120" Margin="40,0,10,10"/>
-            <Button x:Name="ButtonPrint" Content="Print" Command="{Binding PrintButtonCommand}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="120" Margin="10,0,40,10" Click="ButtonPrint_Click"/>
+            <Button x:Name="ButtonPrint" Content="Print" Command="{Binding PrintButtonCommand}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="120" Margin="10,0,40,10"/>
         </Grid>
         <Grid Grid.Column="2" Grid.Row="2">
             <Button x:Name="ButtonPrintJob" Content="Print Jobs" Command="{Binding PrintJobsButtonCommand}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="120" Margin="10"/>

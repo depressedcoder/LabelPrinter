@@ -17,7 +17,7 @@ namespace LabelPrinter.Model
             }
         }
 
-        int _howManyCopies;
+        int _howManyCopies = 1;
         /// <summary>
         /// How many copies will be printed
         /// </summary>

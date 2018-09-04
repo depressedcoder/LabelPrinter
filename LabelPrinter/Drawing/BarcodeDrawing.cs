@@ -51,6 +51,11 @@ namespace LabelPrinter.Drawing
             }
         }
 
+        public override void Print(GodexPrinter printer, ref int rowHeight, ref int x, int y)
+        {
+            throw new NotImplementedException();
+        }
+
         Image GetBarcodeImage(string selectedBarcode, string barCodeLabel, int width, int height)
         {
             width = width * 100;
