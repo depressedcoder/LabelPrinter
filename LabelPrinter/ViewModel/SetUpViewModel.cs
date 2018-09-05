@@ -53,7 +53,9 @@ namespace LabelPrinter.ViewModel
             {
                 SelectedConnection = SelectedDataConnection,
                 TextConnection = LocationOfFile,
-                MssqlConnection = ODBCConnectionString
+                MssqlConnection = ODBCConnectionString,
+                Density = Density,
+                Speed = Speed
             };
 
             File.WriteAllText("Config.json", JsonConvert.SerializeObject(config, Formatting.Indented));

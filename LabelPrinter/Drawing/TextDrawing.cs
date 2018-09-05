@@ -25,7 +25,7 @@ namespace LabelPrinter.Drawing
                 rowHeight += Row.SelectedCharWidth;
 
             printer.Command.PrintText(x, y, Row.SelectedCharWidth, "Arial", Placeholder);
-
+            
         }
     }
 }

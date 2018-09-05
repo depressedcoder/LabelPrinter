@@ -70,6 +70,7 @@ namespace LabelPrinter
             Printer.Command.PrintText(PosX, PosY += 40, FontHeight, "Arial", "First Printing");
             Printer.Command.PrintBarCode(BarCodeType.Code39, PosX, PosY += 40, "123123");
             //Printer.Command.PrintImage(PosX, PosY += 40, "", 0);
+            
             Printer.Command.End();
            
             DisconnectPrinter();

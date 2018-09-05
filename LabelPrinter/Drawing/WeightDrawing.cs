@@ -23,7 +23,10 @@ namespace LabelPrinter.Drawing
 
         public override void Print(GodexPrinter printer, ref int rowHeight, ref int x, int y)
         {
-            throw new System.NotImplementedException();
+            if (Row.SelectedCharWidth > rowHeight)
+                rowHeight += Row.SelectedCharWidth;
+
+            printer.Command.PrintText(x, y, Row.SelectedCharWidth, "Arial", ConvertedWeight);
         }
     }
 }

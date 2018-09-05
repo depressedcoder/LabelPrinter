@@ -53,7 +53,32 @@ namespace LabelPrinter.Drawing
 
         public override void Print(GodexPrinter printer, ref int rowHeight, ref int x, int y)
         {
-            throw new NotImplementedException();
+            var label = Regex.Replace(Regex.Replace(Placeholder, BarcodeMatchingPattern, ""), @"\D", "0");
+            if (Barcode.SelectedBarCode == "Code39")
+            {
+                printer.Command.PrintBarCode(BarCodeType.Code39, x, y+=40, label);
+            }
+            else if(Barcode.SelectedBarCode == "Code128")
+            {
+                printer.Command.PrintBarCode(BarCodeType.Code128_Auto, x, y+=40, label);
+            }
+            else if(Barcode.SelectedBarCode == "EAN13")
+            {
+                printer.Command.PrintBarCode(BarCodeType.EAN13, x, y+=40, label);
+            }
+            else if(Barcode.SelectedBarCode == "EAN8")
+            {
+                printer.Command.PrintBarCode(BarCodeType.EAN8, x, y+=40, label);
+            }
+            else if(Barcode.SelectedBarCode == "2/5 Interleaved")
+            {
+                printer.Command.PrintBarCode(BarCodeType.I2of5, x, y+=40, label);
+            }
+            else
+            {
+                System.Windows.MessageBox.Show("Data Matrix is under Construction!!!");
+            }
+            
         }
 
         Image GetBarcodeImage(string selectedBarcode, string barCodeLabel, int width, int height)

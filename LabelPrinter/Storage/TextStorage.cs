@@ -31,7 +31,7 @@ namespace LabelPrinter.Storage
             var labelJsonFile = $"{GetConnectionString()}{labelName}.json";
 
             if (!File.Exists(labelJsonFile))
-                throw new ArgumentException("Invalid label name");
+                throw new ArgumentException("Invali  label name");
 
             var labelRowLines = File.ReadAllText(fileNameOfLabel).Split('\n');
 

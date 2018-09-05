@@ -37,7 +37,11 @@ namespace LabelPrinter.Drawing
 
         public override void Print(GodexPrinter printer, ref int rowHeight, ref int x, int y)
         {
-            throw new NotImplementedException();
+            if (Row.SelectedCharWidth > rowHeight)
+                rowHeight += Row.SelectedCharWidth;
+
+            var datetime = DateTime.Now.ToString(_datetimeFormat[Placeholder]);
+            printer.Command.PrintText(x, y, Row.SelectedCharWidth, "Arial", datetime);
         }
     }
 }

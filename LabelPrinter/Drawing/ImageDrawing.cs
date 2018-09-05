@@ -44,7 +44,9 @@ namespace LabelPrinter.Drawing
 
         public override void Print(GodexPrinter printer, ref int rowHeight, ref int x, int y)
         {
-            throw new System.NotImplementedException();
+            var imgName = Regex.Replace(Placeholder, ImageNamePattern, "");
+            imgName += ".bmp";
+            printer.Command.PrintImage(x, y, imgName, 0);
         }
     }
 }

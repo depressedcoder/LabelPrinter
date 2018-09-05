@@ -12,8 +12,12 @@ namespace LabelPrinter.Storage
 {
     public class MsSqlStorage : AbstractStorage
     {
-        const string TextExtension = "-IMPORT.txt";
-
+        //Label _label;
+        //public Label Label
+        //{
+        //    get => _label;
+        //    set { _label = value; }
+        //}
 
         public override List<string> GetLabelNames()
         {
@@ -41,30 +45,37 @@ namespace LabelPrinter.Storage
         {
             var rowLines = new List<string>();
             
-            string query = "SELECT I1,I2,I3,I4,I5,I6,I7,I8,I9,I10,I11,I12,I13,I14,I15 FROM LABEL_OUT WHERE LABEL_NAME='" + labelName + "'";
-            //Label label;
-            SqlConnection connection = new SqlConnection(GetConnectionString());
-            SqlCommand command = new SqlCommand(query, connection);
-            
-            try
+            using (SqlConnection connection = new SqlConnection(GetConnectionString()))
             {
-                connection.Open();
-                
-                using (SqlDataReader reader = command.ExecuteReader())
+                string query = "SELECT I1,I2,I3,I4,I5,I6,I7,I8,I9,I10,I11,I12,I13,I14,I15 FROM LABEL_OUT WHERE LABEL_NAME='" + labelName + "'";
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    while (reader.Read())
-                    {
+                    connection.Open();
 
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        
+                        while (reader.Read())
+                        {
+                            for (int i = 0; i < reader.FieldCount; i++)
+                            {
+                                rowLines.Add(reader.IsDBNull(i) ? string.Empty : reader[i].ToString());
+                            }
+                        }
+                        var array = rowLines.ToArray();
+                        for (var i = 0; i < array.Length; i++)
+                        {
+                            //foreach(var labelRow in Label.Rows)
+                            //{
+                            //    labelRow.Text = array[i];
+                            //}
+                            //Assign all the textbox value..
+                        }
                     }
                 }
-                
             }
-            catch (Exception ex)
-            {
-                System.Windows.MessageBox.Show(ex.Message);
-            }
-            return null;
-            
+                return null;
+           
         }
 
         public override void SaveLabel(Label label)

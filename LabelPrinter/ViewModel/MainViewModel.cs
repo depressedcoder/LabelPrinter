@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using LabelPrinter.Model;
 using LabelPrinter.Drawing;
+using Newtonsoft.Json;
 
 namespace LabelPrinter.ViewModel
 {
@@ -145,12 +146,17 @@ namespace LabelPrinter.ViewModel
 
         void PrintCommand()
         {
+            //StreamReader r = new StreamReader("Configure.json");
+            
+            //string json = r.ReadToEnd();
+            //Config con = JsonConvert.DeserializeObject<Config>(json);
+
             //Setup
             PaperMode value = PaperMode.PlainPaperLabel;
-            _printer.Config.LabelMode(value, 40, 3);
-            _printer.Config.LabelWidth(54);
-            _printer.Config.Dark(10);
-            _printer.Config.Speed(3);
+            _printer.Config.LabelMode(value, 40, 3); //40->Label.LabelHeight 
+            _printer.Config.LabelWidth(54); //Label.LabelWidth
+            _printer.Config.Dark(10); //con.Density
+            _printer.Config.Speed(3); //con.Speed
             _printer.Config.PageNo(1);
             _printer.Config.CopyNo(Label.HowManyCoppies);
 
@@ -159,8 +165,8 @@ namespace LabelPrinter.ViewModel
             //Print
             _printer.Command.Start();
 
-            var posX = 40;
-            var posY = 40;
+            var posX = 10;
+            var posY = 10;
             var rowHeight = 10;
 
             foreach (var labelRow in Label.Rows)
