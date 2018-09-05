@@ -165,12 +165,13 @@ namespace LabelPrinter.ViewModel
             //Print
             _printer.Command.Start();
 
-            var posX = 10;
+            
             var posY = 10;
             var rowHeight = 10;
 
             foreach (var labelRow in Label.Rows)
             {
+                var posX = 10;
                 var placeholers = GetPlaceholders(labelRow.Text);
                 
                 var strategySelector = new DrawingSelector
@@ -183,7 +184,7 @@ namespace LabelPrinter.ViewModel
                 foreach (var placeholer in placeholers)
                 {
                     var drawingStrategy = strategySelector.GetStrategy(placeholer);
-
+                    
                     drawingStrategy.Print(_printer, ref rowHeight, ref posX, posY);
                 }
 

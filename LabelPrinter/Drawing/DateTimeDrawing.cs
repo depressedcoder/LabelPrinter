@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace LabelPrinter.Drawing
 {
@@ -14,7 +15,7 @@ namespace LabelPrinter.Drawing
             {
                 {"<TIMESTAMP>","h:mm" },
                 {"<TIME>", "HH:mm:ss tt" },
-                {"<DATE>",  "dd-mm-yyyy"}
+                {"<DATE>",  "dd-MM-yyyy"}
             };
         }
 
@@ -37,11 +38,21 @@ namespace LabelPrinter.Drawing
 
         public override void Print(GodexPrinter printer, ref int rowHeight, ref int x, int y)
         {
-            if (Row.SelectedCharWidth > rowHeight)
-                rowHeight += Row.SelectedCharWidth;
+            
+            //if (Row.SelectedCharWidth > rowHeight)
+            //    rowHeight += Row.SelectedCharWidth;
 
             var datetime = DateTime.Now.ToString(_datetimeFormat[Placeholder]);
             printer.Command.PrintText(x, y, Row.SelectedCharWidth, "Arial", datetime);
+            
+            x +=(int) Graphics.MeasureString(datetime, GetRowFont()).Width;
+
+            if (GetRowFont().Height>rowHeight)
+            {
+                rowHeight = GetRowFont().Height;
+            }
+
+
         }
     }
 }

@@ -47,6 +47,14 @@ namespace LabelPrinter.Drawing
             var imgName = Regex.Replace(Placeholder, ImageNamePattern, "");
             imgName += ".bmp";
             printer.Command.PrintImage(x, y, imgName, 0);
+
+            var image = Image.FromFile(imgName);
+            x += image.Width;
+
+            if (image.Height > rowHeight)
+            {
+                rowHeight = image.Height;
+            }
         }
     }
 }

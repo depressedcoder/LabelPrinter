@@ -174,15 +174,29 @@ namespace LabelPrinter.ViewModel
         /// <summary>
         /// For Test Connection Visibility Convertion
         /// </summary>
-        private bool _isVisibleBoolean;
+        private bool _isVisibleForConnection;
 
-        public bool IsVisibleBoolean
+        public bool IsVisibleForConnection
         {
-            get { return _isVisibleBoolean; }
+            get { return _isVisibleForConnection; }
             set
             {
-                _isVisibleBoolean = value;
-                RaisePropertyChanged(nameof(IsVisibleBoolean));
+                _isVisibleForConnection = value;
+                RaisePropertyChanged(nameof(IsVisibleForConnection));
+            }
+        }
+        /// <summary>
+        /// For Test Connection Visibility Convertion
+        /// </summary>
+        private bool _isVisibleForLocation;
+
+        public bool IsVisibleForLocation
+        {
+            get { return _isVisibleForLocation; }
+            set
+            {
+                _isVisibleForLocation = value;
+                RaisePropertyChanged(nameof(IsVisibleForLocation));
             }
         }
 

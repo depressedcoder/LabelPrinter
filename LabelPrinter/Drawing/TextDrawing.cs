@@ -20,12 +20,13 @@ namespace LabelPrinter.Drawing
         }
 
         public override void Print(GodexPrinter printer, ref int rowHeight, ref int x, int y)
-        {
-            if (Row.SelectedCharWidth > rowHeight)
-                rowHeight += Row.SelectedCharWidth;
-
+        {    
             printer.Command.PrintText(x, y, Row.SelectedCharWidth, "Arial", Placeholder);
-            
+            x += (int)Graphics.MeasureString(Placeholder, GetRowFont()).Width;
+            if(GetRowFont().Height>rowHeight)
+            {
+                rowHeight = GetRowFont().Height;
+            }
         }
     }
 }

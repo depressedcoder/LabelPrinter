@@ -15,11 +15,13 @@ namespace LabelPrinter.ViewModel
         {
             if(SelectedDataConnection != "Text Files")
             {
-                IsVisibleBoolean = true;
+                IsVisibleForConnection = true;
+                IsVisibleForLocation = false;
             }
             else
             {
-                IsVisibleBoolean = false;
+                IsVisibleForLocation = true;
+                IsVisibleForConnection = false;
             }
         }
         void ChangeCommand()

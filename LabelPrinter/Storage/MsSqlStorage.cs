@@ -92,7 +92,7 @@ namespace LabelPrinter.Storage
             decimal w = 12;
             try
             {
-                string query = "INSERT INTO LABEL_IN (LABEL_NAME, DATE_TIME, WEIGHT, LINE1, LINE2, LINE3, LINE4, LINE5, LINE6, LINE7, LINE8, LINE9, LINE10, LINE11, LINE12, LINE13, LINE14, LINE15) VALUES ('" + @label.SelectedLabelName+ "','"+@w+"',"+@sb+")";
+                string query = "INSERT INTO LABEL_IN (LABEL_NAME, WEIGHT, LINE1, LINE2, LINE3, LINE4, LINE5, LINE6, LINE7, LINE8, LINE9, LINE10, LINE11, LINE12, LINE13, LINE14, LINE15) VALUES ('" + @label.SelectedLabelName+ "','"+@w+"',"+@sb+")";
                 SqlConnection connection = new SqlConnection(GetConnectionString());
                 SqlCommand command = new SqlCommand(query, connection);
                 connection.Open();

@@ -36,7 +36,7 @@ namespace LabelPrinter.Drawing
             {
                 charWidth *= 2;
             }
-
+            
             var font = new Font("Arial", charWidth, style | style);
 
             return font;
