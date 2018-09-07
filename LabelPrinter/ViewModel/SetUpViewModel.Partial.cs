@@ -199,6 +199,16 @@ namespace LabelPrinter.ViewModel
                 RaisePropertyChanged(nameof(IsVisibleForLocation));
             }
         }
+        private string _egText;
+
+        public string EgText
+        {
+            get { return _egText; }
+            set {
+                _egText = value;
+                RaisePropertyChanged(nameof(EgText));
+            }
+        }
 
         /// <summary>
         /// For Create or Export Textbox

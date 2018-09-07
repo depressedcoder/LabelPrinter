@@ -17,6 +17,12 @@ namespace LabelPrinter.ViewModel
             {
                 IsVisibleForConnection = true;
                 IsVisibleForLocation = false;
+                if (SelectedDataConnection == "Data Base MySQL")
+                    EgText = "Example: Server=localhost;Database=labelprinter;Uid=root;Pwd = 4466;";
+                if (SelectedDataConnection == "Data Base MS SQL Server")
+                    EgText = "Example: Data Source = BS-229; Initial Catalog = LabelPrinter;Integrated Security=True";
+                if (SelectedDataConnection == "Data Base Oracle")
+                    EgText = "Under Construction....";
             }
             else
             {
@@ -56,6 +62,7 @@ namespace LabelPrinter.ViewModel
                 SelectedConnection = SelectedDataConnection,
                 TextConnection = LocationOfFile,
                 MssqlConnection = ODBCConnectionString,
+                MySqlConnection = ODBCConnectionString,
                 Density = Density,
                 Speed = Speed
             };

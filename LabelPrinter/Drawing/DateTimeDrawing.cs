@@ -38,18 +38,19 @@ namespace LabelPrinter.Drawing
 
         public override void Print(GodexPrinter printer, ref int rowHeight, ref int x, int y)
         {
-            
-            //if (Row.SelectedCharWidth > rowHeight)
-            //    rowHeight += Row.SelectedCharWidth;
-
             var datetime = DateTime.Now.ToString(_datetimeFormat[Placeholder]);
-            printer.Command.PrintText(x, y, Row.SelectedCharWidth, "Arial", datetime);
-            
-            x +=(int) Graphics.MeasureString(datetime, GetRowFont()).Width;
+            FontWeight BoldStatus = Row.IsBold ? FontWeight.FW_700_BOLD : FontWeight.FW_400_NORMAL;
+            Underline_State UnderLineStatus = Row.IsUnderlined ? Underline_State.ON : Underline_State.OFF;
+            //if (Row.IsHigh)
+            //    Row.SelectedCharWidth *= 2;
 
-            if (GetRowFont().Height>rowHeight)
+            printer.Command.PrintText(x, y, Row.SelectedCharWidth * 3, "Arial", datetime, 0, BoldStatus, RotateMode.Angle_0, Italic_State.OFF, UnderLineStatus, Strikeout_State.OFF, Inverse_State.OFF);
+            
+            x +=(int) Graphics.MeasureString(datetime, GetRowFontForPrinting()).Width;
+
+            if (GetRowFontForPrinting().Height>rowHeight)
             {
-                rowHeight = GetRowFont().Height;
+                rowHeight = GetRowFontForPrinting().Height;
             }
 
 

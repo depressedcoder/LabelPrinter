@@ -189,12 +189,7 @@ namespace LabelPrinter
         {
             return EZioApi.ecTextOut(PosX, PosY, FontHeight, FontName, Data);
         }
-        //custom print
-        public int PrintText(int PosX, int PosY, int FontHeight, string FontName, string Data, FontWeight Dark, Underline_State Underline)
-        {
-            return EZioApi.customEcTextOut(PosX, PosY, FontHeight, FontName, Data, (int)Dark, (int)Underline);
-        }
-
+       
         public int PrintText(int PosX, int PosY, int FontHeight, string FontName, string Data, int TextWidth, FontWeight Dark, RotateMode Rotate)
         {
             return EZioApi.ecTextOutR(PosX, PosY, FontHeight, FontName, Data, TextWidth, (int)Dark, (int)Rotate);

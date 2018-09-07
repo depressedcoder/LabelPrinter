@@ -22,6 +22,8 @@ namespace LabelPrinter.Drawing
         public Barcode Barcode { get; set; }
         public Row Row { get; set; }
 
+
+        //Return font for Drawing
         protected Font GetRowFont()
         {
             var style = FontStyle.Regular;
@@ -37,9 +39,19 @@ namespace LabelPrinter.Drawing
                 charWidth *= 2;
             }
             
-            var font = new Font("Arial", charWidth, style | style);
+            var font = new Font("Arial", charWidth, style | style,GraphicsUnit.Point);
 
             return font;
         }
+        //Return font for printing
+        protected Font GetRowFontForPrinting()
+        {
+            var charWidth = Row.SelectedCharWidth*3;
+            
+            var font = new Font("Arial", charWidth,GraphicsUnit.Pixel);
+
+            return font;
+        }
+
     }
 }

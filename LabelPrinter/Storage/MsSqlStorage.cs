@@ -18,7 +18,7 @@ namespace LabelPrinter.Storage
         //    get => _label;
         //    set { _label = value; }
         //}
-
+      
         public override List<string> GetLabelNames()
         {
             List<String> labelNames = new List<String>();
@@ -40,7 +40,7 @@ namespace LabelPrinter.Storage
             }
             return labelNames;
         }
-
+        
         public override Label GetLabel(string labelName)
         {
             var rowLines = new List<string>();
@@ -63,18 +63,15 @@ namespace LabelPrinter.Storage
                             }
                         }
                         var array = rowLines.ToArray();
+                        
                         for (var i = 0; i < array.Length; i++)
                         {
-                            //foreach(var labelRow in Label.Rows)
-                            //{
-                            //    labelRow.Text = array[i];
-                            //}
-                            //Assign all the textbox value..
+                            //assign value to all row text..
                         }
                     }
                 }
             }
-                return null;
+            return null;
            
         }
 
@@ -132,7 +129,7 @@ namespace LabelPrinter.Storage
                     }
                     else
                     {
-                        return "You have been successfully connected to the database!";
+                        return "You have been successfully connected to the MsSQL database!";
                     }
                 }
             }

@@ -116,17 +116,6 @@ namespace LabelPrinter
             int Underline,
             int Strikeout,
             int Inverse);
-        //custom
-        [DllImport("Ezio32.dll")]
-        public static extern int customEcTextOut(
-            int PosX,
-            int PosY,
-            int FontHeight,
-            [MarshalAs(UnmanagedType.LPStr)]string FontName,
-            [MarshalAs(UnmanagedType.LPStr)]string Data,
-            int Dark,
-            int Underline
-            );
 
         [DllImport("Ezio32.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern int ecTextOutFineW(

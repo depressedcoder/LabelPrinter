@@ -34,7 +34,7 @@ namespace LabelPrinter.Storage
                 throw new ArgumentException("Invali  label name");
 
             var labelRowLines = File.ReadAllText(fileNameOfLabel).Split('\n');
-
+      
             var label = JsonConvert.DeserializeObject<Label>(File.ReadAllText(labelJsonFile), new JsonSerializerSettings
             {
                 Error = (sender, args) => { args.ErrorContext.Handled = true; }
@@ -42,7 +42,7 @@ namespace LabelPrinter.Storage
 
             if (label == null)
                 return null;
-
+            
             foreach (var labelRow in label.Rows)
             {
                 var idx = label.Rows.IndexOf(labelRow) + 2; //First two lines are labelName & number of copies
