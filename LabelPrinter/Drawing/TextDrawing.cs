@@ -32,8 +32,7 @@ namespace LabelPrinter.Drawing
             if(GetRowFontForPrinting().Height>rowHeight)
             {
                 rowHeight = GetRowFontForPrinting().Height;
-            }
-            
+            } 
         }
     }
 }
