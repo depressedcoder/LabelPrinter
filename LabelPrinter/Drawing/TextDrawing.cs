@@ -26,8 +26,7 @@ namespace LabelPrinter.Drawing
             //if (Row.IsHigh)
             //    Row.SelectedCharWidth *= 2;
 
-            printer.Command.PrintText(x, y, Row.SelectedCharWidth * 3, "Arial", Placeholder, 0, BoldStatus, RotateMode.Angle_0, Italic_State.OFF, UnderLineStatus, Strikeout_State.OFF, Inverse_State.OFF);    
-            
+            printer.Command.PrintText(x, y, Row.SelectedCharWidth * 3, "Arial", Placeholder, 0, BoldStatus, RotateMode.Angle_0, Italic_State.OFF, UnderLineStatus, Strikeout_State.OFF, Inverse_State.OFF);
             x += (int)Graphics.MeasureString(Placeholder, GetRowFontForPrinting()).Width;
             if(GetRowFontForPrinting().Height>rowHeight)
             {

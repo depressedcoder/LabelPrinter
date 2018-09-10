@@ -63,6 +63,7 @@ namespace LabelPrinter.ViewModel
                 TextConnection = LocationOfFile,
                 MssqlConnection = ODBCConnectionString,
                 MySqlConnection = ODBCConnectionString,
+                OracleConnection = ODBCConnectionString,
                 Density = Density,
                 Speed = Speed
             };

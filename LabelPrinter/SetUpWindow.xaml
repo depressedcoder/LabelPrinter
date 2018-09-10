@@ -92,7 +92,7 @@
                 <TextBlock Grid.Column="0" Text="Density=" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                 <TextBlock Grid.Column="1" Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ElementName=densitySlider}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 <TextBlock Grid.Column="2" Text="Light" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                <Slider x:Name="densitySlider" Value="{Binding Density}" IsSnapToTickEnabled="True" TickFrequency="1" Minimum="1" Maximum="10" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="130" Height="25"/>
+                <Slider x:Name="densitySlider" Value="{Binding Density}" IsSnapToTickEnabled="True" TickFrequency="1" Minimum="1" Maximum="15" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="130" Height="25"/>
                 <TextBlock Grid.Column="4" Text="Dark" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             </Grid>
             <Grid Grid.Row="3">
@@ -106,7 +106,7 @@
                 <TextBlock Grid.Column="0" Text="Speed=" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                 <TextBlock Grid.Column="1" Text="{Binding  Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=Value,ElementName=speedSlider}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 <TextBlock Grid.Column="2" Text="Slow" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                <Slider x:Name="speedSlider" Value="{Binding Speed}" IsSnapToTickEnabled="True" TickFrequency="1" Minimum="1" Maximum="10" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="130" Height="25"/>
+                <Slider x:Name="speedSlider" Value="{Binding Speed}" IsSnapToTickEnabled="True" TickFrequency="1" Minimum="1" Maximum="12" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="130" Height="25"/>
                 <TextBlock Grid.Column="4" Text="Fast" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             </Grid>
             <Grid Grid.Row="4">

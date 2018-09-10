@@ -8,6 +8,7 @@ using System.Windows;
 using LabelPrinter.Model;
 using LabelPrinter.Drawing;
 using Newtonsoft.Json;
+using System;
 
 namespace LabelPrinter.ViewModel
 {
@@ -146,17 +147,17 @@ namespace LabelPrinter.ViewModel
 
         void PrintCommand()
         {
-            //StreamReader r = new StreamReader("Configure.json");
-            
-            //string json = r.ReadToEnd();
-            //Config con = JsonConvert.DeserializeObject<Config>(json);
+            if (!File.Exists("Config.json"))
+                throw new ArgumentException("Configuration file is missing");
+
+            var con = JsonConvert.DeserializeObject<Config>(File.ReadAllText("Config.json"));
 
             //Setup
             PaperMode value = PaperMode.PlainPaperLabel;
             _printer.Config.LabelMode(value, 40, 3); //40->Label.LabelHeight 
             _printer.Config.LabelWidth(54); //Label.LabelWidth
-            _printer.Config.Dark(10); //con.Density
-            _printer.Config.Speed(3); //con.Speed
+            _printer.Config.Dark(con.Density); //con.Density
+            _printer.Config.Speed(con.Speed); //con.Speed
             _printer.Config.PageNo(1);
             _printer.Config.CopyNo(Label.HowManyCoppies);
 
