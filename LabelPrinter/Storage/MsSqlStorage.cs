@@ -62,15 +62,18 @@ namespace LabelPrinter.Storage
                                 rowLines.Add(reader.IsDBNull(i) ? string.Empty : reader[i].ToString());
                             }
                         }
-                        var array = rowLines.ToArray();
                         
-                        for (var i = 0; i < array.Length; i++)
-                        {
-                            //assign value to all row text..
-                        }
+                        //var array = rowLines.ToArray();
+
+                        //for (var i = 0; i < array.Length; i++)
+                        //{
+
+                        //}
                     }
                 }
+
             }
+            //var label = rowLines.ToList();
             return null;
            
         }
