@@ -17,6 +17,7 @@ namespace LabelPrinter.Drawing
         readonly Dictionary<Predicate<string>, AbstractDrawing> _strategies;
 
         public Graphics Graphics { get; set; }
+        public decimal Weight { set; get; }
         public Barcode Barcode { get; set; }
         public Row Row { get; set; }
 
@@ -37,7 +38,8 @@ namespace LabelPrinter.Drawing
 
             strategy.Placeholder = placeholder;
             strategy.Graphics = Graphics;
-            strategy.Barcode = Barcode;
+            strategy.Weight = Weight;
+            strategy.Barcode = Barcode; 
             strategy.Row = Row;
 
             return strategy;

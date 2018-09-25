@@ -17,7 +17,7 @@ namespace LabelPrinter.Drawing
             int y);
 
         public string Placeholder { get; set; }
-
+        public decimal Weight { set; get; }
         public Graphics Graphics { get; set; }
         public Barcode Barcode { get; set; }
         public Row Row { get; set; }

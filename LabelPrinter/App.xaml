@@ -6,11 +6,13 @@
     StartupUri="MainWindow.xaml" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     d1p1:Ignorable="d" 
-    xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006">
+    xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:converters="clr-namespace:LabelPrinter.Converters">
     <Application.Resources>
         <ResourceDictionary>
             <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" xmlns:vm="clr-namespace:LabelPrinter.ViewModel" />
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+            <converters:LabelToImageWidthConverter x:Key="labelToImageWidthConverter" />
             <ControlTemplate x:Key="TextBoxErrorTemplate">
                 <StackPanel>
                     <StackPanel Orientation="Horizontal">
@@ -22,7 +24,10 @@
                         <AdornedElementPlaceholder x:Name="Holder"/>
                     </StackPanel>
                 </StackPanel>
-            </ControlTemplate>
+            </ControlTemplate> 
+                    <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles\Style.xaml"/>
+            </ResourceDictionary.MergedDictionaries> 
         </ResourceDictionary>
     </Application.Resources>
 </Application>

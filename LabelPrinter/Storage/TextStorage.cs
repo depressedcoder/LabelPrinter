@@ -13,7 +13,8 @@ namespace LabelPrinter.Storage
 
         public override List<string> GetLabelNames()
         {
-            var directoryInfo = new DirectoryInfo(GetConnectionString());
+            string directory = GetConnectionString();
+            var directoryInfo = new DirectoryInfo(directory);
 
             return directoryInfo
                 .GetFiles($"*{TextExtension}")
@@ -23,33 +24,10 @@ namespace LabelPrinter.Storage
 
         public override Label GetLabel(string labelName)
         {
-            var fileNameOfLabel = $"{GetConnectionString()}{labelName}{TextExtension}";
-
-            if (!File.Exists(fileNameOfLabel))
-                return null;
-
-            var labelJsonFile = $"{GetConnectionString()}{labelName}.json";
-
-            if (!File.Exists(labelJsonFile))
-                throw new ArgumentException("Invali  label name");
-
-            var labelRowLines = File.ReadAllText(fileNameOfLabel).Split('\n');
-      
-            var label = JsonConvert.DeserializeObject<Label>(File.ReadAllText(labelJsonFile), new JsonSerializerSettings
-            {
-                Error = (sender, args) => { args.ErrorContext.Handled = true; }
-            });
-
-            if (label == null)
-                return null;
-            
-            foreach (var labelRow in label.Rows)
-            {
-                var idx = label.Rows.IndexOf(labelRow) + 2; //First two lines are labelName & number of copies
-
-                labelRow.Text = labelRowLines.ElementAtOrDefault(idx);
-            }
-
+            Label label = null;
+            Labels labels = GetLabels(labelName);
+            if (labels != null)
+                label = JsonConvert.DeserializeObject<Label>(labels.Label);
             return label;
         }
 
@@ -80,12 +58,49 @@ namespace LabelPrinter.Storage
             if (!string.IsNullOrEmpty(connectionString))
                 Directory.CreateDirectory(connectionString);
 
-            return connectionString ?? AppDomain.CurrentDomain.BaseDirectory + "\\";
+            return string.IsNullOrEmpty(connectionString) ?  AppDomain.CurrentDomain.BaseDirectory + "\\" : connectionString;
         }
 
         public override string TestConnection(string connectionString)
         {
             throw new NotImplementedException();
+        }
+
+        public override Labels GetLabels(string labelName)
+        {
+            Labels labels = new Labels();
+            var fileNameOfLabel = $"{GetConnectionString()}{labelName}{TextExtension}";
+
+            if (!File.Exists(fileNameOfLabel))
+                return null;
+
+            var labelJsonFile = $"{GetConnectionString()}{labelName}.json";
+
+            if (!File.Exists(labelJsonFile))
+                throw new ArgumentException("Invali  label name");
+
+            var labelRowLines = File.ReadAllText(fileNameOfLabel).Split('\n');
+
+            var label = JsonConvert.DeserializeObject<Label>(File.ReadAllText(labelJsonFile), new JsonSerializerSettings
+            {
+                Error = (sender, args) => { args.ErrorContext.Handled = true; }
+            });
+
+            if (label == null)
+                return null;
+
+            foreach (var labelRow in label.Rows)
+            {
+                var idx = label.Rows.IndexOf(labelRow) + 2; //First two lines are labelName & number of copies
+
+                labelRow.Text = labelRowLines.ElementAtOrDefault(idx);
+            }
+
+            labels.Label = JsonConvert.SerializeObject(label);
+            labels.Name = label.SelectedLabelName;
+            labels.Wieght = label.LabelWidth;
+
+            return labels;
         }
     }
 }

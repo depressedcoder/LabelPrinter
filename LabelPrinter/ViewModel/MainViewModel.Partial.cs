@@ -62,6 +62,9 @@ namespace LabelPrinter.ViewModel
         /// </summary>
         public List<int> CharWidths { get; set; } = new List<int> { 6, 8, 10, 12, 15, 18, 20, 24 };
 
+        public int PreviewHeight { set; get; } = 400;
+        public int PreviewWeight { set; get; } = 100;
+
         readonly StorageSelector _storageSelector;
 
         public MainViewModel()

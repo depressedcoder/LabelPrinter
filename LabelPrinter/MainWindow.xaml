@@ -4,13 +4,20 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LabelPrinter.ValidationRules"
+        xmlns:converter="clr-namespace:LabelPrinter.Converters"
         mc:Ignorable="d"
         Title="Label 4.1 - Demo" 
         Height="720" 
         Width="1080"
+        Icon="Norsel.bmp"
         FontSize="15"
         WindowStartupLocation="CenterScreen"
         DataContext="{Binding Main, Source={StaticResource Locator}}" FontFamily="/LabelPrinter;component/Fonts/#Roboto">
+    <Window.Resources>
+        <converter:LabelToImageWidthConverter x:Key="labelToImageWidthConverter" />
+
+    </Window.Resources>
+
     <Grid Margin="8">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
@@ -69,7 +76,7 @@
                     TextChanged="UpdateLabelEvent">
                 <Binding Path="Label.LabelHeight" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                     <Binding.ValidationRules>
-                        <local:MinMaxValidationRule MaxValue="500" MinValue="50"/>
+                        <local:MinMaxValidationRule MaxValue="100" MinValue="20"/>
                     </Binding.ValidationRules>
                 </Binding>
             </TextBox>
@@ -312,25 +319,27 @@
                 </TextBox>
             </Grid>
         </Grid>
-        <Border x:Name="Border"
-                Grid.Row="1" 
-                Grid.Column="2" 
-                Height="{Binding Label.LabelHeight, Mode=TwoWay}"
-                Width="{Binding Label.LabelWidth, Mode=TwoWay}"
-                VerticalAlignment="Top"
+        <Border Grid.Row="1" 
+                Grid.Column="2" >
+            <ScrollViewer 
+                VerticalScrollBarVisibility="Visible"
+                HorizontalScrollBarVisibility="Visible">
+                <Border x:Name="Border" 
+              VerticalAlignment="Top"
                 HorizontalAlignment="Left"
                 BorderBrush="Black" 
                 BorderThickness="2"
-                Margin="10">
-            <Image x:Name="Image" 
+                Margin="5">
+                    <Image x:Name="Image" 
                             HorizontalAlignment="Stretch" 
                             VerticalAlignment="Stretch"
-                            Height="{Binding ActualHeight, ElementName=Border}" 
-                            Width="{Binding ActualWidth, ElementName=Border}" 
+                            Height="{Binding Label.LabelHeight, Converter={StaticResource labelToImageWidthConverter},Mode=TwoWay}" 
+                            Width="{Binding Label.LabelWidth, Converter={StaticResource labelToImageWidthConverter},Mode=TwoWay}" 
                    Source="{Binding BitmapImage, Mode=TwoWay}">
-            </Image>
+                    </Image>
+                </Border>
+            </ScrollViewer>
         </Border>
-
         <Grid Grid.Column="0" Grid.Row="2">
             <Button x:Name="ButtonNew" Content="New" Command="{Binding NewButtonCommand}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="120" Margin="10"/>
             <Button x:Name="ButtonSave" Content="Save" Command="{Binding SaveButtonCommand}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="120" Margin="10"/>

@@ -1,14 +1,14 @@
+using LabelPrinter.Drawing;
+using LabelPrinter.Model;
+using LabelPrinter.Storage;
+using System;
 using System.Collections.Generic;
-using System.Windows.Media.Imaging;
 using System.Drawing;
-using System.IO;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows;
-using LabelPrinter.Model;
-using LabelPrinter.Drawing;
-using Newtonsoft.Json;
-using System;
+using System.Windows.Media.Imaging;
 
 namespace LabelPrinter.ViewModel
 {
@@ -16,20 +16,24 @@ namespace LabelPrinter.ViewModel
     {
         public void SetLabel()
         {
-            if(string.IsNullOrEmpty(Label.SelectedLabelName))
+            if (string.IsNullOrEmpty(Label.SelectedLabelName))
+            {
                 return;
+            }
 
             var storage = _storageSelector.GetStorage();
 
             var label = storage.GetLabel(Label.SelectedLabelName);
 
-            if(label !=null)
+            if (label != null)
+            {
                 Label = label;
+            }
         }
 
         public void PreviewLabel()
         {
-            using (var bitmap = new Bitmap(Label.LabelWidth, Label.LabelHeight))
+            using (var bitmap = new Bitmap((AppConstant.ImageMultiplyWith * Label.LabelWidth), (AppConstant.ImageMultiplyWith * Label.LabelHeight)))
             {
                 var rowHeight = 10f;
 
@@ -61,16 +65,19 @@ namespace LabelPrinter.ViewModel
             }
         }
 
-        void Draw(Graphics graphics, Row row, float x, ref float y)
+        private void Draw(Graphics graphics, Row row, float x, ref float y)
         {
             var placeholers = GetPlaceholders(row.Text);
 
             var rowHeight = 10;
 
+            var storage = _storageSelector.GetStorage();
+            var weight = storage.GetLabels(Label.SelectedLabelName)?.Wieght;
             var strategySelector = new DrawingSelector
             {
                 Graphics = graphics,
                 Barcode = Label.Barcode,
+                Weight = weight ?? 0,
                 Row = row
             };
 
@@ -86,7 +93,7 @@ namespace LabelPrinter.ViewModel
             y = rowHeight + y;
         }
 
-        List<string> GetPlaceholders(string input)
+        private List<string> GetPlaceholders(string input)
         {
             var placeholderPattern = "<([a-zA-Z0-9_.-])+?>";
 
@@ -123,69 +130,61 @@ namespace LabelPrinter.ViewModel
                 if (!Regex.IsMatch(input, placeholderPattern))
                 {
                     if (!string.IsNullOrEmpty(input))
+                    {
                         results.Add(input);
+                    }
                 }
             }
 
             return results;
         }
 
-        void UpdateLabel()
+        private void UpdateLabel()
         {
 
         }
 
-        void ExitCommand()
+        private void ExitCommand()
         {
             System.Windows.Application.Current.MainWindow.Close();
         }
 
-        void PrintJobsCommand()
+        private void PrintJobsCommand()
         {
-            //PrintJobs Button
+            PrintJobWindow window = new PrintJobWindow();
+            window.ShowDialog();
         }
 
-        void PrintCommand()
+        private void PrintCommand()
         {
-            if (!File.Exists("Config.json"))
-                throw new ArgumentException("Configuration file is missing");
+            var con = StorageSelector.GetConfig();
 
-            var con = JsonConvert.DeserializeObject<Config>(File.ReadAllText("Config.json"));
-
-            //Setup
-            PaperMode value = PaperMode.PlainPaperLabel;
-            _printer.Config.LabelMode(value, 40, 3); //40->Label.LabelHeight 
-            _printer.Config.LabelWidth(54); //Label.LabelWidth
-            _printer.Config.Dark(con.Density); //con.Density
-            _printer.Config.Speed(con.Speed); //con.Speed
-            _printer.Config.PageNo(1);
-            _printer.Config.CopyNo(Label.HowManyCoppies);
-
-            _printer.Open(PortType.USB);
+            SetupPrinter(con);
 
             //Print
             _printer.Command.Start();
 
-            
+
             var posY = 10;
             var rowHeight = 10;
-
+            var storage = _storageSelector.GetStorage();
             foreach (var labelRow in Label.Rows)
             {
                 var posX = 10;
                 var placeholers = GetPlaceholders(labelRow.Text);
-                
+
                 var strategySelector = new DrawingSelector
                 {
                     Graphics = Graphics.FromImage(new Bitmap(Label.LabelWidth, Label.LabelHeight)),
                     Barcode = Label.Barcode,
+                    Weight = storage.GetLabels(Label.SelectedLabelName).Wieght,
                     Row = labelRow
                 };
 
                 foreach (var placeholer in placeholers)
                 {
                     var drawingStrategy = strategySelector.GetStrategy(placeholer);
-                    
+
                     drawingStrategy.Print(_printer, ref rowHeight, ref posX, posY);
                 }
 
@@ -196,13 +195,48 @@ namespace LabelPrinter.ViewModel
             _printer.Close();
         }
 
-        void SetUpCommand()
+        private void SetupPrinter(Config con)
+        {
+            // Connect printer
+            PortType port = EnumsConverter.ParseEnum<PortType>(string.IsNullOrEmpty(con.SelectedPrinterPort) ? "USB" : con.SelectedPrinterPort);
+            _printer.Open(port);
+            //Setup
+             
+            PaperMode value = EnumsConverter.ParseEnum<PaperMode>(con.RadioButtonValue.ToString());
+            int gapFeed = Convert.ToInt32(string.IsNullOrEmpty(con.GapControlText) ? "0" : con.GapControlText);
+            _printer.Config.LabelMode(value, Label.LabelHeight, gapFeed); //40-> 
+            _printer.Config.LabelWidth(Label.LabelWidth); //Label.LabelWidth
+            _printer.Config.Dark(con.Density); //con.Density
+            _printer.Config.Speed(con.Speed); //con.Speed
+            _printer.Config.PageNo(1);
+            _printer.Config.CopyNo(Label.HowManyCoppies);
+            ////Cutting command
+            if (Label.IsAutomaticCuttingDevice)
+            {
+                _printer.Config.CutPapaerOn(1);
+            }
+            else
+            {
+                _printer.Config.CutPapaerOff();
+            }
+
+            _printer.Config.SetLeftMargin(Label.DistanceFromLeft); //8 dot = 1 mm
+        }
+
+        private void SetUpCommand()
         {
             SetUpWindow window = new SetUpWindow();
+            window.Closing += Window_Closing;
             window.ShowDialog();
         }
 
-        void NewCommand()
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            var storage = _storageSelector.GetStorage();
+            LabelSource = storage.GetLabelNames();
+        }
+
+        private void NewCommand()
         {
             Label.SelectedLabelName = string.Empty;
 
@@ -216,11 +250,11 @@ namespace LabelPrinter.ViewModel
             }
         }
 
-        void SaveCommand()
+        private void SaveCommand()
         {
             if (Label.SelectedLabelName != null)
             {
-                var storage = _storageSelector.GetStorage();
+                var storage = _storageSelector.GetStorage(); 
                 storage.SaveLabel(Label);
 
                 LabelSource = storage.GetLabelNames();
@@ -233,7 +267,7 @@ namespace LabelPrinter.ViewModel
             }
         }
 
-        void GetLabelNames()
+        private void GetLabelNames()
         {
             var storage = _storageSelector.GetStorage();
             LabelSource = storage.GetLabelNames();

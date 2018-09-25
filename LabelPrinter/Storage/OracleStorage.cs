@@ -1,6 +1,11 @@
-﻿using LabelPrinter.Model;
+﻿using Devart.Data.Oracle;
+using LabelPrinter.Model;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Common;
+using System.IO;
 
 namespace LabelPrinter.Storage
 {
@@ -67,68 +72,71 @@ namespace LabelPrinter.Storage
         }
 
         public override void SaveLabel(Label label)
-        {
-            //string sep = "'";
-            //StringBuilder sb = new StringBuilder();
-            //foreach (var l in label.Rows)
-            //{
-            //    sb.Append(sep).Append(l.Text);
-            //    sep = "','";
-            //}
-            //sb.Append("'");
-
-            //decimal w = 12;
-            //try
-            //{
-            //    string query = "INSERT INTO label_in (LABEL_NAME, WEIGHT, LINE1, LINE2, LINE3, LINE4, LINE5, LINE6, LINE7, LINE8, LINE9, LINE10, LINE11, LINE12, LINE13, LINE14, LINE15) VALUES ('" + @label.SelectedLabelName + "','" + @w + "'," + @sb + ")";
-            //    OracleConnection connection = new OracleConnection(GetConnectionString());
-            //    OracleCommand command = new OracleCommand(query, connection);
-            //    connection.Open();
-            //    command.ExecuteNonQuery();
-            //    connection.Close();
-            //}
-            //catch (Exception ex)
-            //{
-            //    System.Windows.MessageBox.Show(ex.Message);
-            //}
-            throw new NotImplementedException();
+        { 
+            decimal w = 12;
+            try
+            {
+                string query = string.Empty;
+                query = "INSERT INTO LABELS(NAME, WEIGHT, LABEL) VALUES(@name, @weight, @label)";
+                OracleConnection connection = new OracleConnection(GetConnectionString());
+                OracleCommand command = new OracleCommand(query, connection);
+                command.Parameters.Add(new OracleParameter("@name", label.SelectedLabelName));
+                command.Parameters.Add(new OracleParameter("@weight", w));
+                command.Parameters.Add(new OracleParameter("@label", JsonConvert.SerializeObject(label)));
+                connection.Open();
+                command.ExecuteNonQuery();
+                connection.Close();
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.Message);
+            }
         }
         
         protected override string GetConnectionString()
         {
-            //if (!File.Exists("Config.json"))
-            //    throw new ArgumentException("Configuration file is missing");
+            if (!File.Exists("Config.json"))
+                throw new ArgumentException("Configuration file is missing");
 
-            //var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("Config.json"));
+            var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("Config.json"));
 
-            //var connectionString = config?.OracleConnection;
+            var connectionString = config?.OracleConnection;
 
-            //return connectionString;
+            return connectionString;
 
-            throw new NotImplementedException();
         }
 
         public override string TestConnection(string connectionString)
         {
-            //try
-            //{
-            //    using (OracleConnection connection = new OracleConnection(connectionString))
-            //    {
-            //        connection.Open();
-            //        if (connection.State != ConnectionState.Open)
-            //        {
-            //            return "Connection failed.";
-            //        }
-            //        else
-            //        {
-            //            return "You have been successfully connected to the Oracle database!";
-            //        }
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    return ex.Message;
-            //}
+            try
+            {
+                var str = new DbConnectionStringBuilder(false);
+                str.Add("Data Source", "desktop-bi2o5lr");
+                str.Add("User ID", "system");
+                str.Add("Password", "masud@bs23");
+                //var con = new Devart.Data.Oracle.OracleConnection(str.ConnectionString);
+                using (OracleConnection connection = new OracleConnection(str.ConnectionString))
+                {
+                    connection.Open();
+                    if (connection.State != ConnectionState.Open)
+                    {
+                        return "Connection failed.";
+                    }
+                    else
+                    {
+                        return "You have been successfully connected to the Oracle database!";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+            throw new NotImplementedException();
+        }
+
+        public override Labels GetLabels(string name)
+        {
             throw new NotImplementedException();
         }
     }

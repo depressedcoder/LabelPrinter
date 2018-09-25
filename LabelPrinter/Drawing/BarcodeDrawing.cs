@@ -39,13 +39,14 @@ namespace LabelPrinter.Drawing
             {
                 using (var barcodeImage = GetBarcodeImage(Barcode.SelectedBarCode, Placeholder, Barcode.CodeSize, Barcode.HeightOfCode))
                 {
-                    Graphics.DrawImage(barcodeImage, x, y, barcodeImage.Width, barcodeImage.Height);
+                    int height = barcodeImage.Height / 2;
+                    Graphics.DrawImage(barcodeImage, x, y, barcodeImage.Width, height);
 
                     x += barcodeImage.Width;
 
-                    if (barcodeImage.Height > rowHeight)
+                    if (height > rowHeight)
                     {
-                        rowHeight = barcodeImage.Height;
+                        rowHeight = height;
                     }
                 }
             }
@@ -55,55 +56,61 @@ namespace LabelPrinter.Drawing
         {             
             var label = Regex.Replace(Regex.Replace(Placeholder, BarcodeMatchingPattern, ""), @"\D", "0");
             var barcodeHeight = Barcode.HeightOfCode * 20;
-            var barcodeSize = Barcode.CodeSize * 2;
+            var barcodeWidth = Barcode.CodeSize * 2;
 
             if (Barcode.SelectedBarCode == "Code39")
             {
                 //Couldn't increment the correct x value...
-                printer.Command.PrintBarCode(BarCodeType.Code128_Auto, x, y, label);
-                //printer.Command.PrintBarCode(BarCodeType.Code39, x, y, 5, barcodeSize, barcodeHeight, 0, 0, label);
-                //x += barcodeSize;
+                //printer.Command.PrintBarCode(BarCodeType.Code39, x, y, label);
+                printer.Command.PrintBarCode(BarCodeType.Code39, x, y, 5, barcodeWidth, barcodeHeight, 0, 0, label);
+                //x += (barcodeWidth / 2);
                 //if (barcodeHeight > rowHeight)
                 //    rowHeight = barcodeHeight;
-               
+
             }
             else if(Barcode.SelectedBarCode == "Code128")
             {
-                printer.Command.PrintBarCode(BarCodeType.Code128_Auto, x, y, label);
-                //printer.Command.PrintBarCode(BarCodeType.Code128_Auto, x, y, 5, barcodeSize, barcodeHeight, 0, 0, label);
-                //x += barcodeSize;
+                //printer.Command.PrintBarCode(BarCodeType.Code128_Subset, x, y, label);
+                printer.Command.PrintBarCode(BarCodeType.Code128_Auto, x, y, 5, barcodeWidth, barcodeHeight, 0, 0, label);
+                //x += (barcodeWidth / 2);
                 //if (barcodeHeight > rowHeight)
-                //    rowHeight = barcodeHeight;
+                //    rowHeight = (barcodeHeight);
             }
             else if(Barcode.SelectedBarCode == "EAN13")
             {
-                printer.Command.PrintBarCode(BarCodeType.EAN13, x, y, label);
-                //printer.Command.PrintBarCode(BarCodeType.EAN13, x, y, 5, barcodeSize, barcodeHeight, 0, 0, label);
-                //x += barcodeSize;
+                //printer.Command.PrintBarCode(BarCodeType.EAN13_Add5, x, y, label);
+                printer.Command.PrintBarCode(BarCodeType.EAN13, x, y, 5, barcodeWidth, barcodeHeight, 0, 0, label);
+                //x += (barcodeWidth / 2);
                 //if (barcodeHeight > rowHeight)
                 //    rowHeight = barcodeHeight;
             }
             else if(Barcode.SelectedBarCode == "EAN8")
             {
-               printer.Command.PrintBarCode(BarCodeType.EAN8, x, y, label);
-               // printer.Command.PrintBarCode(BarCodeType.EAN8, x, y, 5, barcodeSize, barcodeHeight, 0, 0, label);
-               // x += barcodeSize;
+                //printer.Command.PrintBarCode(BarCodeType.EAN8, x, y, label);
+                printer.Command.PrintBarCode(BarCodeType.EAN8, x, y, 5, barcodeWidth, barcodeHeight, 0, 0, label);
+                //x += (barcodeWidth / 2);
                 //if (barcodeHeight > rowHeight)
                 //    rowHeight = barcodeHeight;
             }
             else if(Barcode.SelectedBarCode == "2/5 Interleaved")
             {
-                printer.Command.PrintBarCode(BarCodeType.I2of5, x, y, label);
-                //printer.Command.PrintBarCode(BarCodeType.I2of5, x, y, 5, barcodeSize, barcodeHeight, 0, 0, label);
-                //x += barcodeSize;
+                //printer.Command.PrintBarCode(BarCodeType.I2of5, x, y, label);
+                printer.Command.PrintBarCode(BarCodeType.I2of5, x, y, 5, barcodeWidth, barcodeHeight, 0, 0, label);
+                //x += (barcodeWidth / 2);
                 //if (barcodeHeight > rowHeight)
                 //    rowHeight = barcodeHeight;
             }
             else
             {
-                printer.Command.PrintDataMatrix(x,y,10,"0",label); 
+                printer.Command.PrintDataMatrix(x,y,10,"0",label);
+                //x += (barcodeWidth / 2);
+                //if (barcodeHeight > rowHeight)
+                //    rowHeight = barcodeHeight;
             }
-            
+            x += (barcodeWidth / 2);
+            if (barcodeHeight > rowHeight)
+                rowHeight = barcodeHeight;
+
         }
 
         Image GetBarcodeImage(string selectedBarcode, string barCodeLabel, int width, int height)

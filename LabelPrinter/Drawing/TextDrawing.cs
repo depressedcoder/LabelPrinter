@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
+using System.Linq;
 
 namespace LabelPrinter.Drawing
 {
@@ -7,10 +9,10 @@ namespace LabelPrinter.Drawing
         public override void Draw(ref int rowHeight, ref float x, float y)
         {
             using (var font = GetRowFont())
-            {
+            { 
                 Graphics.DrawString(Placeholder, font, Brushes.Black, new PointF(x, y));
 
-                x += Graphics.MeasureString(Placeholder, font).Width;
+                x += Graphics.MeasureString(Placeholder, font).Width + (Placeholder.Count(Char.IsWhiteSpace) * font.Size);
 
                 if (font.Height > rowHeight)
                 {
@@ -18,6 +20,7 @@ namespace LabelPrinter.Drawing
                 }
             }
         }
+
 
         public override void Print(GodexPrinter printer, ref int rowHeight, ref int x, int y)
         {

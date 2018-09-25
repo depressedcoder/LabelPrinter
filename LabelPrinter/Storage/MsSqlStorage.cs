@@ -4,9 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.IO;
-using System.Linq;
-using System.Text;
+using System.IO; 
 
 namespace LabelPrinter.Storage
 {
@@ -23,81 +21,116 @@ namespace LabelPrinter.Storage
         {
             List<String> labelNames = new List<String>();
 
-            using (SqlConnection connection = new SqlConnection(GetConnectionString()))
+            try
             {
-                connection.Open();
-                string query = "SELECT LABEL_NAME FROM LABEL_OUT";
-                using (SqlCommand command = new SqlCommand(query, connection))
+                string labelName = string.Empty;
+                using (SqlConnection connection = new SqlConnection(GetConnectionString()))
                 {
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    string query = "SELECT [NAME] FROM LABELS";
+                    using (SqlCommand command = new SqlCommand(query, connection))
                     {
-                        while (reader.Read())
+                        connection.Open();
+
+                        using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            labelNames.Add(reader.GetString(0));
+                            while (reader.Read())
+                            { 
+                                labelName = reader["NAME"].ToString();
+                                labelNames.Add(labelName);
+                            }
+                            reader.Close();
                         }
+                        connection.Close();
                     }
-                }
+                } 
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
             return labelNames;
         }
         
         public override Label GetLabel(string labelName)
         {
-            var rowLines = new List<string>();
-            
-            using (SqlConnection connection = new SqlConnection(GetConnectionString()))
+            Label label = null;
+            Labels labels = GetLabels(labelName);
+            if(labels != null)
+                label = JsonConvert.DeserializeObject<Label>(labels.Label); 
+            return label;           
+        }
+
+        public override Labels GetLabels(string name)
+        {
+            try
             {
-                string query = "SELECT I1,I2,I3,I4,I5,I6,I7,I8,I9,I10,I11,I12,I13,I14,I15 FROM LABEL_OUT WHERE LABEL_NAME='" + labelName + "'";
-                using (SqlCommand command = new SqlCommand(query, connection))
+                Labels labels = null;
+                using (SqlConnection connection = new SqlConnection(GetConnectionString()))
                 {
-                    connection.Open();
-
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    string query = "SELECT * FROM LABELS WHERE [NAME] = '" + name + "'";
+                    using (SqlCommand command = new SqlCommand(query, connection))
                     {
-                        
-                        while (reader.Read())
+                        connection.Open();
+
+                        using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            for (int i = 0; i < reader.FieldCount; i++)
+                            while (reader.Read())
                             {
-                                rowLines.Add(reader.IsDBNull(i) ? string.Empty : reader[i].ToString());
+                                labels = new Labels();
+                                labels.ID = Convert.ToInt64(reader["ID"]);
+                                labels.Name = reader.IsDBNull(1) ? string.Empty : reader["NAME"].ToString();
+                                labels.Wieght = reader.IsDBNull(2) ? 0 : Convert.ToDecimal(reader["WEIGHT"]);
+                                labels.Label = reader.IsDBNull(3) ? string.Empty : reader["LABEL"].ToString();
                             }
+                            reader.Close();
                         }
-                        
-                        //var array = rowLines.ToArray();
-
-                        //for (var i = 0; i < array.Length; i++)
-                        //{
-
-                        //}
+                        connection.Close();
                     }
                 }
-
+                return labels;
             }
-            //var label = rowLines.ToList();
-            return null;
-           
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public override void SaveLabel(Label label)
-        {
-            string sep = "'";
-            StringBuilder sb = new StringBuilder();
-            foreach (var l in label.Rows)
-            {
-                sb.Append(sep).Append(l.Text);
-                sep = "','";
-            }
-            sb.Append("'");
-
+        {             
             decimal w = 12;
             try
             {
-                string query = "INSERT INTO LABEL_IN (LABEL_NAME, WEIGHT, LINE1, LINE2, LINE3, LINE4, LINE5, LINE6, LINE7, LINE8, LINE9, LINE10, LINE11, LINE12, LINE13, LINE14, LINE15) VALUES ('" + @label.SelectedLabelName+ "','"+@w+"',"+@sb+")";
-                SqlConnection connection = new SqlConnection(GetConnectionString());
-                SqlCommand command = new SqlCommand(query, connection);
-                connection.Open();
-                command.ExecuteNonQuery();
-                connection.Close();
+                Labels dblabels = GetLabels(label.SelectedLabelName); 
+                string labelStr = JsonConvert.SerializeObject(label);
+                string query = string.Empty;
+                using (SqlConnection connection = new SqlConnection(GetConnectionString()))
+                {
+                    if(dblabels != null)
+                    {
+                        query = "UPDATE LABELS SET [NAME] = @name, [WEIGHT] = @weight, LABEL = @label WHERE ID = " + dblabels.ID;
+                    }
+                    else
+                    {
+                        query = "INSERT INTO LABELS([NAME],[WEIGHT],LABEL) VALUES(@name, @weight, @label)";
+                      
+                    }
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+
+                        SqlParameter nameParam = new SqlParameter("@name", label.SelectedLabelName);
+                        SqlParameter wightParam = new SqlParameter("@weight", w);
+                        SqlParameter labelParam = new SqlParameter("@label", labelStr);
+
+                        command.Parameters.Add(nameParam);
+                        command.Parameters.Add(wightParam);
+                        command.Parameters.Add(labelParam);
+
+                        connection.Open();
+                        command.ExecuteNonQuery();
+                        connection.Close();
+                    }
+                }
             }
             catch (Exception ex)
             {

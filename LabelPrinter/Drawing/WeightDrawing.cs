@@ -10,9 +10,9 @@ namespace LabelPrinter.Drawing
         {
             using (var font = GetRowFont())
             {
-                Graphics.DrawString(ConvertedWeight, font, Brushes.Black, new PointF(x, y));
+                Graphics.DrawString(Weight.ToString("#,##0.00"), font, Brushes.Black, new PointF(x, y));
                 
-                x +=  Graphics.MeasureString(ConvertedWeight, font).Width;
+                x +=  Graphics.MeasureString(Weight.ToString(), font).Width + 2; // 2 * fontSize added because of two zero after weight.
 
                 if (font.Height > rowHeight)
                 {
@@ -28,7 +28,7 @@ namespace LabelPrinter.Drawing
             //if (Row.IsHigh)
             //    Row.SelectedCharWidth *= 2;
 
-            printer.Command.PrintText(x, y, Row.SelectedCharWidth * 3, "Arial", ConvertedWeight, 0, BoldStatus, RotateMode.Angle_0, Italic_State.OFF, UnderLineStatus, Strikeout_State.OFF, Inverse_State.OFF);
+            printer.Command.PrintText(x, y, Row.SelectedCharWidth * 3, "Arial", Weight.ToString("#,##0.00"), 0, BoldStatus, RotateMode.Angle_0, Italic_State.OFF, UnderLineStatus, Strikeout_State.OFF, Inverse_State.OFF);
 
             x += (int)Graphics.MeasureString(Placeholder, GetRowFontForPrinting()).Width;
             if (GetRowFontForPrinting().Height > rowHeight)

@@ -12,6 +12,8 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -24,13 +26,11 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -75,6 +75,8 @@
       <HintPath>..\packages\BarcodeLib.1.1.0.0\lib\net20\BarcodeLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Devart.Data, Version=5.0.2021.0, Culture=neutral, PublicKeyToken=09af7300eec23701" />
+    <Reference Include="Devart.Data.Oracle, Version=9.6.597.0, Culture=neutral, PublicKeyToken=09af7300eec23701, processorArchitecture=MSIL" />
     <Reference Include="GalaSoft.MvvmLight, Version=5.4.1.0, Culture=neutral, PublicKeyToken=bb738e8c4ab8c76c, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.4.1\lib\net35\GalaSoft.MvvmLight.dll</HintPath>
     </Reference>
@@ -92,6 +94,9 @@
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
+    <Reference Include="MySql.Data, Version=6.7.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.6.7.9\lib\net20\MySql.Data.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net35\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -99,6 +104,7 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.4.1\lib\net35\System.Windows.Interactivity.dll</HintPath>
@@ -118,6 +124,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Config.cs" />
+    <Compile Include="Converters\EnumConverter.cs" />
+    <Compile Include="Converters\LabelToImageWidthConverter.cs" />
     <Compile Include="Converters\RadioBoolToIntConverter.cs" />
     <Compile Include="EZioApi.cs" />
     <Compile Include="GodexPrinter.cs" />
@@ -128,9 +136,17 @@
     <Compile Include="Drawing\DrawingSelector.cs" />
     <Compile Include="Drawing\TextDrawing.cs" />
     <Compile Include="Drawing\WeightDrawing.cs" />
+    <Compile Include="Model\AppConstant.cs" />
     <Compile Include="Model\Barcode.cs" />
+    <Compile Include="Model\Entities\Labels.cs" />
+    <Compile Include="Model\Enums.cs" />
     <Compile Include="Model\Label.cs" />
+    <Compile Include="Model\PrintJobsLabel.cs" />
+    <Compile Include="Model\PrintJobsRow.cs" />
     <Compile Include="Model\Row.cs" />
+    <Compile Include="PrintJobWindow.xaml.cs">
+      <DependentUpon>PrintJobWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Storage\AbstractStorage.cs" />
     <Compile Include="Storage\MsSqlStorage.cs" />
     <Compile Include="Storage\MySqlStorage.cs" />
@@ -144,6 +160,7 @@
     <Compile Include="ValidationRules\MinMaxValidationRule.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.Partial.cs" />
+    <Compile Include="ViewModel\PrintJobsViewModel.cs" />
     <Compile Include="ViewModel\SetUpViewModel.cs" />
     <Compile Include="ViewModel\SetUpViewModel.Partial.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
@@ -161,7 +178,15 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="PrintJobWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="SetUpWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\Style.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

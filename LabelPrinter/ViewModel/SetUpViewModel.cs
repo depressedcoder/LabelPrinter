@@ -1,76 +1,137 @@
 ﻿using GalaSoft.MvvmLight;
+using LabelPrinter.Model;
 using LabelPrinter.Storage;
 using Newtonsoft.Json;
-using System;
-using System.Data;
-using System.Data.SqlClient;
 using System.IO;
+using System.Windows;
 using System.Windows.Forms;
 
 namespace LabelPrinter.ViewModel
 {
     public partial class SetUpViewModel : ViewModelBase
     {
+        /// <summary>
+        /// If class is initialize then config.json should not reset/save
+        /// </summary>
+        private bool IsNotInit { set; get; }
+
         public void DataConnectionUpdate()
         {
-            if(SelectedDataConnection != "Text Files")
+            if (SelectedDataConnection != "Text Files")
             {
+                Config config = StorageSelector.GetConfig();
+
                 IsVisibleForConnection = true;
                 IsVisibleForLocation = false;
-                if (SelectedDataConnection == "Data Base MySQL")
-                    EgText = "Example: Server=localhost;Database=labelprinter;Uid=root;Pwd = 4466;";
-                if (SelectedDataConnection == "Data Base MS SQL Server")
-                    EgText = "Example: Data Source = BS-229; Initial Catalog = LabelPrinter;Integrated Security=True";
-                if (SelectedDataConnection == "Data Base Oracle")
-                    EgText = "Under Construction....";
+                if (config != null)
+                {
+                    if (SelectedDataConnection == EnumsConverter.GetDescription(DataConnections.MySQL))
+                    {
+                        EgText = "Example: Server=localhost;Database=labelprinter;Uid=root;Pwd = 4466;";
+                        ODBCConnectionString = config.MySqlConnection;
+                    }
+                    if (SelectedDataConnection == EnumsConverter.GetDescription(DataConnections.MSSQL))
+                    {
+                        EgText = "Example: Data Source = BS-229; Initial Catalog = LabelPrinter;Integrated Security=True";
+                        ODBCConnectionString = config.MssqlConnection;
+                    }
+                    if (SelectedDataConnection == EnumsConverter.GetDescription(DataConnections.Oracle))
+                    {
+                        ODBCConnectionString = config.OracleConnection;
+                        EgText = "Under Construction....";
+                    }
+                }
             }
             else
             {
                 IsVisibleForLocation = true;
                 IsVisibleForConnection = false;
             }
+
+            if (IsNotInit)
+            {
+                SaveConfig();
+            }
+            else
+            {
+                IsNotInit = true;
+            }
         }
-        void ChangeCommand()
+
+        private void ChangeCommand()
         {
             FolderBrowserDialog openFolderDialog = new FolderBrowserDialog();
             if (openFolderDialog.ShowDialog() == DialogResult.OK)
+            {
                 LocationOfFile = openFolderDialog.SelectedPath + "\\";
+            }
         }
 
-        
-
-        void TestConnectionCommand()
+        private void TestConnectionCommand()
         {
             StorageSelector _storageSelector = new StorageSelector();
             var storage = _storageSelector.GetStorage();
 
             var msg = storage.TestConnection(ODBCConnectionString);
 
-            MessageBox.Show(msg);
+            System.Windows.MessageBox.Show(msg);
 
         }
 
-        void ExitCommand()
+        private void ExitCommand(object obj)
         {
+            Window Win = obj as Window;
 
+            Win.Close();
         }
 
-        void SaveCommand()
+        private void SaveCommand()
         {
-            var config = new Config
-            {
-                SelectedConnection = SelectedDataConnection,
-                TextConnection = LocationOfFile,
-                MssqlConnection = ODBCConnectionString,
-                MySqlConnection = ODBCConnectionString,
-                OracleConnection = ODBCConnectionString,
-                Density = Density,
-                Speed = Speed
-            };
-
-            File.WriteAllText("Config.json", JsonConvert.SerializeObject(config, Formatting.Indented));
+            SaveConfig();
 
             System.Windows.MessageBox.Show("File saved");
+        }
+
+        private void SaveConfig()
+        {
+            Config prevConfig = StorageSelector.GetConfig();
+            if (prevConfig != null)
+            {
+                var config = new Config
+                {
+                    SelectedConnection = SelectedDataConnection,
+                    SelectedScalesPort = SelectedScalesPort,
+                    SelectedScalesModel = SelectedScalesModel,
+                    SelectedPrinter = SelectedPrinter,
+                    SelectedPrinterPort = SelectedPrinterPort,
+                    TextConnection = LocationOfFile,
+                    MssqlConnection = SelectedDataConnection == EnumsConverter.GetDescription(DataConnections.MSSQL) ? ODBCConnectionString : prevConfig.MssqlConnection,
+                    MySqlConnection = SelectedDataConnection == EnumsConverter.GetDescription(DataConnections.MySQL) ? ODBCConnectionString : prevConfig.MySqlConnection,
+                    OracleConnection = SelectedDataConnection == EnumsConverter.GetDescription(DataConnections.Oracle) ? ODBCConnectionString : prevConfig.OracleConnection,
+                    Density = Density,
+                    Speed = Speed,
+                    RadioButtonValue = RadioButtonValue,
+                    BlackLineText = BlackLineText,
+                    GapControlText = GapControlText,
+                    LocationOfFile = LocationOfFile,
+                    IsCreateOrExport = IsCreateOrExport
+                };
+                if (!string.IsNullOrEmpty(LocationOfFile))
+                {
+                    if (!Directory.Exists(LocationOfFile))
+                        Directory.CreateDirectory(LocationOfFile);
+                    File.WriteAllText(LocationOfFile +"\\Config.json", JsonConvert.SerializeObject(config, Formatting.Indented));
+                }
+                else
+                {
+                    File.WriteAllText("Config.json", JsonConvert.SerializeObject(config, Formatting.Indented));
+                }
+                
+            }
+            else
+            {
+                throw new FileNotFoundException("Config file not found.");
+            }
         }
     }
 }

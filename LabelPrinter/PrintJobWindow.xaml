@@ -1,0 +1,105 @@
+﻿<Window x:Class="LabelPrinter.PrintJobWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:local="clr-namespace:LabelPrinter"
+         x:Name="JobWindowsForm"
+        mc:Ignorable="d"
+        Title="Print Jobs" 
+        Height="550" 
+        ResizeMode="NoResize"
+        Width="350">
+    <Window.Resources>
+        <Style x:Key="TextBlockRowNo" TargetType="{x:Type TextBlock}">
+            <Setter Property="TextWrapping" Value="NoWrap"/>
+            <Setter Property="TextTrimming" Value="None"/>
+            <Setter Property="FontFamily" Value="Arial" />
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+    </Window.Resources>
+    <Grid Margin="8">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="8*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="Print Jobs" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontWeight="Bold"/>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="6*"/>
+                <ColumnDefinition Width="4*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            
+            <TextBlock Text="1." Grid.Column="0" Grid.Row="0" Style="{DynamicResource TextBlockRowNo}" />
+            <ComboBox x:Name="CharWidthComboBox0" Cursor="Hand" ItemsSource="{Binding LabelSource}" SelectedItem="{Binding PrintJobsLabel.PrintJobsRow[0].LabelName}" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center"  Margin="2" FontSize="15" />
+            <TextBox x:Name="CopyNo0" Text="{Binding PrintJobsLabel.PrintJobsRow[0].NoOfCopy}" Width="60" Height="25"  Grid.Column="2" Grid.Row="0" FontSize="13" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
+
+            <TextBlock Text="2." Grid.Column="0" Grid.Row="1" Style="{DynamicResource TextBlockRowNo}" />
+            <ComboBox x:Name="CharWidthComboBox1" Cursor="Hand" ItemsSource="{Binding LabelSource}" SelectedItem="{Binding PrintJobsLabel.PrintJobsRow[1].LabelName}" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center"  Margin="2" FontSize="15" />
+            <TextBox x:Name="CopyNo1" Text="{Binding PrintJobsLabel.PrintJobsRow[1].NoOfCopy}"  Width="60" Height="25"   Grid.Column="2" Grid.Row="1" FontSize="13" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
+
+            <TextBlock Text="3." Grid.Column="0" Grid.Row="2" Style="{DynamicResource TextBlockRowNo}" />
+            <ComboBox x:Name="CharWidthComboBox2" Cursor="Hand" ItemsSource="{Binding LabelSource}" SelectedItem="{Binding PrintJobsLabel.PrintJobsRow[2].LabelName}" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center"  Margin="2" FontSize="15" />
+            <TextBox x:Name="CopyNo2" Text="{Binding PrintJobsLabel.PrintJobsRow[2].NoOfCopy}"  Width="60" Height="25"   Grid.Column="2" Grid.Row="2" FontSize="13" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
+            
+            <TextBlock Text="4." Grid.Column="0" Grid.Row="3" Style="{DynamicResource TextBlockRowNo}" />
+            <ComboBox x:Name="CharWidthComboBox3" Cursor="Hand" ItemsSource="{Binding LabelSource}" SelectedItem="{Binding PrintJobsLabel.PrintJobsRow[3].LabelName}" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center"  Margin="2" FontSize="15" />
+            <TextBox x:Name="CopyNo3" Text="{Binding PrintJobsLabel.PrintJobsRow[3].NoOfCopy}" Width="60" Height="25"   Grid.Column="2" Grid.Row="3" FontSize="13" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
+            
+            <TextBlock Text="5." Grid.Column="0" Grid.Row="4" Style="{DynamicResource TextBlockRowNo}" />
+            <ComboBox x:Name="CharWidthComboBox4" Cursor="Hand" ItemsSource="{Binding LabelSource}" SelectedItem="{Binding PrintJobsLabel.PrintJobsRow[4].LabelName}" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center"  Margin="2" FontSize="15" />
+            <TextBox x:Name="CopyNo4" Text="{Binding PrintJobsLabel.PrintJobsRow[4].NoOfCopy}" Width="60" Height="25" Grid.Column="2" Grid.Row="4" FontSize="13" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
+            
+            <TextBlock Text="6." Grid.Column="0" Grid.Row="5" Style="{DynamicResource TextBlockRowNo}" />
+            <ComboBox x:Name="CharWidthComboBox5" Cursor="Hand" ItemsSource="{Binding LabelSource}" SelectedItem="{Binding PrintJobsLabel.PrintJobsRow[5].LabelName}" Grid.Row="5" Grid.Column="1" VerticalAlignment="Center"  Margin="2" FontSize="15" />
+            <TextBox x:Name="CopyNo5" Text="{Binding PrintJobsLabel.PrintJobsRow[5].NoOfCopy}" Width="60" Height="25" Grid.Column="2" Grid.Row="5" FontSize="13" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
+            
+            <TextBlock Text="7." Grid.Column="0" Grid.Row="6" Style="{DynamicResource TextBlockRowNo}" />
+            <ComboBox x:Name="CharWidthComboBox6" Cursor="Hand" ItemsSource="{Binding LabelSource}" SelectedItem="{Binding PrintJobsLabel.PrintJobsRow[6].LabelName}" Grid.Row="6" Grid.Column="1" VerticalAlignment="Center"  Margin="2" FontSize="15" />
+            <TextBox x:Name="CopyNo6" Text="{Binding PrintJobsLabel.PrintJobsRow[6].NoOfCopy}" Width="60" Height="25" Grid.Column="2" Grid.Row="6" FontSize="13" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
+            
+            <TextBlock Text="8." Grid.Column="0" Grid.Row="7" Style="{DynamicResource TextBlockRowNo}" />
+            <ComboBox x:Name="CharWidthComboBox7" Cursor="Hand" ItemsSource="{Binding LabelSource}" SelectedItem="{Binding PrintJobsLabel.PrintJobsRow[7].LabelName}" Grid.Row="7" Grid.Column="1" VerticalAlignment="Center"  Margin="2" FontSize="15" />
+            <TextBox x:Name="CopyNo7" Text="{Binding PrintJobsLabel.PrintJobsRow[7].NoOfCopy}" Width="60" Height="25" Grid.Column="2" Grid.Row="7" FontSize="13" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
+            
+            <TextBlock Text="9." Grid.Column="0" Grid.Row="8" Style="{DynamicResource TextBlockRowNo}" />
+            <ComboBox x:Name="CharWidthComboBox8" Cursor="Hand" ItemsSource="{Binding LabelSource}" SelectedItem="{Binding PrintJobsLabel.PrintJobsRow[8].LabelName}" Grid.Row="8" Grid.Column="1" VerticalAlignment="Center"  Margin="2" FontSize="15" />
+            <TextBox x:Name="CopyNo8" Text="{Binding PrintJobsLabel.PrintJobsRow[8].NoOfCopy}" Width="60" Height="25" Grid.Column="2" Grid.Row="8" FontSize="13" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
+            
+            <TextBlock Text="10." Grid.Column="0" Grid.Row="9" Style="{DynamicResource TextBlockRowNo}" />
+            <ComboBox x:Name="CharWidthComboBo9" Cursor="Hand" ItemsSource="{Binding LabelSource}" SelectedItem="{Binding PrintJobsLabel.PrintJobsRow[9].LabelName}" Grid.Row="9" Grid.Column="1" VerticalAlignment="Center"  Margin="2" FontSize="15"  />
+            <TextBox x:Name="CopyNo9" Text="{Binding PrintJobsLabel.PrintJobsRow[9].NoOfCopy}" Width="60" Height="25" Grid.Column="2" Grid.Row="9" FontSize="153" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
+        </Grid>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" x:Name="ButtonPrintJob" Content="Print Start" Command="{Binding PrintJobsButtonCommand}"  Width="120" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Button Grid.Column="1" x:Name="ButtonExit" CommandParameter="{Binding ElementName=JobWindowsForm}"  Content="Exit" Command="{Binding ExitButtonCommand}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="120" />
+        </Grid>
+
+    </Grid>
+</Window>

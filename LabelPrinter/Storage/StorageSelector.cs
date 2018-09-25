@@ -23,16 +23,22 @@ namespace LabelPrinter.Storage
 
         public AbstractStorage GetStorage()
         {
-            if (!File.Exists("Config.json"))
-                throw new ArgumentException("Configuration file is missing");
-
-            var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("Config.json"));
-
+            Config config = GetConfig();
             var selectedStorage = config?.SelectedConnection;
 
             var strategy = _storage.FirstOrDefault(x => x.Key == selectedStorage).Value ?? new TextStorage();
 
             return strategy;
+        }
+
+        public static Config GetConfig()
+        {
+
+            if (!File.Exists("Config.json"))
+                throw new ArgumentException("Configuration file is missing");
+
+            Config config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("Config.json"));
+            return config;
         }
     }
 }

@@ -1,9 +1,10 @@
 ﻿using GalaSoft.MvvmLight.Command;
+using LabelPrinter.Model;
 using LabelPrinter.Storage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Management;
 
 namespace LabelPrinter.ViewModel
 {
@@ -45,9 +46,9 @@ namespace LabelPrinter.ViewModel
         /// <summary>
         /// For Printer Combobox
         /// </summary>
-        public List<string> Printer { get; set; } = new List<string> { "None", "FAX", "Microsoft Print to PDF", "Microsoft XPS Document Writer", "Nitro PDF Creator (Pro 10)", "Send To OneNote 2013" };
-        private string _selectedPrinter;
+        public List<string> Printer { get; set; } = GodexPrinter.GetDriverPrinter().ToList(); // new List<string> { "None", "FAX", "Microsoft Print to PDF", "Microsoft XPS Document Writer", "Nitro PDF Creator (Pro 10)", "Send To OneNote 2013" };
 
+        private string _selectedPrinter;         
         public string SelectedPrinter
         {
             get { return _selectedPrinter; }
@@ -75,7 +76,12 @@ namespace LabelPrinter.ViewModel
         /// <summary>
         /// For Date Connection ComboBox
         /// </summary>
-        public List<string> DataConnection { get; set; } = new List<string> {"Text Files", "Data Base Oracle", "Data Base MySQL", "Data Base MS SQL Server" };
+        public List<string> DataConnection { get; set; } = new List<string> {
+                                                                EnumsConverter.GetDescription(DataConnections.TextFile),
+                                                                EnumsConverter.GetDescription(DataConnections.Oracle),
+                                                                EnumsConverter.GetDescription(DataConnections.MySQL),
+                                                                EnumsConverter.GetDescription(DataConnections.MSSQL)
+                                                            };
         private string _selectedDateConnection;
 
         public string SelectedDataConnection
@@ -84,7 +90,7 @@ namespace LabelPrinter.ViewModel
             set
             {
                 _selectedDateConnection = value;
-                RaisePropertyChanged("DateConnection");
+                RaisePropertyChanged(nameof(SelectedDataConnection));
             }
         }
         /// <summary>
@@ -239,21 +245,48 @@ namespace LabelPrinter.ViewModel
         }
 
         public RelayCommand SaveButtonCommand { get; private set; }
-        public RelayCommand ExitButtonCommand { get; private set; }
+        public RelayCommand<object> ExitButtonCommand { get; private set; }
         public RelayCommand ChangeButtonCommand { get; private set; }
         public RelayCommand TestConnectionButtonCommand { get; private set; }
 
         public SetUpViewModel()
         {
-            SelectedScalesModel = ScalesModel.FirstOrDefault();
-            SelectedScalesPort = ScalesPort.FirstOrDefault();
-            SelectedDataConnection = DataConnection.FirstOrDefault();
+            SetupConfig();
 
             SaveButtonCommand = new RelayCommand(SaveCommand);
-            ExitButtonCommand = new RelayCommand(ExitCommand);
+            ExitButtonCommand = new RelayCommand<object>(ExitCommand);
             ChangeButtonCommand = new RelayCommand(ChangeCommand);
             TestConnectionButtonCommand = new RelayCommand(TestConnectionCommand);
         }
-        
+
+        private void SetupConfig()
+        {
+            Config config = StorageSelector.GetConfig();
+            if (config != null)
+            { 
+                SelectedScalesModel = config.SelectedScalesModel != null ? config.SelectedScalesModel : ScalesModel.FirstOrDefault();
+                SelectedScalesPort = config.SelectedScalesPort != null ? config.SelectedScalesPort : ScalesPort.FirstOrDefault();
+                SelectedDataConnection = config.SelectedConnection != null ? config.SelectedConnection : DataConnection.FirstOrDefault();
+                SelectedPrinter = config.SelectedPrinter;
+                SelectedPrinterPort = config.SelectedPrinterPort;
+                Density = config.Density;
+                Speed = config.Speed;
+                RadioButtonValue = config.RadioButtonValue;
+                BlackLineText = config.BlackLineText;
+                GapControlText = config.GapControlText;
+                LocationOfFile = config.LocationOfFile;
+                ODBCConnectionString = SelectedDataConnection == EnumsConverter.GetDescription(DataConnections.Oracle) ? config.OracleConnection
+                                    : SelectedDataConnection == EnumsConverter.GetDescription(DataConnections.MySQL) ? config.MySqlConnection
+                                    : SelectedDataConnection == EnumsConverter.GetDescription(DataConnections.MSSQL) ? config.MssqlConnection
+                                    : config.TextConnection;
+                IsCreateOrExport = config.IsCreateOrExport;
+            }
+            else
+            {
+                SelectedScalesModel = ScalesModel.FirstOrDefault();
+                SelectedScalesPort = ScalesPort.FirstOrDefault();
+                SelectedDataConnection = DataConnection.FirstOrDefault();
+            }
+        }
     }
 }

@@ -564,6 +564,25 @@ namespace LabelPrinter
             EZioApi.sendcommand("^S" + nSpeed.ToString());
         }
 
+        public void SetLeftMargin(int numberOfDot)
+        {
+            EZioApi.sendcommand("^R" + numberOfDot);
+        }
+
+        public void CutPapaerOn(int numberOfLabel)
+        {
+            EZioApi.sendcommand("^D"+ numberOfLabel);
+        }
+        public void CutPapaerOff()
+        {
+            EZioApi.sendcommand("^D0");
+        }
+
+        public void SendCommand(string command)
+        {
+            EZioApi.sendcommand(command);
+        }
+
         public void PageNo(int nPageNo)
         {
             EZioApi.sendcommand("^P" + nPageNo.ToString());
