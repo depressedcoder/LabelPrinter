@@ -39,7 +39,7 @@ namespace LabelPrinter.Storage
 
         public override void SaveLabel(Label label)
         {
-
+            string basePath = AppDomain.CurrentDomain.BaseDirectory;
             //Save all labels
             var fileName = $"{GetConnectionString()}{label.SelectedLabelName}{TextExtension}";
             File.WriteAllText(fileName, label.SelectedLabelName + '\n' +
@@ -103,7 +103,7 @@ namespace LabelPrinter.Storage
 
             return labels;
         }
-
+        
         public override bool IsDatabaseConnected(string connectionString)
         {
             // It returns always true because in case of test file not to connect database

@@ -1,13 +1,13 @@
 using LabelPrinter.Drawing;
 using LabelPrinter.Model;
 using LabelPrinter.Storage;
+using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
+using System.Security.Permissions;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
@@ -31,6 +31,88 @@ namespace LabelPrinter.ViewModel
             if (label != null)
             {
                 Label = label;
+            }
+            Config config = StorageSelector.GetConfig();
+            WatchDirectory(config.LocationOfFile);
+            //if(config.SelectedConnection == StorageTypes.Text)
+            //{
+
+            //}
+        }
+
+        [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
+        private void WatchDirectory(string textConnection)
+        {
+            if (string.IsNullOrEmpty(textConnection))
+            {
+                return;
+            }
+
+            FileSystemWatcher watcher = new FileSystemWatcher();
+            watcher.Path = textConnection;
+            /* Watch for changes in LastAccess and LastWrite times, and
+               the renaming of files or directories. */
+            watcher.NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite
+               | NotifyFilters.FileName | NotifyFilters.DirectoryName;
+            // Only watch text files.
+            watcher.Filter = "*.txt";
+
+            // Add event handlers.
+            watcher.Changed += new FileSystemEventHandler(OnCreated);
+            watcher.Created += new FileSystemEventHandler(OnCreated);
+            //watcher.Deleted += new FileSystemEventHandler(OnChanged);
+            //watcher.Renamed += new RenamedEventHandler(OnRenamed);
+
+            // Begin watching.
+            watcher.EnableRaisingEvents = true;
+        }
+
+        private void OnCreated(object sender, FileSystemEventArgs e)
+        {
+            string textFilePath = e.FullPath;
+            string text = string.Empty;
+            if (!File.Exists(textFilePath))
+            {
+                return;
+            }
+
+            string jsonData = string.Empty;
+            string basePath = AppDomain.CurrentDomain.BaseDirectory + e.Name.Split('-')[0] + ".json";
+            string fileNameOfLabel = basePath;
+            if (!File.Exists(fileNameOfLabel))
+            {
+                return;
+            }
+            else
+            {
+                jsonData = File.ReadAllText(fileNameOfLabel);
+            }
+
+            text = File.ReadAllText(textFilePath);
+
+            if (!string.IsNullOrEmpty(text))
+            {
+                var labelRowLines = text.Split('\n');
+                for (int i = 3; i <= labelRowLines.Length; i++)
+                {
+                    var param = labelRowLines[i - 1].Replace("\r\n", "").Replace("\r", "").Replace("\n", "");
+                    string origin = $"<I{i - 2}>";
+                    jsonData = jsonData.Replace(origin, param);
+                }
+
+                File.Delete(textFilePath);
+
+                using (StreamWriter sw = File.AppendText(basePath))
+                {
+                    sw.WriteLine(jsonData);
+                    sw.Close();
+                }
+                Label label = JsonConvert.DeserializeObject<Label>(jsonData);
+                if (label != null)
+                {
+                    Label = label;
+                    PhysicalPrinter.Instance.Print(label);
+                }
             }
         }
 
@@ -99,7 +181,7 @@ namespace LabelPrinter.ViewModel
             //Increase row width
             y = rowHeight + y;
         }
-         
+
         private void UpdateLabel()
         {
 
@@ -120,7 +202,7 @@ namespace LabelPrinter.ViewModel
         {
             PhysicalPrinter.Instance.Print(Label);
         }
-  
+
         private void SetUpCommand()
         {
             SetUpWindow window = new SetUpWindow();
@@ -179,7 +261,7 @@ namespace LabelPrinter.ViewModel
                 }
             }
         }
-         
+
         #endregion
 
     }

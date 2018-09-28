@@ -119,7 +119,7 @@ namespace LabelPrinter.ViewModel
                     SelectedScalesModel = SelectedScalesModel,
                     SelectedPrinter = SelectedPrinter,
                     SelectedPrinterPort = SelectedPrinterPort,
-                    TextConnection = LocationOfFile,
+                    TextConnection = null,
                     MssqlConnection = SelectedDataConnection == EnumsConverter.GetDescription(DataConnections.MSSQL) ? ODBCConnectionString : prevConfig.MssqlConnection,
                     MySqlConnection = SelectedDataConnection == EnumsConverter.GetDescription(DataConnections.MySQL) ? ODBCConnectionString : prevConfig.MySqlConnection,
                     OracleConnection = SelectedDataConnection == EnumsConverter.GetDescription(DataConnections.Oracle) ? ODBCConnectionString : prevConfig.OracleConnection,
@@ -131,20 +131,8 @@ namespace LabelPrinter.ViewModel
                     LocationOfFile = LocationOfFile,
                     IsCreateOrExport = IsCreateOrExport
                 };
-                if (!string.IsNullOrEmpty(LocationOfFile))
-                {
-                    if (!Directory.Exists(LocationOfFile))
-                    {
-                        Directory.CreateDirectory(LocationOfFile);
-                    }
 
-                    File.WriteAllText(LocationOfFile + "\\Config.json", JsonConvert.SerializeObject(config, Formatting.Indented));
-                }
-                else
-                {
-                    File.WriteAllText("Config.json", JsonConvert.SerializeObject(config, Formatting.Indented));
-                }
-
+                File.WriteAllText("Config.json", JsonConvert.SerializeObject(config, Formatting.Indented)); 
             }
             else
             {
