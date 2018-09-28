@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media.Imaging;
 using LabelPrinter.Storage;
+using System;
 
 namespace LabelPrinter.ViewModel
 {
@@ -14,6 +15,7 @@ namespace LabelPrinter.ViewModel
         public RelayCommand SaveButtonCommand { get; }
         public RelayCommand NewButtonCommand { get; }
         public RelayCommand SetUpButtonCommand { get; }
+        public RelayCommand DeleteButtonCommand { get; }
         public RelayCommand PrintButtonCommand { get; }
         public RelayCommand PrintJobsButtonCommand { get; }
         public RelayCommand ExitButtonCommand { get; }
@@ -76,6 +78,7 @@ namespace LabelPrinter.ViewModel
             SaveButtonCommand = new RelayCommand(SaveCommand);
             NewButtonCommand = new RelayCommand(NewCommand);
             SetUpButtonCommand = new RelayCommand(SetUpCommand);
+            DeleteButtonCommand = new RelayCommand(DeleteCommand);
             PrintButtonCommand = new RelayCommand(PrintCommand);
             PrintJobsButtonCommand = new RelayCommand(PrintJobsCommand);
             ExitButtonCommand = new RelayCommand(ExitCommand);

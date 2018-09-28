@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LabelPrinter.DatabaseWatcher;
+using System;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -11,6 +12,9 @@ namespace LabelPrinter
     {
         protected override void OnStartup(StartupEventArgs e)
         {
+            //Subscribe wather to objerb the database changes in the table LABLES_IN
+            WatherSelector.Instance.GetWatcher().NotifyNewItem();
+
             Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
         }
 
@@ -23,11 +27,11 @@ namespace LabelPrinter
         {
             if (exceptionEventArgs.Exception is ArgumentException argumentException)
             {
-                MessageBox.Show(argumentException.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageView.Instance.ShowError(argumentException.Message);
             }
             else
             {
-                MessageBox.Show("Unexpected error occurred", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageView.Instance.ShowError("Unexpected error occurred");
             }
             exceptionEventArgs.Handled = true;
         }

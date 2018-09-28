@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using GalaSoft.MvvmLight;
 
 namespace LabelPrinter.Model
@@ -125,5 +126,16 @@ namespace LabelPrinter.Model
             get => _barcode;
             set { _barcode = value; RaisePropertyChanged(nameof(Barcode)); }
         }
+
+        private DateTime _createdDate = DateTime.Now;
+        public DateTime CreatedDate
+        {
+            get => _createdDate;
+            set
+            {
+                _createdDate = value;
+                RaisePropertyChanged(nameof(CreatedDate));
+            }
+        } 
     }
 }

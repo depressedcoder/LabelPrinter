@@ -4,19 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.IO; 
+using System.IO;
 
 namespace LabelPrinter.Storage
 {
     public class MsSqlStorage : AbstractStorage
     {
-        //Label _label;
-        //public Label Label
-        //{
-        //    get => _label;
-        //    set { _label = value; }
-        //}
-      
         public override List<string> GetLabelNames()
         {
             List<String> labelNames = new List<String>();
@@ -26,7 +19,7 @@ namespace LabelPrinter.Storage
                 string labelName = string.Empty;
                 using (SqlConnection connection = new SqlConnection(GetConnectionString()))
                 {
-                    string query = "SELECT [NAME] FROM LABELS";
+                    string query = "SELECT [NAME] FROM LABELS_OUT";
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
                         connection.Open();
@@ -34,7 +27,7 @@ namespace LabelPrinter.Storage
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
                             while (reader.Read())
-                            { 
+                            {
                                 labelName = reader["NAME"].ToString();
                                 labelNames.Add(labelName);
                             }
@@ -42,7 +35,7 @@ namespace LabelPrinter.Storage
                         }
                         connection.Close();
                     }
-                } 
+                }
             }
             catch (Exception ex)
             {
@@ -50,14 +43,17 @@ namespace LabelPrinter.Storage
             }
             return labelNames;
         }
-        
+
         public override Label GetLabel(string labelName)
         {
             Label label = null;
             Labels labels = GetLabels(labelName);
-            if(labels != null)
-                label = JsonConvert.DeserializeObject<Label>(labels.Label); 
-            return label;           
+            if (labels != null)
+            {
+                label = JsonConvert.DeserializeObject<Label>(labels.Label);
+            }
+
+            return label;
         }
 
         public override Labels GetLabels(string name)
@@ -67,7 +63,7 @@ namespace LabelPrinter.Storage
                 Labels labels = null;
                 using (SqlConnection connection = new SqlConnection(GetConnectionString()))
                 {
-                    string query = "SELECT * FROM LABELS WHERE [NAME] = '" + name + "'";
+                    string query = "SELECT * FROM LABELS_OUT WHERE [NAME] = '" + name + "'";
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
                         connection.Open();
@@ -96,23 +92,23 @@ namespace LabelPrinter.Storage
         }
 
         public override void SaveLabel(Label label)
-        {             
+        {
             decimal w = 12;
             try
             {
-                Labels dblabels = GetLabels(label.SelectedLabelName); 
+                Labels dblabels = GetLabels(label.SelectedLabelName);
                 string labelStr = JsonConvert.SerializeObject(label);
                 string query = string.Empty;
                 using (SqlConnection connection = new SqlConnection(GetConnectionString()))
                 {
-                    if(dblabels != null)
+                    if (dblabels != null)
                     {
-                        query = "UPDATE LABELS SET [NAME] = @name, [WEIGHT] = @weight, LABEL = @label WHERE ID = " + dblabels.ID;
+                        query = "UPDATE LABELS_OUT SET [NAME] = @name, [WEIGHT] = @weight, LABEL = @label WHERE ID = " + dblabels.ID;
                     }
                     else
                     {
-                        query = "INSERT INTO LABELS([NAME],[WEIGHT],LABEL) VALUES(@name, @weight, @label)";
-                      
+                        query = "INSERT INTO LABELS_OUT([NAME],[WEIGHT],LABEL) VALUES(@name, @weight, @label)";
+
                     }
 
                     using (SqlCommand command = new SqlCommand(query, connection))
@@ -134,39 +130,72 @@ namespace LabelPrinter.Storage
             }
             catch (Exception ex)
             {
-                System.Windows.MessageBox.Show(ex.Message);
+                MessageView.Instance.ShowError(ex.Message);
             }
 
         }
-        
-        protected override string GetConnectionString()
+
+        public override void DeleteLabel(Label label)
+        {
+            try
+            {
+                Labels dblabels = GetLabels(label.SelectedLabelName.Trim());
+                string query = string.Empty;
+                if (dblabels != null)
+                {
+                    using (SqlConnection connection = new SqlConnection(GetConnectionString()))
+                    {
+                        query = "delete from LABELS_OUT WHERE ID = @ID";
+
+                        using (SqlCommand command = new SqlCommand(query, connection))
+                        {
+                            SqlParameter IDParam = new SqlParameter("@ID", dblabels.ID);
+
+                            command.Parameters.Add(IDParam);
+
+                            connection.Open();
+                            command.ExecuteNonQuery();
+                            connection.Close();
+                            MessageView.Instance.ShowInformation("Delete Successful.");
+                        }
+                    }
+                }
+                else
+                {
+                    MessageView.Instance.ShowWarning("The label already deleted from database.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageView.Instance.ShowError(ex.Message);
+            }
+        }
+
+        public override string GetConnectionString()
         {
             if (!File.Exists("Config.json"))
+            {
                 throw new ArgumentException("Configuration file is missing");
+            }
 
             var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("Config.json"));
 
             var connectionString = config?.MssqlConnection;
 
             return connectionString;
-
         }
 
         public override string TestConnection(string connectionString)
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                if (!IsDatabaseConnected(connectionString))
                 {
-                    connection.Open();
-                    if (connection.State != ConnectionState.Open)
-                    {
-                        return "Connection failed.";
-                    }
-                    else
-                    {
-                        return "You have been successfully connected to the MsSQL database!";
-                    }
+                    return "Connection failed.";
+                }
+                else
+                {
+                    return "You have been successfully connected to the MsSQL database!";
                 }
             }
             catch (Exception ex)
@@ -175,6 +204,28 @@ namespace LabelPrinter.Storage
             }
 
 
+        }
+
+        public override bool IsDatabaseConnected(string connectionString)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    bool isConnected = connection.State == ConnectionState.Open;
+                    if (isConnected)
+                    {
+                        connection.Close();
+                    }
+
+                    return isConnected;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

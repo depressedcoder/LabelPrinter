@@ -6,7 +6,9 @@
         xmlns:local="clr-namespace:LabelPrinter"
          x:Name="JobWindowsForm"
         mc:Ignorable="d"
+        Icon="Norsel.bmp"
         Title="Print Jobs" 
+        WindowStartupLocation="CenterScreen"
         Height="550" 
         ResizeMode="NoResize"
         Width="350">

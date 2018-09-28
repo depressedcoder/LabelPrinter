@@ -75,8 +75,6 @@
       <HintPath>..\packages\BarcodeLib.1.1.0.0\lib\net20\BarcodeLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Devart.Data, Version=5.0.2021.0, Culture=neutral, PublicKeyToken=09af7300eec23701" />
-    <Reference Include="Devart.Data.Oracle, Version=9.6.597.0, Culture=neutral, PublicKeyToken=09af7300eec23701, processorArchitecture=MSIL" />
     <Reference Include="GalaSoft.MvvmLight, Version=5.4.1.0, Culture=neutral, PublicKeyToken=bb738e8c4ab8c76c, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.4.1\lib\net35\GalaSoft.MvvmLight.dll</HintPath>
     </Reference>
@@ -100,23 +98,52 @@
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net35\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Management" />
-    <Reference Include="System.Windows.Forms" />
+    <Reference Include="Oracle.DataAccess, Version=2.112.2.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=x86" />
+    <Reference Include="System">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Configuration">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Management">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Windows.Interactivity, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.4.1\lib\net35\System.Windows.Interactivity.dll</HintPath>
     </Reference>
-    <Reference Include="System.Windows.Presentation" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="WindowsBase" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
+    <Reference Include="System.Windows.Presentation">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Core">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="WindowsBase">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PresentationCore">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PresentationFramework">
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -127,6 +154,9 @@
     <Compile Include="Converters\EnumConverter.cs" />
     <Compile Include="Converters\LabelToImageWidthConverter.cs" />
     <Compile Include="Converters\RadioBoolToIntConverter.cs" />
+    <Compile Include="DatabaseWatcher\AbstractWatcher.cs" />
+    <Compile Include="DatabaseWatcher\TextFileWatcher.cs" />
+    <Compile Include="DatabaseWatcher\WatherSelector.cs" />
     <Compile Include="EZioApi.cs" />
     <Compile Include="GodexPrinter.cs" />
     <Compile Include="Drawing\BarcodeDrawing.cs" />
@@ -141,12 +171,17 @@
     <Compile Include="Model\Entities\Labels.cs" />
     <Compile Include="Model\Enums.cs" />
     <Compile Include="Model\Label.cs" />
+    <Compile Include="Model\MessageView.cs" />
     <Compile Include="Model\PrintJobsLabel.cs" />
     <Compile Include="Model\PrintJobsRow.cs" />
     <Compile Include="Model\Row.cs" />
     <Compile Include="PrintJobWindow.xaml.cs">
       <DependentUpon>PrintJobWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PhysicalPrinter.cs" />
+    <Compile Include="DatabaseWatcher\MySqlWatcher.cs" />
+    <Compile Include="DatabaseWatcher\OracleWatcher.cs" />
+    <Compile Include="DatabaseWatcher\MsSqlWatcher.cs" />
     <Compile Include="Storage\AbstractStorage.cs" />
     <Compile Include="Storage\MsSqlStorage.cs" />
     <Compile Include="Storage\MySqlStorage.cs" />

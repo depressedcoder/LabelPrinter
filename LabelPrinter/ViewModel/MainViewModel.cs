@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Media.Imaging;
@@ -157,17 +158,22 @@ namespace LabelPrinter.ViewModel
 
         private void PrintCommand()
         {
+            PhysicalPrinter.Print(Label);
+        }
+
+        private void Print()
+        {
             var con = StorageSelector.GetConfig();
 
             SetupPrinter(con);
 
-            //Print
+            //Printer start
             _printer.Command.Start();
-
 
             var posY = 10;
             var rowHeight = 10;
             var storage = _storageSelector.GetStorage();
+
             foreach (var labelRow in Label.Rows)
             {
                 var posX = 10;
@@ -177,7 +183,7 @@ namespace LabelPrinter.ViewModel
                 {
                     Graphics = Graphics.FromImage(new Bitmap(Label.LabelWidth, Label.LabelHeight)),
                     Barcode = Label.Barcode,
-                    Weight = storage.GetLabels(Label.SelectedLabelName).Wieght,
+                    Weight = storage.GetLabels(Label.SelectedLabelName)?.Wieght ?? 0,
                     Row = labelRow
                 };
 
@@ -259,12 +265,28 @@ namespace LabelPrinter.ViewModel
 
                 LabelSource = storage.GetLabelNames();
 
-                MessageBox.Show("Label saved successfully", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageView.Instance.ShowInformation("Label saved successfully");
             }
             else
             {
-                MessageBox.Show("Please Enter Label Name", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageView.Instance.ShowWarning("Please Enter Label Name");
             }
+        }
+
+
+        private void DeleteCommand()
+        {
+            var isSure = MessageBox.Show("Are you sure to delete this label?", "Sure?", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if(isSure == MessageBoxResult.Yes)
+            {
+                var storage = _storageSelector.GetStorage();
+                storage.DeleteLabel(Label);
+                LabelSource = storage.GetLabelNames();
+                if(LabelSource != null && LabelSource.Count > 0)
+                {
+                    Label = storage.GetLabel(LabelSource.FirstOrDefault() ?? string.Empty);
+                }
+            }            
         }
 
         private void GetLabelNames()

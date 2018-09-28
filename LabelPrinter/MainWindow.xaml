@@ -61,7 +61,7 @@
                 TextChanged="UpdateLabelEvent">
                 <Binding Path="Label.LabelWidth" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                     <Binding.ValidationRules>
-                        <local:MinMaxValidationRule MaxValue="500" MinValue="50"/>
+                        <local:MinMaxValidationRule MaxValue="500" MinValue="20"/>
                     </Binding.ValidationRules>
                 </Binding>
             </TextBox>
@@ -85,14 +85,14 @@
 
             <TextBlock Text="Distance from left:" Grid.Row="2" Grid.Column="0" Margin="5"/>
             <TextBox
-        Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
-        Grid.Row="2"
-        Grid.Column="1"
-        Margin="5"
-        TextChanged="UpdateLabelEvent">
+                Validation.ErrorTemplate="{StaticResource TextBoxErrorTemplate}"
+                Grid.Row="2"
+                Grid.Column="1"
+                Margin="5"
+                TextChanged="UpdateLabelEvent">
                 <Binding Path="Label.DistanceFromLeft" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                     <Binding.ValidationRules>
-                        <local:MinMaxValidationRule MaxValue="400" MinValue="10"/>
+                        <local:MinMaxValidationRule MaxValue="100" MinValue="1"/>
                     </Binding.ValidationRules>
                 </Binding>
             </TextBox>
@@ -341,8 +341,9 @@
             </ScrollViewer>
         </Border>
         <Grid Grid.Column="0" Grid.Row="2">
-            <Button x:Name="ButtonNew" Content="New" Command="{Binding NewButtonCommand}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="120" Margin="10"/>
-            <Button x:Name="ButtonSave" Content="Save" Command="{Binding SaveButtonCommand}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="120" Margin="10"/>
+            <Button x:Name="ButtonNew" Content="New" Command="{Binding NewButtonCommand}" HorizontalAlignment="Left" VerticalAlignment="Bottom"  Margin="10" Padding="20 0"/>
+            <Button x:Name="ButtonSave" Content="Save" Command="{Binding SaveButtonCommand}" HorizontalAlignment="Center" VerticalAlignment="Bottom"  Margin="10" Padding="20 0"/>
+            <Button x:Name="ButtonDelete" Content="Delete" Command="{Binding DeleteButtonCommand}" HorizontalAlignment="Right" VerticalAlignment="Bottom"  Margin="10" Padding="20 0"/>
         </Grid>
         <Grid Grid.Column="1" Grid.Row="2">
             <Button x:Name="ButtonSetUp" Content="Set Up" Command="{Binding SetUpButtonCommand}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="120" Margin="40,0,10,10"/>

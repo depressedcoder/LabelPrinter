@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight.Command;
 using LabelPrinter.Drawing;
 using LabelPrinter.Model;
 using LabelPrinter.Storage;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text.RegularExpressions;
@@ -61,7 +62,7 @@ namespace LabelPrinter.ViewModel
         {
             PrintJobsLabel = new PrintJobsLabel
             {
-                PrintJobsRow = new List<PrintJobsRow>()
+                PrintJobsRow = new List<PrintJobsRow>()  // As we 10 jobs in UI.
                 {
                    new PrintJobsRow(),
                    new PrintJobsRow(),
@@ -83,7 +84,6 @@ namespace LabelPrinter.ViewModel
             var jobs = PrintJobsLabel;
             if(jobs != null && jobs.PrintJobsRow != null)
             {
-                var con = StorageSelector.GetConfig();
                 var storage = _storageSelector.GetStorage();
 
                 foreach (var job in jobs.PrintJobsRow)
@@ -93,15 +93,16 @@ namespace LabelPrinter.ViewModel
                         Label label = storage.GetLabel(job.LabelName);
                         if(label != null)
                         {
-                            Print(con, label, job.NoOfCopy);
+                            PhysicalPrinter.Print(label, job.NoOfCopy);
                         }                        
                     }                    
                 }
             }          
         }
 
-        private void Print(Config con, Label label, int noOfCopy)
+        private void Print(Label label, int noOfCopy)
         {
+            var con = StorageSelector.GetConfig();
             SetupPrinter(con, label, noOfCopy);
 
             _printer.Command.Start();
@@ -119,7 +120,7 @@ namespace LabelPrinter.ViewModel
                 {
                     Graphics = Graphics.FromImage(new Bitmap(label.LabelWidth, label.LabelHeight)),
                     Barcode = label.Barcode,
-                    Weight = storage.GetLabels(label.SelectedLabelName).Wieght,
+                    Weight = storage.GetLabels(label.SelectedLabelName)?.Wieght ?? 0,
                     Row = labelRow
                 };
 
@@ -195,8 +196,9 @@ namespace LabelPrinter.ViewModel
             PortType port = EnumsConverter.ParseEnum<PortType>(string.IsNullOrEmpty(con.SelectedPrinterPort) ? "USB" : con.SelectedPrinterPort);
             _printer.Open(port);
             //Setup
-            PaperMode value = PaperMode.PlainPaperLabel;
-            _printer.Config.LabelMode(value, label.LabelHeight, 3); //40-> 
+            PaperMode value = EnumsConverter.ParseEnum<PaperMode>(con.RadioButtonValue.ToString());
+            int gapFeed = Convert.ToInt32(string.IsNullOrEmpty(con.GapControlText) ? "0" : con.GapControlText);
+            _printer.Config.LabelMode(value, label.LabelHeight, gapFeed); //40-> 
             _printer.Config.LabelWidth(label.LabelWidth); //Label.LabelWidth
             _printer.Config.Dark(con.Density); //con.Density
             _printer.Config.Speed(con.Speed); //con.Speed

@@ -17,4 +17,11 @@ namespace LabelPrinter.Model
         [Description("Data Base MS SQL Server")]
         MSSQL = 3
     }
+
+    public enum Watcher
+    {
+        MsSqlWatcher,
+        MySqlWatcher,
+        OracleWatcher
+    }
 }

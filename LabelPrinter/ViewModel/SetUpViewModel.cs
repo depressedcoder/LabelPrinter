@@ -14,7 +14,7 @@ namespace LabelPrinter.ViewModel
         /// If class is initialize then config.json should not reset/save
         /// </summary>
         private bool IsNotInit { set; get; }
-
+        private StorageSelector _storageSelector;
         public void DataConnectionUpdate()
         {
             if (SelectedDataConnection != "Text Files")
@@ -69,13 +69,16 @@ namespace LabelPrinter.ViewModel
 
         private void TestConnectionCommand()
         {
-            StorageSelector _storageSelector = new StorageSelector();
+            if (_storageSelector == null)
+            {
+                _storageSelector = new StorageSelector();
+            }
+
             var storage = _storageSelector.GetStorage();
 
             var msg = storage.TestConnection(ODBCConnectionString);
 
-            System.Windows.MessageBox.Show(msg);
-
+            MessageView.Instance.ShowInformation(msg);
         }
 
         private void ExitCommand(object obj)
@@ -87,9 +90,20 @@ namespace LabelPrinter.ViewModel
 
         private void SaveCommand()
         {
-            SaveConfig();
-
-            System.Windows.MessageBox.Show("File saved");
+            if (_storageSelector == null)
+            {
+                _storageSelector = new StorageSelector();
+            }
+            var storage = _storageSelector.GetStorage();
+            if (storage.IsDatabaseConnected(ODBCConnectionString))
+            {
+                SaveConfig();
+                MessageView.Instance.ShowInformation("File saved");
+            }
+            else
+            {
+                MessageView.Instance.ShowWarning("Connection string is not in correct formate. Pleae enter valid one.");
+            }            
         }
 
         private void SaveConfig()
@@ -119,14 +133,17 @@ namespace LabelPrinter.ViewModel
                 if (!string.IsNullOrEmpty(LocationOfFile))
                 {
                     if (!Directory.Exists(LocationOfFile))
+                    {
                         Directory.CreateDirectory(LocationOfFile);
-                    File.WriteAllText(LocationOfFile +"\\Config.json", JsonConvert.SerializeObject(config, Formatting.Indented));
+                    }
+
+                    File.WriteAllText(LocationOfFile + "\\Config.json", JsonConvert.SerializeObject(config, Formatting.Indented));
                 }
                 else
                 {
                     File.WriteAllText("Config.json", JsonConvert.SerializeObject(config, Formatting.Indented));
                 }
-                
+
             }
             else
             {

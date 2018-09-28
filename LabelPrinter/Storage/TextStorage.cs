@@ -46,7 +46,7 @@ namespace LabelPrinter.Storage
             
         }
 
-        protected override string GetConnectionString()
+        public override string GetConnectionString()
         {
             if (!File.Exists("Config.json"))
                 throw new ArgumentException("Configuration file is missing");
@@ -101,6 +101,37 @@ namespace LabelPrinter.Storage
             labels.Wieght = label.LabelWidth;
 
             return labels;
+        }
+
+        public override bool IsDatabaseConnected(string connectionString)
+        {
+            // It returns always true because in case of test file not to connect database
+            return true;
+        }
+
+        public override void DeleteLabel(Label label)
+        {
+            try
+            {
+                //delete all labels
+                var fileName = $"{GetConnectionString()}{label.SelectedLabelName}{TextExtension}";
+                if (File.Exists(fileName))
+                {
+                    File.Delete(fileName);
+                }
+
+                //delete metadata of labels
+                fileName = $"{GetConnectionString()}{label.SelectedLabelName}.json";
+                if (File.Exists(fileName))
+                {
+                    File.Delete(fileName);
+                }
+                MessageView.Instance.ShowInformation("Delete Successful.");
+            }
+            catch (Exception ex)
+            {
+                MessageView.Instance.ShowError(ex.Message);
+            }
         }
     }
 }

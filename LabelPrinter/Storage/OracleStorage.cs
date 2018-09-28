@@ -1,6 +1,7 @@
-﻿using Devart.Data.Oracle;
+﻿ 
 using LabelPrinter.Model;
 using Newtonsoft.Json;
+using Oracle.DataAccess.Client;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -13,62 +14,42 @@ namespace LabelPrinter.Storage
     {
         public override List<string> GetLabelNames()
         {
-            //List<String> labelNames = new List<String>();
-
-            //using (OracleConnection connection = new OracleConnection(GetConnectionString()))
-            //{
-            //    connection.Open();
-            //    string query = "SELECT LABEL_NAME FROM label_in";
-            //    using (OracleCommand command = new OracleCommand(query, connection))
-            //    {
-            //        using (OracleDataReader reader = command.ExecuteReader())
-            //        {
-            //            while (reader.Read())
-            //            {
-            //                labelNames.Add(reader.GetString(0));
-            //            }
-            //        }
-            //    }
-            //}
-            //return labelNames;
-            throw new NotImplementedException();
+            List<String> labelNames = new List<String>();
+            string labelName = string.Empty;
+            try
+            {
+                using (OracleConnection connection = new OracleConnection(GetConnectionString()))
+                {
+                    connection.Open();
+                    string query = "SELECT NAME FROM labelprinter.LABELS_OUT";
+                    using (OracleCommand command = new OracleCommand(query, connection))
+                    {
+                        using (OracleDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                labelName = reader["NAME"].ToString();
+                                labelNames.Add(labelName);
+                            }
+                        }
+                    }
+                    connection.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return labelNames;
         }
 
         public override Label GetLabel(string labelName)
-        {
-            //var rowLines = new List<string>();
-
-            //using (OracleConnection connection = new OracleConnection(GetConnectionString()))
-            //{
-            //    string query = "SELECT I1,I2,I3,I4,I5,I6,I7,I8,I9,I10,I11,I12,I13,I14,I15 FROM label_out WHERE LABEL_NAME='" + labelName + "'";
-            //    using (OracleCommand command = new OracleCommand(query, connection))
-            //    {
-            //        connection.Open();
-
-            //        using (OracleDataReader reader = command.ExecuteReader())
-            //        {
-
-            //            while (reader.Read())
-            //            {
-            //                for (int i = 0; i < reader.FieldCount; i++)
-            //                {
-            //                    rowLines.Add(reader.IsDBNull(i) ? string.Empty : reader[i].ToString());
-            //                }
-            //            }
-            //            var array = rowLines.ToArray();
-            //            for (var i = 0; i < array.Length; i++)
-            //            {
-            //                //foreach(var labelRow in Label.Rows)
-            //                //{
-            //                //    labelRow.Text = array[i];
-            //                //}
-            //                //Assign all the textbox value..
-            //            }
-            //        }
-            //    }
-            //}
-            //return null;
-            throw new NotImplementedException();
+        {            
+            Label label = null;
+            Labels labels = GetLabels(labelName);
+            if (labels != null)
+                label = JsonConvert.DeserializeObject<Label>(labels.Label);
+            return label;  
         }
 
         public override void SaveLabel(Label label)
@@ -76,24 +57,75 @@ namespace LabelPrinter.Storage
             decimal w = 12;
             try
             {
+                Labels dblabels = GetLabels(label.SelectedLabelName);
+                string labelStr = JsonConvert.SerializeObject(label);
                 string query = string.Empty;
-                query = "INSERT INTO LABELS(NAME, WEIGHT, LABEL) VALUES(@name, @weight, @label)";
-                OracleConnection connection = new OracleConnection(GetConnectionString());
-                OracleCommand command = new OracleCommand(query, connection);
-                command.Parameters.Add(new OracleParameter("@name", label.SelectedLabelName));
-                command.Parameters.Add(new OracleParameter("@weight", w));
-                command.Parameters.Add(new OracleParameter("@label", JsonConvert.SerializeObject(label)));
-                connection.Open();
-                command.ExecuteNonQuery();
-                connection.Close();
+                using(OracleConnection connection = new OracleConnection(GetConnectionString()))
+                {
+                    if (dblabels != null)
+                    {
+                        query = "UPDATE labelprinter.LABELS_OUT SET NAME = :1, WEIGHT = :2, LABEL = :3 WHERE ID = " + dblabels.ID;
+                    }
+                    else
+                    {
+                        query = "INSERT INTO labelprinter.LABELS_OUT(NAME, WEIGHT, LABEL) VALUES(:1, :2, :3)";
+
+                    }
+                    using( OracleCommand command = new OracleCommand(query, connection))
+                    {
+                        command.Parameters.Add(new OracleParameter("1", OracleDbType.Varchar2 , label.SelectedLabelName, ParameterDirection.Input));
+                        command.Parameters.Add(new OracleParameter("2", OracleDbType.Decimal , w, ParameterDirection.Input));
+                        command.Parameters.Add(new OracleParameter("3", OracleDbType.Varchar2, JsonConvert.SerializeObject(label), ParameterDirection.Input));
+
+                        connection.Open();
+                        command.ExecuteNonQuery();
+                        connection.Close();
+                    }        
+                }                
             }
             catch (Exception ex)
             {
-                System.Windows.MessageBox.Show(ex.Message);
+                MessageView.Instance.ShowError(ex.Message);
             }
         }
-        
-        protected override string GetConnectionString()
+
+        public override void DeleteLabel(Label label)
+        {
+            try
+            {
+                Labels dblabels = GetLabels(label.SelectedLabelName.Trim()); 
+                string query = string.Empty;
+                if(dblabels != null)
+                {
+                    using (OracleConnection connection = new OracleConnection(GetConnectionString()))
+                    {
+                        query = "delete from labelprinter.LABELS_OUT WHERE ID = :1";
+
+                        using (OracleCommand command = new OracleCommand(query, connection))
+                        {
+                            OracleParameter IDParam = new OracleParameter("1", dblabels.ID);
+
+                            command.Parameters.Add(IDParam);
+
+                            connection.Open();
+                            command.ExecuteNonQuery();
+                            connection.Close();
+                            MessageView.Instance.ShowInformation("Delete Successful.");
+                        }
+                    }
+                }
+                else
+                {
+                    MessageView.Instance.ShowWarning("The label already deleted from database.");
+                }                
+            }
+            catch (Exception ex)
+            {
+                MessageView.Instance.ShowError(ex.Message);
+            }
+        }
+
+        public override string GetConnectionString()
         {
             if (!File.Exists("Config.json"))
                 throw new ArgumentException("Configuration file is missing");
@@ -109,35 +141,74 @@ namespace LabelPrinter.Storage
         public override string TestConnection(string connectionString)
         {
             try
-            {
-                var str = new DbConnectionStringBuilder(false);
-                str.Add("Data Source", "desktop-bi2o5lr");
-                str.Add("User ID", "system");
-                str.Add("Password", "masud@bs23");
-                //var con = new Devart.Data.Oracle.OracleConnection(str.ConnectionString);
-                using (OracleConnection connection = new OracleConnection(str.ConnectionString))
+            { 
+                if (!IsDatabaseConnected(connectionString))
                 {
-                    connection.Open();
-                    if (connection.State != ConnectionState.Open)
-                    {
-                        return "Connection failed.";
-                    }
-                    else
-                    {
-                        return "You have been successfully connected to the Oracle database!";
-                    }
+                    return "Connection failed.";
+                }
+                else
+                {
+                    return "You have been successfully connected to the Oracle database!";
                 }
             }
             catch (Exception ex)
             {
                 return ex.Message;
+            } 
+        }
+
+        public override bool IsDatabaseConnected(string connectionString)
+        {
+            try
+            {
+                using (OracleConnection connection = new OracleConnection(connectionString))
+                {
+                    connection.Open();
+                    bool isConnected = connection.State == ConnectionState.Open;
+                    if (isConnected)
+                        connection.Close();
+                    return isConnected;
+                }
             }
-            throw new NotImplementedException();
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public override Labels GetLabels(string name)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Labels labels = null;
+                using (OracleConnection connection = new OracleConnection(GetConnectionString()))
+                {
+                    string query = "SELECT * FROM labelprinter.LABELS_OUT WHERE NAME = '" + name + "'";
+                    using (OracleCommand command = new OracleCommand(query, connection))
+                    {
+                        connection.Open();
+
+                        using (OracleDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                labels = new Labels();
+                                labels.ID = Convert.ToInt64(reader["ID"]);
+                                labels.Name = reader.IsDBNull(1) ? string.Empty : reader["NAME"].ToString();
+                                labels.Wieght = reader.IsDBNull(2) ? 0 : Convert.ToDecimal(reader["WEIGHT"]);
+                                labels.Label = reader.IsDBNull(3) ? string.Empty : reader["LABEL"].ToString();
+                            }
+                            reader.Close();
+                        }
+                        connection.Close();
+                    }
+                }
+                return labels;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

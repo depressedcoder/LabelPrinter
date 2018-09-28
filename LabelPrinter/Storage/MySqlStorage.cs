@@ -19,7 +19,7 @@ namespace LabelPrinter.Storage
                 using (MySqlConnection connection = new MySqlConnection(GetConnectionString()))
                 {
                     connection.Open();
-                    string query = "SELECT NAME FROM LABELS";
+                    string query = "SELECT NAME FROM LABELS_OUT";
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
                         using (MySqlDataReader reader = command.ExecuteReader())
@@ -44,7 +44,9 @@ namespace LabelPrinter.Storage
             Label label = null;
             Labels labels = GetLabels(labelName);
             if (labels != null)
+            {
                 label = JsonConvert.DeserializeObject<Label>(labels.Label);
+            }
 
             return label;
         }
@@ -54,7 +56,7 @@ namespace LabelPrinter.Storage
             Labels labels = null;
             using (MySqlConnection connection = new MySqlConnection(GetConnectionString()))
             {
-                string query = "SELECT * FROM LABELS WHERE NAME = '" + name + "'";
+                string query = "SELECT * FROM LABELS_OUT WHERE NAME = '" + name + "'";
                 using (MySqlCommand command = new MySqlCommand(query, connection))
                 {
                     connection.Open();
@@ -90,11 +92,11 @@ namespace LabelPrinter.Storage
                 {
                     if (dblabels != null)
                     {
-                        query = "UPDATE LABELS SET NAME = @name, WEIGHT = @weight, LABEL = @label WHERE ID = " + dblabels.ID;
+                        query = "UPDATE LABELS_OUT SET NAME = @name, WEIGHT = @weight, LABEL = @label WHERE ID = " + dblabels.ID;
                     }
                     else
                     {
-                        query = "INSERT INTO LABELS(NAME,WEIGHT,LABEL) VALUES(@name, @weight, @label)";
+                        query = "INSERT INTO LABELS_OUT(NAME,WEIGHT,LABEL) VALUES(@name, @weight, @label)";
 
                     }
 
@@ -117,14 +119,52 @@ namespace LabelPrinter.Storage
             }
             catch (Exception ex)
             {
-                System.Windows.MessageBox.Show(ex.Message);
+                MessageView.Instance.ShowError(ex.Message);
             }
         }
 
-        protected override string GetConnectionString()
+        public override void DeleteLabel(Label label)
+        {
+            try
+            {
+                Labels dblabels = GetLabels(label.SelectedLabelName.Trim());
+                string query = string.Empty;
+                if (dblabels != null)
+                {
+                    using (MySqlConnection connection = new MySqlConnection(GetConnectionString()))
+                    {
+                        query = "delete from LABELS_OUT WHERE ID = @ID";
+
+                        using (MySqlCommand command = new MySqlCommand(query, connection))
+                        {
+                            MySqlParameter IDParam = new MySqlParameter("@ID", dblabels.ID);
+
+                            command.Parameters.Add(IDParam);
+
+                            connection.Open();
+                            command.ExecuteNonQuery();
+                            connection.Close();
+                            MessageView.Instance.ShowInformation("Delete Successful.");
+                        }
+                    }
+                }
+                else
+                {
+                    MessageView.Instance.ShowWarning("The label already deleted from database.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageView.Instance.ShowError(ex.Message);
+            }
+        }
+
+        public override string GetConnectionString()
         {
             if (!File.Exists("Config.json"))
+            {
                 throw new ArgumentException("Configuration file is missing");
+            }
 
             var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("Config.json"));
 
@@ -137,27 +177,40 @@ namespace LabelPrinter.Storage
         {
             try
             {
-                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                if (!IsDatabaseConnected(connectionString))
                 {
-                    connection.Open();
-                    if (connection.State != ConnectionState.Open)
-                    {
-                        return "Connection failed.";
-                    }
-                    else
-                    {
-                        connection.Close();
-                        return "You have been successfully connected to the MySql database!";
-                    }
+                    return "Connection failed.";
                 }
-            }
-            catch (MySqlException exc)
-            {
-                return "Connection failed";
+                else
+                {
+                    return "You have been successfully connected to the MySql database!";
+                }
             }
             catch (Exception ex)
             {
                 return ex.Message;
+            }
+        }
+
+        public override bool IsDatabaseConnected(string connectionString)
+        {
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    connection.Open();
+                    bool isConnected = connection.State == ConnectionState.Open;
+                    if (isConnected)
+                    {
+                        connection.Close();
+                    }
+
+                    return isConnected;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
     }
