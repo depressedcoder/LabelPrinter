@@ -1,8 +1,7 @@
-﻿using LabelPrinter.DatabaseWatcher;
-using LabelPrinter.Model;
+﻿using LabelPrinter.Model;
 using LabelPrinter.Storage;
 using MySql.Data.MySqlClient;
-using Newtonsoft.Json; 
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,10 +9,19 @@ using System.Threading;
 
 namespace LabelPrinter.DatabaseWatcher
 {
+    /// <summary>
+    /// Observe insertion into LABELS_IN table on MySql database
+    /// </summary>
     public class MySqlWatcher : AbstractWatcher
     {
+        #region Private members
+
         private readonly static object _padLoack = new object();
-        private static MySqlWatcher _msSqlDependency; 
+        private static MySqlWatcher _msSqlDependency;
+
+        #endregion
+
+        #region Constructors
 
         private MySqlWatcher()
         {
@@ -37,10 +45,45 @@ namespace LabelPrinter.DatabaseWatcher
             }
         }
 
+        #endregion
+
+        #region Public methods
+
         public override void NotifyNewItem()
         {
             Thread thread = new Thread(() => DetectOnChanged());
             thread.Start();
+        }
+
+        public override string GetConnectionString()
+        {
+            if (!File.Exists("Config.json"))
+            {
+                throw new ArgumentException("Configuration file is missing");
+            }
+
+            var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("Config.json"));
+
+            var connectionString = config?.MySqlConnection;
+
+            return connectionString;
+        }
+
+        #endregion
+
+        #region Private methods
+
+        private void DeletePreviouse(MySqlConnection connection, string labelID)
+        {
+            if (connection.State != System.Data.ConnectionState.Open)
+            {
+                connection.Open();
+            }
+            using (MySqlCommand command = new MySqlCommand("DELETE FROM LABELS_IN where ID IN " + labelID, connection))
+            {
+                command.CommandType = System.Data.CommandType.Text;
+                command.ExecuteNonQuery();
+            }
         }
 
         private void DetectOnChanged()
@@ -78,7 +121,7 @@ namespace LabelPrinter.DatabaseWatcher
                                     if (!string.IsNullOrEmpty(labels.Label))
                                     {
                                         Label label = JsonConvert.DeserializeObject<Label>(labels.Label);
-                                        PhysicalPrinter.Print(label);
+                                        PhysicalPrinter.Instance.Print(label);
                                         var storage = new MySqlStorage();
                                         storage.SaveLabel(label);
                                         IDList.Add(labels.ID.ToString());
@@ -99,35 +142,9 @@ namespace LabelPrinter.DatabaseWatcher
                 {
                     Console.WriteLine(ex);
                 }
-            }            
-        }
-         
-        private void DeletePreviouse(MySqlConnection connection, string labelID)
-        {
-            if (connection.State != System.Data.ConnectionState.Open)
-            {
-                connection.Open();
-            }
-            using (MySqlCommand command = new MySqlCommand("DELETE FROM LABELS_IN where ID IN " + labelID, connection))
-            {
-                command.CommandType = System.Data.CommandType.Text;
-                command.ExecuteNonQuery();
             }
         }
-        
-        public override string GetConnectionString()
-        {
-            if (!File.Exists("Config.json"))
-            {
-                throw new ArgumentException("Configuration file is missing");
-            }
 
-            var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("Config.json"));
-
-            var connectionString = config?.MySqlConnection;
-
-            return connectionString;
-        }
- 
+        #endregion
     }
 }

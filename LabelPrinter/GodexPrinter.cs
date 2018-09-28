@@ -592,6 +592,11 @@ namespace LabelPrinter
         {
             EZioApi.sendcommand("^C" + nCopyNo.ToString());
         }
+        
+        public void SetPrinterType(string command)
+        {
+            EZioApi.sendcommand("^A" + command);
+        }
     }
 
     public class GodexPrinter

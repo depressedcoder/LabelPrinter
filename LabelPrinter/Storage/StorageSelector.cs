@@ -8,7 +8,13 @@ namespace LabelPrinter.Storage
 {
     public class StorageSelector
     {
+        #region private member(s)
+
         readonly Dictionary<string, AbstractStorage> _storage;
+
+        #endregion
+
+        #region constructor(s)
 
         public StorageSelector()
         {
@@ -20,6 +26,10 @@ namespace LabelPrinter.Storage
                 {StorageTypes.MsSql, new MsSqlStorage() }
             };
         }
+
+        #endregion
+
+        #region public method(s)
 
         public AbstractStorage GetStorage()
         {
@@ -40,5 +50,7 @@ namespace LabelPrinter.Storage
             Config config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("Config.json"));
             return config;
         }
+
+        #endregion
     }
 }

@@ -6,9 +6,16 @@ namespace LabelPrinter.DatabaseWatcher
 {
     public class WatherSelector
     {
+        #region Private members
+
         private static WatherSelector _watherSelector;
         private readonly static object _padLoack = new object();
         readonly Dictionary<string, AbstractWatcher> _watcher;
+
+        #endregion
+
+        #region Constructors
+
         private WatherSelector()
         {
             _watcher = new Dictionary<string, AbstractWatcher>();
@@ -22,11 +29,11 @@ namespace LabelPrinter.DatabaseWatcher
         {
             get
             {
-                if(_watherSelector == null)
+                if (_watherSelector == null)
                 {
                     lock (_padLoack)
                     {
-                        if(_watherSelector == null)
+                        if (_watherSelector == null)
                         {
                             _watherSelector = new WatherSelector();
                         }
@@ -36,6 +43,10 @@ namespace LabelPrinter.DatabaseWatcher
             }
         }
 
+        #endregion
+
+        #region Public method(s)
+
         public AbstractWatcher GetWatcher()
         {
             Config config = StorageSelector.GetConfig();
@@ -44,6 +55,8 @@ namespace LabelPrinter.DatabaseWatcher
             var wather = _watcher.FirstOrDefault(x => x.Key == selectedWather).Value ?? TextFileWatcher.Instance;
 
             return wather;
-        }
+        } 
+
+        #endregion
     }
 }

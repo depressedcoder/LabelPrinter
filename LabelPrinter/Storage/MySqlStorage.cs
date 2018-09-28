@@ -10,6 +10,8 @@ namespace LabelPrinter.Storage
 {
     public class MySqlStorage : AbstractStorage
     {
+        #region public method(s)
+
         public override List<string> GetLabelNames()
         {
             List<String> labelNames = new List<String>();
@@ -213,5 +215,7 @@ namespace LabelPrinter.Storage
                 return false;
             }
         }
+
+        #endregion
     }
 }

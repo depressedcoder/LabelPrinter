@@ -5,13 +5,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media.Imaging;
 using LabelPrinter.Storage;
-using System;
 
 namespace LabelPrinter.ViewModel
 {
     public partial class MainViewModel : ViewModelBase
     {
+        #region global variable
+
         GodexPrinter _printer;
+        readonly StorageSelector _storageSelector;
+
+        #endregion
+
+        #region public relayCommand(s)
+
         public RelayCommand SaveButtonCommand { get; }
         public RelayCommand NewButtonCommand { get; }
         public RelayCommand SetUpButtonCommand { get; }
@@ -21,6 +28,33 @@ namespace LabelPrinter.ViewModel
         public RelayCommand ExitButtonCommand { get; }
         public RelayCommand UpdateLabelCommand { get; }
 
+        #endregion
+
+        #region public member(s)
+        private List<string> _printerTypes;
+        public List<string> PrinterTypes
+        {
+            get
+            {
+                if(_printerTypes == null)
+                {
+                    _printerTypes = new List<string>();
+                }
+                if(_printerTypes.Count < 2)
+                {
+                    _printerTypes.Add(EnumsConverter.GetDescription(PrinterType.DirectThermal));
+                    _printerTypes.Add(EnumsConverter.GetDescription(PrinterType.ThermalTransfer));
+                }
+
+               return _printerTypes;
+            }
+            set
+            {
+                _printerTypes = value;
+                RaisePropertyChanged(nameof(PrinterTypes));
+            }
+        }
+
         Label _label;
         public Label Label
         {
@@ -29,7 +63,6 @@ namespace LabelPrinter.ViewModel
         }
 
         BitmapImage _bitmapImage;
-
         public BitmapImage BitmapImage
         {
             get => _bitmapImage;
@@ -39,8 +72,8 @@ namespace LabelPrinter.ViewModel
                 RaisePropertyChanged(nameof(BitmapImage));
             }
         }
-        List<string> _labelSource;
 
+        List<string> _labelSource;
         /// <summary>
         /// List of all LabelNames
         /// </summary>
@@ -51,14 +84,14 @@ namespace LabelPrinter.ViewModel
             {
                 _labelSource = value;
                 RaisePropertyChanged(nameof(LabelSource));
-            }   
+            }
         }
 
         /// <summary>
         /// List of all BarCodes
         /// </summary>
         public List<string> BarCodes { get; set; } = new List<string> { "2/5 Interleaved", "Code128", "Code39", "DataMatrix", "EAN13", "EAN8" };
-        
+
         /// <summary>
         /// Used for the Char Widths ComboBox
         /// </summary>
@@ -67,7 +100,9 @@ namespace LabelPrinter.ViewModel
         public int PreviewHeight { set; get; } = 400;
         public int PreviewWeight { set; get; } = 100;
 
-        readonly StorageSelector _storageSelector;
+        #endregion
+        
+        #region constructor(s)
 
         public MainViewModel()
         {
@@ -83,7 +118,7 @@ namespace LabelPrinter.ViewModel
             PrintJobsButtonCommand = new RelayCommand(PrintJobsCommand);
             ExitButtonCommand = new RelayCommand(ExitCommand);
             UpdateLabelCommand = new RelayCommand(UpdateLabel);
-            
+
             LabelSource = _storageSelector.GetStorage().GetLabelNames();
 
             Label = new Label
@@ -107,5 +142,8 @@ namespace LabelPrinter.ViewModel
                 });
             }
         }
+
+        #endregion
+
     }
 }

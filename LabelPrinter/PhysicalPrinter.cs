@@ -1,21 +1,52 @@
 ﻿
 
-using LabelPrinter.Storage;
-using LabelPrinter.Model;
 using LabelPrinter.Drawing;
-using System.Drawing;
+using LabelPrinter.Model;
+using LabelPrinter.Storage;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text.RegularExpressions;
 
-namespace LabelPrinter 
+namespace LabelPrinter
 {
     public class PhysicalPrinter
     {
-        static GodexPrinter _printer;
-        static StorageSelector _storageSelector;
+        #region private member(s)
 
-        public static void Print(Label label, int noOfCopy)
+        private static GodexPrinter _printer;
+        private static StorageSelector _storageSelector;
+        private readonly static object _padLoack = new object();
+        private static PhysicalPrinter _physicalPrinter;
+
+        #endregion
+
+        private PhysicalPrinter()
+        {
+        }
+
+        public static PhysicalPrinter Instance
+        {
+            get
+            {
+                if (_physicalPrinter == null)
+                {
+                    lock (_padLoack)
+                    {
+                        if (_physicalPrinter == null)
+                        {
+                            _physicalPrinter = new PhysicalPrinter();
+                        }
+                    }
+                }
+                return _physicalPrinter;
+            }
+        }
+
+
+        #region public member(s)
+
+        public void Print(Label label, int noOfCopy)
         {
             var con = StorageSelector.GetConfig();
             _printer = new GodexPrinter();
@@ -57,7 +88,7 @@ namespace LabelPrinter
             _printer.Close();
         }
 
-        public static void Print(Label label)
+        public void Print(Label label)
         {
             var con = StorageSelector.GetConfig();
             _printer = new GodexPrinter();
@@ -67,7 +98,7 @@ namespace LabelPrinter
 
             //Print
             _printer.Command.Start();
-            
+
             var posY = 10;
             var rowHeight = 10;
             var storage = _storageSelector.GetStorage();
@@ -99,34 +130,7 @@ namespace LabelPrinter
             _printer.Close();
         }
 
-        private static void SetupPrinter(Config con, Label label, int numberOfCopy)
-        {
-            // Connect printer
-            PortType port = EnumsConverter.ParseEnum<PortType>(string.IsNullOrEmpty(con.SelectedPrinterPort) ? "USB" : con.SelectedPrinterPort);
-            _printer.Open(port);
-            //Setup
-            PaperMode value = EnumsConverter.ParseEnum<PaperMode>(con.RadioButtonValue.ToString());
-            int gapFeed = Convert.ToInt32(string.IsNullOrEmpty(con.GapControlText) ? "0" : con.GapControlText);
-            _printer.Config.LabelMode(value, label.LabelHeight, gapFeed); //40-> 
-            _printer.Config.LabelWidth(label.LabelWidth); //Label.LabelWidth
-            _printer.Config.Dark(con.Density); //con.Density
-            _printer.Config.Speed(con.Speed); //con.Speed
-            _printer.Config.PageNo(1);
-            _printer.Config.CopyNo(numberOfCopy);
-            ////Cutting command
-            if (label.IsAutomaticCuttingDevice)
-            {
-                _printer.Config.CutPapaerOn(1);
-            }
-            else
-            {
-                _printer.Config.CutPapaerOff();
-            }
-
-            _printer.Config.SetLeftMargin(label.DistanceFromLeft*8); //8 dot = 1 mm
-        }
-
-        private static List<string> GetPlaceholders(string input)
+        public List<string> GetPlaceholders(string input)
         {
             var placeholderPattern = "<([a-zA-Z0-9_.-])+?>";
 
@@ -172,5 +176,46 @@ namespace LabelPrinter
             return results;
         }
 
+        #endregion
+
+        #region private method(s)
+
+        private static void SetupPrinter(Config con, Label label, int numberOfCopy)
+        {
+            // Connect printer
+            PortType port = EnumsConverter.ParseEnum<PortType>(string.IsNullOrEmpty(con.SelectedPrinterPort) ? "USB" : con.SelectedPrinterPort);
+            _printer.Open(port);
+            //Setup
+            PaperMode value = EnumsConverter.ParseEnum<PaperMode>(con.RadioButtonValue.ToString());
+            int gapFeed = Convert.ToInt32(string.IsNullOrEmpty(con.GapControlText) ? "0" : con.GapControlText);
+            _printer.Config.LabelMode(value, label.LabelHeight, gapFeed); //40-> 
+            _printer.Config.LabelWidth(label.LabelWidth); //Label.LabelWidth
+            _printer.Config.Dark(con.Density); //con.Density
+            _printer.Config.Speed(con.Speed); //con.Speed
+            _printer.Config.PageNo(1);
+            _printer.Config.CopyNo(numberOfCopy);
+            if (label.SelectedPrinterType == EnumsConverter.GetDescription(PrinterType.DirectThermal))
+            {
+                _printer.Config.SetPrinterType("D"); // direct tharmul
+            }
+            else
+            {
+                _printer.Config.SetPrinterType("T");
+            }
+
+            ////Cutting command
+            if (label.IsAutomaticCuttingDevice)
+            {
+                _printer.Config.CutPapaerOn(1);
+            }
+            else
+            {
+                _printer.Config.CutPapaerOff();
+            }
+
+            _printer.Config.SetLeftMargin(label.DistanceFromLeft * 8); //8 dot = 1 mm
+        }
+
+        #endregion
     }
 }

@@ -4,15 +4,21 @@ namespace LabelPrinter.Drawing
 {
     public class WeightDrawing : AbstractDrawing
     {
+        #region private constant(s)
+
         const string ConvertedWeight = "0.0";
+
+        #endregion
+
+        #region public method(s)
 
         public override void Draw(ref int rowHeight, ref float x, float y)
         {
             using (var font = GetRowFont())
             {
                 Graphics.DrawString(Weight.ToString("#,##0.00"), font, Brushes.Black, new PointF(x, y));
-                
-                x +=  Graphics.MeasureString(Weight.ToString(), font).Width + 2; // 2 * fontSize added because of two zero after weight.
+
+                x += Graphics.MeasureString(Weight.ToString(), font).Width + 2; // 2 * fontSize added because of two zero after weight.
 
                 if (font.Height > rowHeight)
                 {
@@ -36,5 +42,7 @@ namespace LabelPrinter.Drawing
                 rowHeight = GetRowFontForPrinting().Height;
             }
         }
+
+        #endregion
     }
 }

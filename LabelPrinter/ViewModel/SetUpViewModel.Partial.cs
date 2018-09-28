@@ -244,7 +244,7 @@ namespace LabelPrinter.ViewModel
             }
         }
 
-        public RelayCommand SaveButtonCommand { get; private set; }
+        public RelayCommand<object> SaveButtonCommand { get; private set; }
         public RelayCommand<object> ExitButtonCommand { get; private set; }
         public RelayCommand ChangeButtonCommand { get; private set; }
         public RelayCommand TestConnectionButtonCommand { get; private set; }
@@ -253,7 +253,7 @@ namespace LabelPrinter.ViewModel
         {
             SetupConfig();
 
-            SaveButtonCommand = new RelayCommand(SaveCommand);
+            SaveButtonCommand = new RelayCommand<object>(SaveCommand);
             ExitButtonCommand = new RelayCommand<object>(ExitCommand);
             ChangeButtonCommand = new RelayCommand(ChangeCommand);
             TestConnectionButtonCommand = new RelayCommand(TestConnectionCommand);

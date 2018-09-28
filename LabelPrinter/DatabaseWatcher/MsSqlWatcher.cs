@@ -13,10 +13,19 @@ using System.Threading;
 
 namespace LabelPrinter.DatabaseWatcher
 {
+    /// <summary>
+    /// Observe insertion into LABELS_IN table on MSSQL database
+    /// </summary>
     public class MsSqlWatcher : AbstractWatcher
     {
+        #region Private members
+
         private readonly static object _padLoack = new object();
-        private static MsSqlWatcher _msSqlDependency; 
+        private static MsSqlWatcher _msSqlDependency;
+
+        #endregion
+
+        #region Constructors
 
         private MsSqlWatcher()
         {
@@ -40,11 +49,33 @@ namespace LabelPrinter.DatabaseWatcher
             }
         }
 
+        #endregion
+
+        #region Public methods
+
         public override void NotifyNewItem()
         {
             Thread thread = new Thread(() => DetectOnChanged());
             thread.Start();
         }
+
+        public override string GetConnectionString()
+        {
+            if (!File.Exists("Config.json"))
+            {
+                throw new ArgumentException("Configuration file is missing");
+            }
+
+            var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("Config.json"));
+
+            var connectionString = config?.MssqlConnection;
+
+            return connectionString;
+        }
+
+        #endregion
+
+        #region Private methods
 
         private void DetectOnChanged()
         {
@@ -52,7 +83,7 @@ namespace LabelPrinter.DatabaseWatcher
             while (true)
             {
                 try
-                { 
+                {
                     if (!string.IsNullOrEmpty(connectionString))
                     {
                         var connection = new SqlConnection(connectionString);
@@ -81,7 +112,7 @@ namespace LabelPrinter.DatabaseWatcher
                                     if (!string.IsNullOrEmpty(labels.Label))
                                     {
                                         Label label = JsonConvert.DeserializeObject<Label>(labels.Label);
-                                        PhysicalPrinter.Print(label);
+                                        PhysicalPrinter.Instance.Print(label);
                                         var storage = new MsSqlStorage();
                                         storage.SaveLabel(label);
                                         IDList.Add(labels.ID.ToString());
@@ -117,19 +148,7 @@ namespace LabelPrinter.DatabaseWatcher
                 command.ExecuteNonQuery();
             }
         }
- 
-        public override string GetConnectionString()
-        {
-            if (!File.Exists("Config.json"))
-            {
-                throw new ArgumentException("Configuration file is missing");
-            }
 
-            var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("Config.json"));
-
-            var connectionString = config?.MssqlConnection;
-
-            return connectionString;
-        }
+        #endregion
     }
 }

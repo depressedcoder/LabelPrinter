@@ -24,4 +24,13 @@ namespace LabelPrinter.Model
         MySqlWatcher,
         OracleWatcher
     }
+
+    public enum PrinterType
+    {
+        [Description("Direct Thermal")]
+        DirectThermal = 1,
+
+        [Description("Thermal Transfer")]
+        ThermalTransfer = 2
+    }
 }

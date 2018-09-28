@@ -1,17 +1,18 @@
-﻿ 
+﻿
 using LabelPrinter.Model;
 using Newtonsoft.Json;
 using Oracle.DataAccess.Client;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
 using System.IO;
 
 namespace LabelPrinter.Storage
 {
     public class OracleStorage : AbstractStorage
     {
+        #region public method(s)
+
         public override List<string> GetLabelNames()
         {
             List<String> labelNames = new List<String>();
@@ -44,23 +45,23 @@ namespace LabelPrinter.Storage
         }
 
         public override Label GetLabel(string labelName)
-        {            
+        {
             Label label = null;
             Labels labels = GetLabels(labelName);
             if (labels != null)
                 label = JsonConvert.DeserializeObject<Label>(labels.Label);
-            return label;  
+            return label;
         }
 
         public override void SaveLabel(Label label)
-        { 
+        {
             decimal w = 12;
             try
             {
                 Labels dblabels = GetLabels(label.SelectedLabelName);
                 string labelStr = JsonConvert.SerializeObject(label);
                 string query = string.Empty;
-                using(OracleConnection connection = new OracleConnection(GetConnectionString()))
+                using (OracleConnection connection = new OracleConnection(GetConnectionString()))
                 {
                     if (dblabels != null)
                     {
@@ -71,17 +72,17 @@ namespace LabelPrinter.Storage
                         query = "INSERT INTO labelprinter.LABELS_OUT(NAME, WEIGHT, LABEL) VALUES(:1, :2, :3)";
 
                     }
-                    using( OracleCommand command = new OracleCommand(query, connection))
+                    using (OracleCommand command = new OracleCommand(query, connection))
                     {
-                        command.Parameters.Add(new OracleParameter("1", OracleDbType.Varchar2 , label.SelectedLabelName, ParameterDirection.Input));
-                        command.Parameters.Add(new OracleParameter("2", OracleDbType.Decimal , w, ParameterDirection.Input));
+                        command.Parameters.Add(new OracleParameter("1", OracleDbType.Varchar2, label.SelectedLabelName, ParameterDirection.Input));
+                        command.Parameters.Add(new OracleParameter("2", OracleDbType.Decimal, w, ParameterDirection.Input));
                         command.Parameters.Add(new OracleParameter("3", OracleDbType.Varchar2, JsonConvert.SerializeObject(label), ParameterDirection.Input));
 
                         connection.Open();
                         command.ExecuteNonQuery();
                         connection.Close();
-                    }        
-                }                
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -93,9 +94,9 @@ namespace LabelPrinter.Storage
         {
             try
             {
-                Labels dblabels = GetLabels(label.SelectedLabelName.Trim()); 
+                Labels dblabels = GetLabels(label.SelectedLabelName.Trim());
                 string query = string.Empty;
-                if(dblabels != null)
+                if (dblabels != null)
                 {
                     using (OracleConnection connection = new OracleConnection(GetConnectionString()))
                     {
@@ -117,7 +118,7 @@ namespace LabelPrinter.Storage
                 else
                 {
                     MessageView.Instance.ShowWarning("The label already deleted from database.");
-                }                
+                }
             }
             catch (Exception ex)
             {
@@ -141,7 +142,7 @@ namespace LabelPrinter.Storage
         public override string TestConnection(string connectionString)
         {
             try
-            { 
+            {
                 if (!IsDatabaseConnected(connectionString))
                 {
                     return "Connection failed.";
@@ -154,7 +155,7 @@ namespace LabelPrinter.Storage
             catch (Exception ex)
             {
                 return ex.Message;
-            } 
+            }
         }
 
         public override bool IsDatabaseConnected(string connectionString)
@@ -210,5 +211,7 @@ namespace LabelPrinter.Storage
                 throw ex;
             }
         }
+
+        #endregion
     }
 }

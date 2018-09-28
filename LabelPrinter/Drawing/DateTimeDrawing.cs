@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Windows.Forms;
 
 namespace LabelPrinter.Drawing
 {
     public class DateTimeDrawing : AbstractDrawing
     {
+        #region private member(s)
+
         readonly Dictionary<string, string> _datetimeFormat;
+
+        #endregion
+
+        #region Constructor(s)
 
         public DateTimeDrawing()
         {
@@ -18,6 +23,10 @@ namespace LabelPrinter.Drawing
                 {"<DATE>",  "dd-MM-yyyy"}
             };
         }
+
+        #endregion
+
+        #region public method(s)
 
         public override void Draw(ref int rowHeight, ref float x, float y)
         {
@@ -45,15 +54,17 @@ namespace LabelPrinter.Drawing
             //    Row.SelectedCharWidth *= 2;
 
             printer.Command.PrintText(x, y, Row.SelectedCharWidth * 3, "Arial", datetime, 0, BoldStatus, RotateMode.Angle_0, Italic_State.OFF, UnderLineStatus, Strikeout_State.OFF, Inverse_State.OFF);
-            
-            x +=(int) Graphics.MeasureString(datetime, GetRowFontForPrinting()).Width;
 
-            if (GetRowFontForPrinting().Height>rowHeight)
+            x += (int)Graphics.MeasureString(datetime, GetRowFontForPrinting()).Width;
+
+            if (GetRowFontForPrinting().Height > rowHeight)
             {
                 rowHeight = GetRowFontForPrinting().Height;
             }
 
 
         }
+
+        #endregion
     }
 }

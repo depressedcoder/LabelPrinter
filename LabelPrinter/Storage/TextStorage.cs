@@ -9,7 +9,13 @@ namespace LabelPrinter.Storage
 {
     public class TextStorage : AbstractStorage
     {
+        #region private member(s)
+
         const string TextExtension = "-IMPORT.txt";
+
+        #endregion
+
+        #region public method(s)
 
         public override List<string> GetLabelNames()
         {
@@ -33,17 +39,17 @@ namespace LabelPrinter.Storage
 
         public override void SaveLabel(Label label)
         {
-                        
-                //Save all labels
-                var fileName = $"{GetConnectionString()}{label.SelectedLabelName}{TextExtension}";
-                File.WriteAllText(fileName, label.SelectedLabelName + '\n' +
-                                            label.HowManyCoppies + '\n' +
-                    string.Join("\n", label.Rows.Select(m => m.Text).ToArray()));
 
-                //Save metadata of labels
-                var labelRowsMetadata = JsonConvert.SerializeObject(label, Formatting.Indented);
-                File.WriteAllText($"{GetConnectionString()}{label.SelectedLabelName}.json", labelRowsMetadata);
-            
+            //Save all labels
+            var fileName = $"{GetConnectionString()}{label.SelectedLabelName}{TextExtension}";
+            File.WriteAllText(fileName, label.SelectedLabelName + '\n' +
+                                        label.HowManyCoppies + '\n' +
+                string.Join("\n", label.Rows.Select(m => m.Text).ToArray()));
+
+            //Save metadata of labels
+            var labelRowsMetadata = JsonConvert.SerializeObject(label, Formatting.Indented);
+            File.WriteAllText($"{GetConnectionString()}{label.SelectedLabelName}.json", labelRowsMetadata);
+
         }
 
         public override string GetConnectionString()
@@ -58,12 +64,7 @@ namespace LabelPrinter.Storage
             if (!string.IsNullOrEmpty(connectionString))
                 Directory.CreateDirectory(connectionString);
 
-            return string.IsNullOrEmpty(connectionString) ?  AppDomain.CurrentDomain.BaseDirectory + "\\" : connectionString;
-        }
-
-        public override string TestConnection(string connectionString)
-        {
-            throw new NotImplementedException();
+            return string.IsNullOrEmpty(connectionString) ? AppDomain.CurrentDomain.BaseDirectory + "\\" : connectionString;
         }
 
         public override Labels GetLabels(string labelName)
@@ -133,5 +134,17 @@ namespace LabelPrinter.Storage
                 MessageView.Instance.ShowError(ex.Message);
             }
         }
+
+        #endregion
+
+        #region unimplemented method(s)
+
+        public override string TestConnection(string connectionString)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
     }
 }

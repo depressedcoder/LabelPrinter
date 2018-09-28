@@ -10,9 +10,14 @@ namespace LabelPrinter.DatabaseWatcher
 {
     public class TextFileWatcher : AbstractWatcher
     {
+        #region private members
 
         private readonly static object _padLoack = new object();
         private static TextFileWatcher _textFile;
+
+        #endregion
+
+        #region Construcators
 
         private TextFileWatcher()
         {
@@ -36,13 +41,17 @@ namespace LabelPrinter.DatabaseWatcher
             }
         }
 
+        #endregion
+
+        #region Public methods
+
         public override string GetConnectionString()
         {
             string connectionString = string.Empty;
             try
             {
                 TextStorage storage = new TextStorage();
-                 connectionString = storage.GetConnectionString();
+                connectionString = storage.GetConnectionString();
                 return connectionString;
             }
             catch (Exception ex)
@@ -56,5 +65,7 @@ namespace LabelPrinter.DatabaseWatcher
         {
             // Just ignore it as we don't need to monitor text file change rather than database
         }
+
+        #endregion
     }
 }

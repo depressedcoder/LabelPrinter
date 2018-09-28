@@ -5,16 +5,7 @@ namespace LabelPrinter.Drawing
 {
     public abstract class AbstractDrawing
     {
-        public abstract void Draw(
-            ref int rowHeight,
-            ref float x,
-             float y);
-
-        public abstract void Print(
-            GodexPrinter printer,
-            ref int rowHeight,
-            ref int x,
-            int y);
+        #region Public members
 
         public string Placeholder { get; set; }
         public decimal Weight { set; get; }
@@ -22,6 +13,17 @@ namespace LabelPrinter.Drawing
         public Barcode Barcode { get; set; }
         public Row Row { get; set; }
 
+        #endregion
+
+        #region Abstract methods
+
+        public abstract void Draw(ref int rowHeight, ref float x, float y);
+
+        public abstract void Print(GodexPrinter printer, ref int rowHeight, ref int x, int y);
+
+        #endregion
+
+        #region Protected methods
 
         //Return font for Drawing
         protected Font GetRowFont()
@@ -38,20 +40,21 @@ namespace LabelPrinter.Drawing
             {
                 charWidth *= 2;
             }
-            
-            var font = new Font("Arial", charWidth, style | style,GraphicsUnit.Point);
+
+            var font = new Font("Arial", charWidth, style | style, GraphicsUnit.Point);
 
             return font;
         }
         //Return font for printing
         protected Font GetRowFontForPrinting()
         {
-            var charWidth = Row.SelectedCharWidth*3;
-            
-            var font = new Font("Arial", charWidth,GraphicsUnit.Pixel);
+            var charWidth = Row.SelectedCharWidth * 3;
+
+            var font = new Font("Arial", charWidth, GraphicsUnit.Pixel);
 
             return font;
         }
 
+        #endregion
     }
 }

@@ -76,7 +76,7 @@
                     TextChanged="UpdateLabelEvent">
                 <Binding Path="Label.LabelHeight" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                     <Binding.ValidationRules>
-                        <local:MinMaxValidationRule MaxValue="100" MinValue="20"/>
+                        <local:MinMaxValidationRule MaxValue="100" MinValue="10"/>
                     </Binding.ValidationRules>
                 </Binding>
             </TextBox>
@@ -317,6 +317,14 @@
                         </Binding.ValidationRules>
                     </Binding>
                 </TextBox>
+            </Grid>
+            <Grid Grid.Column="0" Grid.Row="19">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition  Width="1*"/>
+                    <ColumnDefinition  Width="2*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="Printer Type: "/>
+                <ComboBox Grid.Column="1"  x:Name="printerTypeComboBox" Cursor="Hand" ItemsSource="{Binding PrinterTypes}" SelectedItem="{Binding Label.SelectedPrinterType}" FontSize="12" />
             </Grid>
         </Grid>
         <Border Grid.Row="1" 

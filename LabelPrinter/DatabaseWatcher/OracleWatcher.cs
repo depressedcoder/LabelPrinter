@@ -1,5 +1,4 @@
-﻿using LabelPrinter.DatabaseWatcher;
-using LabelPrinter.Model;
+﻿using LabelPrinter.Model;
 using LabelPrinter.Storage;
 using Newtonsoft.Json;
 using Oracle.DataAccess.Client;
@@ -10,11 +9,19 @@ using System.Threading;
 
 namespace LabelPrinter.DatabaseWatcher
 {
+    /// <summary>
+    /// Observe insertion into LABELS_IN table on oracle database
+    /// </summary>
     public class OracleWatcher : AbstractWatcher
     {
-        private readonly static object _padLoack = new object();
-        private static OracleWatcher _msSqlDependency;
-        public static event EventHandler ItemReceived;
+        #region Private members
+
+        private static readonly object _padLoack = new object();
+        private static OracleWatcher _oracleWather;
+
+        #endregion
+
+        #region Construcators
 
         private OracleWatcher()
         {
@@ -24,25 +31,47 @@ namespace LabelPrinter.DatabaseWatcher
         {
             get
             {
-                if (_msSqlDependency == null)
+                if (_oracleWather == null)
                 {
                     lock (_padLoack)
                     {
-                        if (_msSqlDependency == null)
+                        if (_oracleWather == null)
                         {
-                            _msSqlDependency = new OracleWatcher();
+                            _oracleWather = new OracleWatcher();
                         }
                     }
                 }
-                return _msSqlDependency;
+                return _oracleWather;
             }
         }
+
+        #endregion
+
+        #region Public methods
 
         public override void NotifyNewItem()
         {
             Thread thread = new Thread(() => DetectOnChanged());
             thread.Start();
         }
+
+        public override string GetConnectionString()
+        {
+            if (!File.Exists("Config.json"))
+            {
+                throw new ArgumentException("Configuration file is missing");
+            }
+
+            var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("Config.json"));
+
+            var connectionString = config?.OracleConnection;
+
+            return connectionString;
+        }
+
+        #endregion
+
+        #region Private methods
 
         private void DetectOnChanged()
         {
@@ -77,7 +106,7 @@ namespace LabelPrinter.DatabaseWatcher
                                 if (!string.IsNullOrEmpty(labels.Label))
                                 {
                                     Label label = JsonConvert.DeserializeObject<Label>(labels.Label);
-                                    PhysicalPrinter.Print(label);
+                                    PhysicalPrinter.Instance.Print(label);
                                     var storage = new OracleStorage();
                                     storage.SaveLabel(label);
                                     IDList.Add(labels.ID.ToString());
@@ -93,9 +122,9 @@ namespace LabelPrinter.DatabaseWatcher
                     }
                 }
                 Thread.Sleep(TimeSpan.FromSeconds(1));
-            }            
+            }
         }
-         
+
 
         private void DeletePreviouse(OracleConnection connection, string labelID)
         {
@@ -110,20 +139,6 @@ namespace LabelPrinter.DatabaseWatcher
             }
         }
 
-
-        public override string GetConnectionString()
-        {
-            if (!File.Exists("Config.json"))
-            {
-                throw new ArgumentException("Configuration file is missing");
-            }
-
-            var config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("Config.json"));
-
-            var connectionString = config?.OracleConnection;
-
-            return connectionString;
-        }
- 
+        #endregion  
     }
 }

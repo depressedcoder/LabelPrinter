@@ -9,11 +9,17 @@ namespace LabelPrinter.Drawing
 {
     public class BarcodeDrawing : AbstractDrawing
     {
+        #region private members
+
         const string BarcodeMatchingPattern = "<BAR|\\++>|>";
 
         readonly Dictionary<string, BarcodeLib.TYPE> _barcodeTypes;
 
         readonly BarcodeLib.Barcode _barcode;
+
+        #endregion
+
+        #region public methods
 
         public BarcodeDrawing()
         {
@@ -53,7 +59,7 @@ namespace LabelPrinter.Drawing
         }
 
         public override void Print(GodexPrinter printer, ref int rowHeight, ref int x, int y)
-        {             
+        {
             var label = Regex.Replace(Regex.Replace(Placeholder, BarcodeMatchingPattern, ""), @"\D", "0");
             var barcodeHeight = Barcode.HeightOfCode * 20;
             var barcodeWidth = Barcode.CodeSize * 2;
@@ -68,7 +74,7 @@ namespace LabelPrinter.Drawing
                 //    rowHeight = barcodeHeight;
 
             }
-            else if(Barcode.SelectedBarCode == "Code128")
+            else if (Barcode.SelectedBarCode == "Code128")
             {
                 //printer.Command.PrintBarCode(BarCodeType.Code128_Subset, x, y, label);
                 printer.Command.PrintBarCode(BarCodeType.Code128_Auto, x, y, 5, barcodeWidth, barcodeHeight, 0, 0, label);
@@ -76,7 +82,7 @@ namespace LabelPrinter.Drawing
                 //if (barcodeHeight > rowHeight)
                 //    rowHeight = (barcodeHeight);
             }
-            else if(Barcode.SelectedBarCode == "EAN13")
+            else if (Barcode.SelectedBarCode == "EAN13")
             {
                 //printer.Command.PrintBarCode(BarCodeType.EAN13_Add5, x, y, label);
                 printer.Command.PrintBarCode(BarCodeType.EAN13, x, y, 5, barcodeWidth, barcodeHeight, 0, 0, label);
@@ -84,7 +90,7 @@ namespace LabelPrinter.Drawing
                 //if (barcodeHeight > rowHeight)
                 //    rowHeight = barcodeHeight;
             }
-            else if(Barcode.SelectedBarCode == "EAN8")
+            else if (Barcode.SelectedBarCode == "EAN8")
             {
                 //printer.Command.PrintBarCode(BarCodeType.EAN8, x, y, label);
                 printer.Command.PrintBarCode(BarCodeType.EAN8, x, y, 5, barcodeWidth, barcodeHeight, 0, 0, label);
@@ -92,7 +98,7 @@ namespace LabelPrinter.Drawing
                 //if (barcodeHeight > rowHeight)
                 //    rowHeight = barcodeHeight;
             }
-            else if(Barcode.SelectedBarCode == "2/5 Interleaved")
+            else if (Barcode.SelectedBarCode == "2/5 Interleaved")
             {
                 //printer.Command.PrintBarCode(BarCodeType.I2of5, x, y, label);
                 printer.Command.PrintBarCode(BarCodeType.I2of5, x, y, 5, barcodeWidth, barcodeHeight, 0, 0, label);
@@ -102,7 +108,7 @@ namespace LabelPrinter.Drawing
             }
             else
             {
-                printer.Command.PrintDataMatrix(x,y,10,"0",label);
+                printer.Command.PrintDataMatrix(x, y, 10, "0", label);
                 //x += (barcodeWidth / 2);
                 //if (barcodeHeight > rowHeight)
                 //    rowHeight = barcodeHeight;
@@ -113,7 +119,11 @@ namespace LabelPrinter.Drawing
 
         }
 
-        Image GetBarcodeImage(string selectedBarcode, string barCodeLabel, int width, int height)
+        #endregion
+
+        #region private methods
+
+        private Image GetBarcodeImage(string selectedBarcode, string barCodeLabel, int width, int height)
         {
             width = width * 100;
             height = height * 20;
@@ -165,7 +175,7 @@ namespace LabelPrinter.Drawing
             return _barcode.Encode(barcodeType, label, Color.Black, Color.White, width, height);
         }
 
-        Image Resize(Image image, int newWidth, int maxHeight, bool onlyResizeIfWider)
+        private Image Resize(Image image, int newWidth, int maxHeight, bool onlyResizeIfWider)
         {
             if (onlyResizeIfWider && image.Width <= newWidth) newWidth = image.Width;
 
@@ -189,5 +199,7 @@ namespace LabelPrinter.Drawing
 
             return result;
         }
+
+        #endregion
     }
 }

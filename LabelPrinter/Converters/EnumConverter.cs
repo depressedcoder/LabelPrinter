@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Globalization;
-using System.Linq;
 using System.Reflection;
-using System.Text; 
 
-namespace LabelPrinter 
+namespace LabelPrinter
 {
     public class EnumsConverter
     {
+        #region Public methods
+
         public static string GetDescription(Enum value)
         {
             FieldInfo fi = value.GetType().GetField(value.ToString());
@@ -28,5 +26,7 @@ namespace LabelPrinter
         {
             return (T)Enum.Parse(typeof(T), value, true);
         }
+
+        #endregion
     }
 }

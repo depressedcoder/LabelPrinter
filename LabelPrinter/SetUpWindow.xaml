@@ -222,7 +222,7 @@
                 <Button Visibility="{Binding IsVisibleForConnection, Converter={StaticResource booleanToVisibilityConverter}}" Grid.Column="1" Content="Test Connection" Command="{Binding TestConnectionButtonCommand}" Height="25" Width="120" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,0,0,0"/>
                 <TextBlock Visibility="{Binding IsVisibleForConnection, Converter={StaticResource booleanToVisibilityConverter}}" Grid.Column="0" FontSize="12" Text="{Binding EgText,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Bottom" Margin="25,0,10,0" Grid.ColumnSpan="2"/>
             </Grid>
-            <Button Grid.Row="7" Width="120" Height="25" Command="{Binding SaveButtonCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Save" Margin="15,0,0,0"/>
+            <Button Grid.Row="7" Width="120" Height="25" Command="{Binding SaveButtonCommand}" CommandParameter="{Binding ElementName=WindowsForm}" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Save" Margin="15,0,0,0"/>
             <Button Grid.Row="7" Width="120" Height="25" Command="{Binding ExitButtonCommand}" CommandParameter="{Binding ElementName=WindowsForm}" HorizontalAlignment="Right" VerticalAlignment="Top" Content="Exit" Margin="0,0,25,0"/>
         </Grid>
     </Grid>

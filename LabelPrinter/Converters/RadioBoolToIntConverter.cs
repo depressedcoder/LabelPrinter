@@ -9,6 +9,8 @@ namespace LabelPrinter.Converters
 {
     public class RadioBoolToIntConverter : IValueConverter
     {
+        #region Implemented  method(s)
+
         //SETUPWINDOW radio buttons converter to int value
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -19,9 +21,15 @@ namespace LabelPrinter.Converters
                 return false;
         }
 
+        #endregion
+
+        #region Unimplemented method(s)
+
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return parameter;
         }
+
+        #endregion
     }
 }

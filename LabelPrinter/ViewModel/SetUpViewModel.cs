@@ -88,7 +88,7 @@ namespace LabelPrinter.ViewModel
             Win.Close();
         }
 
-        private void SaveCommand()
+        private void SaveCommand(object obj)
         {
             if (_storageSelector == null)
             {
@@ -99,6 +99,7 @@ namespace LabelPrinter.ViewModel
             {
                 SaveConfig();
                 MessageView.Instance.ShowInformation("File saved");
+                ExitCommand(obj);
             }
             else
             {

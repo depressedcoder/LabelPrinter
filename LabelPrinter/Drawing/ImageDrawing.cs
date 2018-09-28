@@ -6,9 +6,15 @@ namespace LabelPrinter.Drawing
 {
     public class ImageDrawing : AbstractDrawing
     {
+        #region private constant(s)
+
         const string DefaultImage = "Norsel";
         const string ImageNotFound = "<?>";
         const string ImageNamePattern = "<IMG|>";
+
+        #endregion
+
+        #region public method(s)
 
         public override void Draw(ref int rowHeight, ref float x, float y)
         {
@@ -56,5 +62,7 @@ namespace LabelPrinter.Drawing
                 rowHeight = image.Height;
             }
         }
+
+        #endregion
     }
 }

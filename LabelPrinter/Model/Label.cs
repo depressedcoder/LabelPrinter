@@ -136,6 +136,17 @@ namespace LabelPrinter.Model
                 _createdDate = value;
                 RaisePropertyChanged(nameof(CreatedDate));
             }
-        } 
+        }
+
+        private string _selectedPrinterType = EnumsConverter.GetDescription(PrinterType.DirectThermal);
+        public string SelectedPrinterType
+        {
+            get => _selectedPrinterType;
+            set
+            {
+                _selectedPrinterType = value;
+                RaisePropertyChanged(nameof(SelectedPrinterType));
+            }
+        }
     }
 }
