@@ -12,9 +12,10 @@ namespace LabelPrinter.Drawing
         {
             using (var font = GetRowFont())
             {
-                Graphics.DrawString(Placeholder, font, Brushes.Black, new PointF(x, y));
+                string label = Placeholder.Replace("++", "");
+                Graphics.DrawString(label, font, Brushes.Black, new PointF(x, y));
 
-                x += Graphics.MeasureString(Placeholder, font).Width + (Placeholder.Count(Char.IsWhiteSpace) * font.Size);
+                x += Graphics.MeasureString(label, font).Width + (label.Count(Char.IsWhiteSpace) * font.Size);
 
                 if (font.Height > rowHeight)
                 {

@@ -610,7 +610,7 @@ namespace LabelPrinter
             ArrayList DriverPrinterList = new ArrayList();
 
             foreach (String PrinterName in PrinterSettings.InstalledPrinters)
-                if (PrinterName.ToUpper().Contains(FilterName.ToUpper()))
+                //if (PrinterName.ToUpper().Contains(FilterName.ToUpper()))
                     DriverPrinterList.Add(PrinterName);
 
             if (DriverPrinterList.Count > 0)

@@ -45,7 +45,16 @@ namespace LabelPrinter.Drawing
             {
                 using (var barcodeImage = GetBarcodeImage(Barcode.SelectedBarCode, Placeholder, Barcode.CodeSize, Barcode.HeightOfCode))
                 {
-                    int height = barcodeImage.Height / 2;
+                    int height = 0;
+                    if (_barcodeTypes.ContainsKey(Barcode.SelectedBarCode) && (_barcodeTypes[Barcode.SelectedBarCode] == BarcodeLib.TYPE.EAN13 || _barcodeTypes[Barcode.SelectedBarCode] == BarcodeLib.TYPE.EAN8))
+                    {
+                        height = barcodeImage.Height;
+                    }
+                    else
+                    {
+                        height = barcodeImage.Height / 2;
+                    }
+
                     Graphics.DrawImage(barcodeImage, x, y, barcodeImage.Width, height);
 
                     x += barcodeImage.Width;
@@ -85,7 +94,7 @@ namespace LabelPrinter.Drawing
             else if (Barcode.SelectedBarCode == "EAN13")
             {
                 //printer.Command.PrintBarCode(BarCodeType.EAN13_Add5, x, y, label);
-                printer.Command.PrintBarCode(BarCodeType.EAN13, x, y, 5, barcodeWidth, barcodeHeight, 0, 0, label);
+                printer.Command.PrintBarCode(BarCodeType.EAN13_Add5, x, y, 5, barcodeWidth, barcodeHeight, 0, 0, label);
                 //x += (barcodeWidth / 2);
                 //if (barcodeHeight > rowHeight)
                 //    rowHeight = barcodeHeight;
@@ -93,7 +102,7 @@ namespace LabelPrinter.Drawing
             else if (Barcode.SelectedBarCode == "EAN8")
             {
                 //printer.Command.PrintBarCode(BarCodeType.EAN8, x, y, label);
-                printer.Command.PrintBarCode(BarCodeType.EAN8, x, y, 5, barcodeWidth, barcodeHeight, 0, 0, label);
+                printer.Command.PrintBarCode(BarCodeType.EAN8_Add5, x, y, 5, barcodeWidth, barcodeHeight, 0, 0, label);
                 //x += (barcodeWidth / 2);
                 //if (barcodeHeight > rowHeight)
                 //    rowHeight = barcodeHeight;
@@ -128,7 +137,7 @@ namespace LabelPrinter.Drawing
             width = width * 100;
             height = height * 20;
 
-            var label = Regex.Replace(Regex.Replace(barCodeLabel, BarcodeMatchingPattern, ""), @"\D", "0");
+            var label = Regex.Replace(Regex.Replace(barCodeLabel, BarcodeMatchingPattern, ""), @"\D", "0"); 
 
             if (!_barcodeTypes.ContainsKey(selectedBarcode))
             {

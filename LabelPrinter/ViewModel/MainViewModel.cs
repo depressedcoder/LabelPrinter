@@ -75,45 +75,47 @@ namespace LabelPrinter.ViewModel
             {
                 return;
             }
-
-            string jsonData = string.Empty;
-            string basePath = AppDomain.CurrentDomain.BaseDirectory + e.Name.Split('-')[0] + ".json";
-            string fileNameOfLabel = basePath;
-            if (!File.Exists(fileNameOfLabel))
+            if (e.Name.Contains("LABEL-IMPORT"))
             {
-                return;
-            }
-            else
-            {
-                jsonData = File.ReadAllText(fileNameOfLabel);
-            }
-
-            text = File.ReadAllText(textFilePath);
-
-            if (!string.IsNullOrEmpty(text))
-            {
-                var labelRowLines = text.Split('\n');
-                for (int i = 3; i <= labelRowLines.Length; i++)
+                string jsonData = string.Empty;
+                string basePath = AppDomain.CurrentDomain.BaseDirectory +"Import.json";
+                string fileNameOfLabel = basePath;
+                if (!File.Exists(fileNameOfLabel))
                 {
-                    var param = labelRowLines[i - 1].Replace("\r\n", "").Replace("\r", "").Replace("\n", "");
-                    string origin = $"<I{i - 2}>";
-                    jsonData = jsonData.Replace(origin, param);
+                    return;
+                }
+                else
+                {
+                    jsonData = File.ReadAllText(fileNameOfLabel);
                 }
 
-                File.Delete(textFilePath);
+                text = File.ReadAllText(textFilePath);
 
-                using (StreamWriter sw = File.AppendText(basePath))
+                if (!string.IsNullOrEmpty(text))
                 {
-                    sw.WriteLine(jsonData);
-                    sw.Close();
+                    var labelRowLines = text.Split('\n');
+                    for (int i = 3; i <= labelRowLines.Length; i++)
+                    {
+                        var param = labelRowLines[i - 1].Replace("\r\n", "").Replace("\r", "").Replace("\n", "");
+                        string origin = $"<I{i - 2}>";
+                        jsonData = jsonData.Replace(origin, param);
+                    }
+
+                    File.Delete(textFilePath);
+
+                    //using (StreamWriter sw = File.AppendText(basePath))
+                    //{
+                    //    sw.WriteLine(jsonData);
+                    //    sw.Close();
+                    //}
+                    Label label = JsonConvert.DeserializeObject<Label>(jsonData);
+                    if (label != null)
+                    {
+                        Label = label;
+                        //PhysicalPrinter.Instance.Print(label);
+                    }
                 }
-                Label label = JsonConvert.DeserializeObject<Label>(jsonData);
-                if (label != null)
-                {
-                    Label = label;
-                    PhysicalPrinter.Instance.Print(label);
-                }
-            }
+            }            
         }
 
         public void PreviewLabel()

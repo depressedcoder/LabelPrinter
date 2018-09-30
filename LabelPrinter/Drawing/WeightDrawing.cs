@@ -18,7 +18,7 @@ namespace LabelPrinter.Drawing
             {
                 Graphics.DrawString(Weight.ToString("#,##0.00"), font, Brushes.Black, new PointF(x, y));
 
-                x += Graphics.MeasureString(Weight.ToString(), font).Width + 2; // 2 * fontSize added because of two zero after weight.
+                x += Graphics.MeasureString(Weight.ToString(), font).Width + (int)(font.Size * 1.5); // 2 * fontSize added because of two zero after weight.
 
                 if (font.Height > rowHeight)
                 {
