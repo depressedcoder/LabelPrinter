@@ -13,8 +13,6 @@ CREATE TABLE LABELS_OUT(
     WEIGHT decimal(18,2),
     LABEL NVARCHAR(8000)
 ) 
---SQL dependency
-ALTER DATABASE labelprinter SET ENABLE_BROKER  with rollback immediate
  
 
 --END
@@ -82,15 +80,15 @@ BEGIN
   INTO   :new.id
   FROM   dual;
 END;
-
+--find hosted database server name
 select sys_context('USERENV','SERVER_HOST') from dual
 
 --END
 
 INSERT INTO  "LABELS_IN" ("NAME", "WEIGHT",  "LABEL") VALUES('Oracle test', 12.45, '{"Rows":[{"Text":"Norsel Oracle","SelectedCharWidth":12,"IsHigh":true,"IsBold":false,"IsUnderlined":false,"CharWidth":24,"IsInDesignMode":false},{"Text":"<TIME>","SelectedCharWidth":6,"IsHigh":false,"IsBold":false,"IsUnderlined":false,"CharWidth":6,"IsInDesignMode":false},{"Text":"<IMGNorsel>","SelectedCharWidth":6,"IsHigh":false,"IsBold":false,"IsUnderlined":false,"CharWidth":6,"IsInDesignMode":false},{"Text":"","SelectedCharWidth":6,"IsHigh":false,"IsBold":false,"IsUnderlined":false,"CharWidth":6,"IsInDesignMode":false},{"Text":"","SelectedCharWidth":6,"IsHigh":false,"IsBold":false,"IsUnderlined":false,"CharWidth":6,"IsInDesignMode":false},{"Text":"","SelectedCharWidth":6,"IsHigh":false,"IsBold":false,"IsUnderlined":false,"CharWidth":6,"IsInDesignMode":false},{"Text":"","SelectedCharWidth":6,"IsHigh":false,"IsBold":false,"IsUnderlined":false,"CharWidth":6,"IsInDesignMode":false},{"Text":"","SelectedCharWidth":6,"IsHigh":false,"IsBold":false,"IsUnderlined":false,"CharWidth":6,"IsInDesignMode":false},{"Text":"","SelectedCharWidth":6,"IsHigh":false,"IsBold":false,"IsUnderlined":false,"CharWidth":6,"IsInDesignMode":false},{"Text":"","SelectedCharWidth":6,"IsHigh":false,"IsBold":false,"IsUnderlined":false,"CharWidth":6,"IsInDesignMode":false},{"Text":"","SelectedCharWidth":6,"IsHigh":false,"IsBold":false,"IsUnderlined":false,"CharWidth":6,"IsInDesignMode":false},{"Text":"","SelectedCharWidth":6,"IsHigh":false,"IsBold":false,"IsUnderlined":false,"CharWidth":6,"IsInDesignMode":false},{"Text":"","SelectedCharWidth":6,"IsHigh":false,"IsBold":false,"IsUnderlined":false,"CharWidth":6,"IsInDesignMode":false},{"Text":"","SelectedCharWidth":6,"IsHigh":false,"IsBold":false,"IsUnderlined":false,"CharWidth":6,"IsInDesignMode":false},{"Text":"","SelectedCharWidth":6,"IsHigh":false,"IsBold":false,"IsUnderlined":false,"CharWidth":6,"IsInDesignMode":false}],"HowManyCoppies":1,"IsAutomaticCuttingDevice":true,"LabelWidth":120,"LabelHeight":100,"DistanceFromLeft":0,"LabelSource":null,"SelectedLabelName":"Norsel","Barcode":{"SelectedBarCode":"EAN13","CodeSize":2,"HeightOfCode":5,"IsInDesignMode":false},"IsInDesignMode":false}')
 
-
 SELECT * FROM LABELS_IN
+SELECT * FROM LABELS_OUT
  
 
 
