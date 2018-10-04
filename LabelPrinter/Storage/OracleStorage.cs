@@ -55,7 +55,6 @@ namespace LabelPrinter.Storage
 
         public override void SaveLabel(Label label)
         {
-            decimal w = 12;
             try
             {
                 Labels dblabels = GetLabels(label.SelectedLabelName);
@@ -75,7 +74,7 @@ namespace LabelPrinter.Storage
                     using (OracleCommand command = new OracleCommand(query, connection))
                     {
                         command.Parameters.Add(new OracleParameter("1", OracleDbType.Varchar2, label.SelectedLabelName, ParameterDirection.Input));
-                        command.Parameters.Add(new OracleParameter("2", OracleDbType.Decimal, w, ParameterDirection.Input));
+                        command.Parameters.Add(new OracleParameter("2", OracleDbType.Decimal, label.Weight, ParameterDirection.Input));
                         command.Parameters.Add(new OracleParameter("3", OracleDbType.Varchar2, JsonConvert.SerializeObject(label), ParameterDirection.Input));
 
                         connection.Open();

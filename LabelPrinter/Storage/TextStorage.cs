@@ -49,7 +49,6 @@ namespace LabelPrinter.Storage
             //Save metadata of labels
             var labelRowsMetadata = JsonConvert.SerializeObject(label, Formatting.Indented);
             File.WriteAllText($"{GetConnectionString()}{label.SelectedLabelName}.json", labelRowsMetadata);
-
         }
 
         public override string GetConnectionString()

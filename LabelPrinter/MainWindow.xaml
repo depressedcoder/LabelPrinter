@@ -92,7 +92,7 @@
                 TextChanged="UpdateLabelEvent">
                 <Binding Path="Label.DistanceFromLeft" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay">
                     <Binding.ValidationRules>
-                        <local:MinMaxValidationRule MaxValue="100" MinValue="1"/>
+                        <local:MinMaxValidationRule MaxValue="50" MinValue="0"/>
                     </Binding.ValidationRules>
                 </Binding>
             </TextBox>

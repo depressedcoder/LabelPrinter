@@ -148,5 +148,16 @@ namespace LabelPrinter.Model
                 RaisePropertyChanged(nameof(SelectedPrinterType));
             }
         }
+
+        private decimal _weight = 0;
+        public decimal Weight
+        {
+            get => _weight;
+            set
+            {
+                _weight = value;
+                RaisePropertyChanged(nameof(Weight));
+            }
+        }
     }
 }

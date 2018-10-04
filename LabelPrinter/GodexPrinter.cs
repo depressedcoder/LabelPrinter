@@ -608,11 +608,14 @@ namespace LabelPrinter
         {
             string[] PrinterList = null;
             ArrayList DriverPrinterList = new ArrayList();
-
-            foreach (String PrinterName in PrinterSettings.InstalledPrinters)
-                //if (PrinterName.ToUpper().Contains(FilterName.ToUpper()))
-                    DriverPrinterList.Add(PrinterName);
-
+            var lstPrinter = PrinterSettings.InstalledPrinters;
+            if(lstPrinter != null && lstPrinter.Count > 0)
+            {
+                foreach (string PrinterName in PrinterSettings.InstalledPrinters)
+                    if (PrinterName.ToUpper().Contains(FilterName.ToUpper()))
+                        DriverPrinterList.Add(PrinterName);
+            }
+         
             if (DriverPrinterList.Count > 0)
             {
                 PrinterList = new string[DriverPrinterList.Count];

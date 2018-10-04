@@ -70,6 +70,11 @@ namespace LabelPrinter.Drawing
         public override void Print(GodexPrinter printer, ref int rowHeight, ref int x, int y)
         {
             var label = Regex.Replace(Regex.Replace(Placeholder, BarcodeMatchingPattern, ""), @"\D", "0");
+            bool hasIncrement = Placeholder.Contains("++");
+            if (hasIncrement)
+            {
+                label = (Convert.ToInt16(label) + Increment).ToString();
+            }
             var barcodeHeight = Barcode.HeightOfCode * 20;
             var barcodeWidth = Barcode.CodeSize * 2;
 

@@ -103,7 +103,7 @@ namespace LabelPrinter.DatabaseWatcher
                             connection.Open();
                         }
 
-                        command.CommandText = "select ID, NAME, WEIGHT, LABEL from LABELS_IN";
+                        command.CommandText = "select * from labelpriter.LABELS_IN";
                         command.CommandType = System.Data.CommandType.Text;
 
                         List<string> IDList = new List<string>();
@@ -111,20 +111,37 @@ namespace LabelPrinter.DatabaseWatcher
                         {
                             if (reader.HasRows)
                             {
-                                Labels labels = new Labels();
+                                LabelIn labels = new LabelIn();
                                 while (reader.Read())
                                 {
-                                    labels.ID = Convert.ToInt32(reader["ID"]);
+                                    labels.Id = Convert.ToInt32(reader["ID"]);
                                     labels.Name = reader["Name"].ToString();
-                                    labels.Wieght = Convert.ToDecimal(reader["WEIGHT"]);
-                                    labels.Label = reader["LABEL"].ToString();
-                                    if (!string.IsNullOrEmpty(labels.Label))
+                                    labels.Weight = Convert.ToDecimal(reader["WEIGHT"]);
+                                    labels.Date = Convert.ToDateTime(reader["Date"]);
+                                    labels.Line1 = reader["Line1"].ToString();
+                                    labels.Line2 = reader["Line2"].ToString();
+                                    labels.Line3 = reader["Line3"].ToString();
+                                    labels.Line4 = reader["Line4"].ToString();
+                                    labels.Line5 = reader["Line5"].ToString();
+                                    labels.Line6 = reader["Line6"].ToString();
+                                    labels.Line7 = reader["Line7"].ToString();
+                                    labels.Line8 = reader["Line8"].ToString();
+                                    labels.Line9 = reader["Line9"].ToString();
+                                    labels.Line10 = reader["Line10"].ToString();
+                                    labels.Line11 = reader["Line11"].ToString();
+                                    labels.Line12 = reader["Line12"].ToString();
+                                    labels.Line13 = reader["Line13"].ToString();
+                                    labels.Line14 = reader["Line14"].ToString();
+                                    labels.Line15 = reader["Line15"].ToString();
+
+                                    if (!string.IsNullOrEmpty(labels.Name))
                                     {
-                                        Label label = JsonConvert.DeserializeObject<Label>(labels.Label);
+                                        Label label = GetLabel(labels); // JsonConvert.DeserializeObject<Label>(labels.Label);
+                                        label.Weight = labels.Weight;
                                         PhysicalPrinter.Instance.Print(label);
-                                        var storage = new MySqlStorage();
+                                        var storage = new MySqlStorage(); 
                                         storage.SaveLabel(label);
-                                        IDList.Add(labels.ID.ToString());
+                                        IDList.Add(labels.Id.ToString());
                                     }
                                 }
                             }

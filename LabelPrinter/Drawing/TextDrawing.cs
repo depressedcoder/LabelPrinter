@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace LabelPrinter.Drawing
 {
@@ -28,12 +29,20 @@ namespace LabelPrinter.Drawing
         {
             FontWeight BoldStatus = Row.IsBold ? FontWeight.FW_700_BOLD : FontWeight.FW_400_NORMAL;
             Underline_State UnderLineStatus = Row.IsUnderlined ? Underline_State.ON : Underline_State.OFF;
+            int fontHeight = Row.SelectedCharWidth;
             if (Row.IsHigh)
             {
-                Row.SelectedCharWidth *= 2;
+                fontHeight *= 2;
             }
-
-            printer.Command.PrintText(x, y, Row.SelectedCharWidth * 3, "Arial", Placeholder, 0, BoldStatus, RotateMode.Angle_0, Italic_State.OFF, UnderLineStatus, Strikeout_State.OFF, Inverse_State.OFF);
+            bool hasIncrement = Placeholder.Contains("++");
+            if (hasIncrement)
+            {
+                Placeholder = Placeholder.Replace("++", "");
+                string resultString = Regex.Match(Placeholder, @"\d+").Value;
+                Placeholder = Placeholder.Replace(resultString, (Convert.ToInt16(resultString) + Increment).ToString());
+                Increment = 0;
+            }
+            printer.Command.PrintText(x, y, fontHeight * 3, "Arial", Placeholder, 0, BoldStatus, RotateMode.Angle_0, Italic_State.OFF, UnderLineStatus, Strikeout_State.OFF, Inverse_State.OFF);
             x += (int)Graphics.MeasureString(Placeholder, GetRowFontForPrinting()).Width;
             if (GetRowFontForPrinting().Height > rowHeight)
             {

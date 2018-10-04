@@ -1,11 +1,27 @@
 -- MSSQL database table creation
 
-CREATE TABLE LABELS_IN(
-	ID bigint auto_increment primary key,
-    NAME NVARCHAR(500) NOT NULL,
-    WEIGHT decimal(18,2),
-    LABEL NVARCHAR(8000)
-) 
+
+CREATE TABLE [dbo].[LABELS_IN](
+	[ID] [bigint] IDENTITY(1,1) primary key NOT NULL,
+	[NAME] [nvarchar](500) NOT NULL,
+	[WEIGHT] [decimal](18, 2) NULL,
+	[Date] [datetime] NULL,
+	[Line1] [nvarchar](200) NULL,
+	[Line2] [nvarchar](200) NULL,
+	[Line3] [nvarchar](200) NULL,
+	[Line4] [nvarchar](200) NULL,
+	[Line5] [nvarchar](200) NULL,
+	[Line6] [nvarchar](200) NULL,
+	[Line7] [nvarchar](200) NULL,
+	[Line8] [nvarchar](200) NULL,
+	[Line9] [nvarchar](200) NULL,
+	[Line10] [nvarchar](200) NULL,
+	[Line11] [nvarchar](200) NULL,
+	[Line12] [nvarchar](200) NULL,
+	[Line13] [nvarchar](200) NULL,
+	[Line14] [nvarchar](200) NULL,
+	[Line15] [nvarchar](200) NULL
+)
 
 CREATE TABLE LABELS_OUT(
 	ID bigint auto_increment primary key,
@@ -21,10 +37,26 @@ CREATE TABLE LABELS_OUT(
 
 CREATE TABLE LABELS_IN(
 	ID bigint auto_increment primary key,
-    NAME NVARCHAR(500) NOT NULL,
-    WEIGHT decimal(18,2),
-    LABEL NVARCHAR(8000)
-) 
+	NAME nvarchar(500) NOT NULL,
+	WEIGHT decimal(18, 2) NULL,
+	Date datetime NULL,
+	Line1 nvarchar(200) NULL,
+	Line2 nvarchar(200) NULL,
+	Line3 nvarchar(200) NULL,
+	Line4 nvarchar(200) NULL,
+	Line5 nvarchar(200) NULL,
+	Line6 nvarchar(200) NULL,
+	Line7 nvarchar(200) NULL,
+	Line8 nvarchar(200) NULL,
+	Line9 nvarchar(200) NULL,
+	Line10 nvarchar(200) NULL,
+	Line11 nvarchar(200) NULL,
+	Line12 nvarchar(200) NULL,
+	Line13 nvarchar(200) NULL,
+	Line14 nvarchar(200) NULL,
+	Line15 nvarchar(200) NULL
+)
+ 
 
 CREATE TABLE LABELS_OUT(
 	ID bigint auto_increment primary key,
@@ -60,13 +92,29 @@ BEGIN
   FROM   dual;
 END;
 
-CREATE TABLE "LABELS_IN"
-(
-    "ID" NUMBER(10) NOT NULL,
-    "NAME" VARCHAR2(500) NOT NULL,
-    "WEIGHT" DECIMAL(10,2),
-    "LABEL" VARCHAR2(4000) 
+
+CREATE TABLE LABELS_IN (
+	"ID"  NUMBER(10) NOT NULL,
+	"NAME" varchar2(500)  NOT NULL,
+	"WEIGHT" decimal(18, 2) NULL,
+	"Date" DATE NULL,
+	"Line1" varchar2(200) NULL,
+	"Line2" varchar2(200) NULL,
+	"Line3" varchar2(200) NULL,
+	"Line4" varchar2(200) NULL,
+	"Line5" varchar2(200) NULL,
+	"Line6" varchar2(200) NULL,
+	"Line7" varchar2(200) NULL,
+	"Line8" varchar2(200) NULL,
+	"Line9" varchar2(200) NULL,
+	"Line10" varchar2(200) NULL,
+	"Line11" varchar2(200) NULL,
+	"Line12" varchar2(200) NULL,
+	"Line13" varchar2(200) NULL,
+	"Line14" varchar2(200) NULL,
+	"Line15" varchar2(200) NULL
 )
+ 
  ALTER TABLE "LABELS_IN" ADD (
   CONSTRAINT "label_in_pk" PRIMARY KEY("ID"))
 

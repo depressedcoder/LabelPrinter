@@ -6,6 +6,7 @@ using LabelPrinter.Storage;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace LabelPrinter
@@ -128,6 +129,61 @@ namespace LabelPrinter
 
             _printer.Command.End();
             _printer.Close();
+        }
+
+        public void PrintJob(Label label, int noOfCopy)
+        {
+            Row row = label.Rows.Where(r => r.Text.Contains("++")).FirstOrDefault();
+            if (row != null)
+            {
+                var con = StorageSelector.GetConfig();
+                for (int i = 0; i < noOfCopy; i++)
+                {
+                    _printer = new GodexPrinter();
+                    _storageSelector = new StorageSelector();
+
+                    SetupPrinter(con, label, noOfCopy);
+
+                    //Print
+                    _printer.Command.Start();
+
+                    var posY = 10;
+                    var rowHeight = 10;
+                    var storage = _storageSelector.GetStorage();
+
+                    foreach (var labelRow in label.Rows)
+                    {
+                        var posX = 10;
+                        var placeholers = GetPlaceholders(labelRow.Text);
+
+                        var strategySelector = new DrawingSelector
+                        {
+                            Graphics = Graphics.FromImage(new Bitmap(label.LabelWidth, label.LabelHeight)),
+                            Barcode = label.Barcode,
+                            Weight = storage.GetLabels(label.SelectedLabelName)?.Wieght ?? 0,
+                            Row = labelRow
+                        };
+
+                        foreach (var placeholer in placeholers)
+                        {
+                            var drawingStrategy = strategySelector.GetStrategy(placeholer);
+
+                            drawingStrategy.Increment = i;
+                            drawingStrategy.Print(_printer, ref rowHeight, ref posX, posY);
+                        }
+
+                        posY += rowHeight;
+                    }
+
+                    _printer.Command.End();
+                    _printer.Close();
+                }
+            }
+            else
+            {
+                Print(label, noOfCopy);
+            }
+
         }
 
         public List<string> GetPlaceholders(string input)

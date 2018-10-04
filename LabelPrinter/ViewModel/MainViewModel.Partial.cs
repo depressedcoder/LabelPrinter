@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media.Imaging;
 using LabelPrinter.Storage;
+using System.Data;
 
 namespace LabelPrinter.ViewModel
 {
@@ -27,6 +28,14 @@ namespace LabelPrinter.ViewModel
         public RelayCommand PrintJobsButtonCommand { get; }
         public RelayCommand ExitButtonCommand { get; }
         public RelayCommand UpdateLabelCommand { get; }
+
+        #endregion
+
+        #region private member(s)
+
+        private readonly DataTable data = new DataTable("PrintingHistory", "LabelPrinter");
+        private readonly string tempDir = @"..\TEMP";
+        private readonly string templateFile = string.Empty;
 
         #endregion
 

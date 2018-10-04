@@ -12,6 +12,7 @@ namespace LabelPrinter.Drawing
         public Graphics Graphics { get; set; }
         public Barcode Barcode { get; set; }
         public Row Row { get; set; }
+        public int Increment { set; get; }
 
         #endregion
 
@@ -49,6 +50,10 @@ namespace LabelPrinter.Drawing
         protected Font GetRowFontForPrinting()
         {
             var charWidth = Row.SelectedCharWidth * 3;
+            if (Row.IsHigh)
+            {
+                charWidth *= 2;
+            }
 
             var font = new Font("Arial", charWidth, GraphicsUnit.Pixel);
 

@@ -3,6 +3,7 @@ using LabelPrinter.Model;
 using LabelPrinter.Storage;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -78,7 +79,7 @@ namespace LabelPrinter.ViewModel
             if (e.Name.Contains("LABEL-IMPORT"))
             {
                 string jsonData = string.Empty;
-                string basePath = AppDomain.CurrentDomain.BaseDirectory +"Import.json";
+                string basePath = AppDomain.CurrentDomain.BaseDirectory +"Norsel.json";
                 string fileNameOfLabel = basePath;
                 if (!File.Exists(fileNameOfLabel))
                 {
@@ -103,16 +104,11 @@ namespace LabelPrinter.ViewModel
 
                     File.Delete(textFilePath);
 
-                    //using (StreamWriter sw = File.AppendText(basePath))
-                    //{
-                    //    sw.WriteLine(jsonData);
-                    //    sw.Close();
-                    //}
                     Label label = JsonConvert.DeserializeObject<Label>(jsonData);
                     if (label != null)
                     {
                         Label = label;
-                        //PhysicalPrinter.Instance.Print(label);
+                        PhysicalPrinter.Instance.Print(label);
                     }
                 }
             }            
@@ -263,6 +259,42 @@ namespace LabelPrinter.ViewModel
                 }
             }
         }
+
+        private void WriteOutput(object sender, RoutedEventArgs e)
+        {
+            string fileName = "PrintingHistory_" + DateTime.Today + "xlsx";
+            // Delete contents of the temporary directory.
+            XlsxRW.DeleteDirectoryContents(tempDir);
+
+            // Unzip template XLSX file to the temporary directory.
+            XlsxRW.UnzipFile(templateFile, tempDir);
+
+            // We will need two string tables; a lookup IDictionary<string, int> for fast searching and 
+            // an ordinary IList<string> where items are sorted by their index.
+            IDictionary<string, int> lookupTable;
+
+            // Call helper methods which creates both tables from input data.
+            var stringTable = XlsxRW.CreateStringTables(this.data, out lookupTable);
+
+            // Create XML file..
+            using (var stream = new FileStream(Path.Combine(tempDir, @"xl\sharedStrings.xml"), FileMode.Create))
+                // ..and fill it with unique strings used in the workbook
+                XlsxRW.WriteStringTable(stream, stringTable);
+
+            // Create XML file..
+            using (var stream = new FileStream(Path.Combine(tempDir, @"xl\worksheets\sheet1.xml"),
+                FileMode.Create))
+                // ..and fill it with rows and columns of the DataTable.
+                XlsxRW.WriteWorksheet(stream, this.data, lookupTable);
+
+            // ZIP temporary directory to the XLSX file.
+            XlsxRW.ZipDirectory(tempDir, fileName);
+
+            // If checkbox is checked, show XLSX file in Microsoft Excel.
+            if (true)
+                System.Diagnostics.Process.Start(fileName);
+        }
+
 
         #endregion
 

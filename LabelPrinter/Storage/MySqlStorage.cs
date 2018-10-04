@@ -82,8 +82,7 @@ namespace LabelPrinter.Storage
         }
 
         public override void SaveLabel(Label label)
-        {
-            decimal w = 12;
+        { 
             try
             {
 
@@ -106,7 +105,7 @@ namespace LabelPrinter.Storage
                     {
 
                         MySqlParameter nameParam = new MySqlParameter("@name", label.SelectedLabelName);
-                        MySqlParameter wightParam = new MySqlParameter("@weight", w);
+                        MySqlParameter wightParam = new MySqlParameter("@weight", label.Weight);
                         MySqlParameter labelParam = new MySqlParameter("@label", labelStr);
 
                         command.Parameters.Add(nameParam);

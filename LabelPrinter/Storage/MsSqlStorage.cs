@@ -94,8 +94,7 @@ namespace LabelPrinter.Storage
         }
 
         public override void SaveLabel(Label label)
-        {
-            decimal w = 12;
+        { 
             try
             {
                 Labels dblabels = GetLabels(label.SelectedLabelName);
@@ -117,7 +116,7 @@ namespace LabelPrinter.Storage
                     {
 
                         SqlParameter nameParam = new SqlParameter("@name", label.SelectedLabelName);
-                        SqlParameter wightParam = new SqlParameter("@weight", w);
+                        SqlParameter wightParam = new SqlParameter("@weight", label.Weight);
                         SqlParameter labelParam = new SqlParameter("@label", labelStr);
 
                         command.Parameters.Add(nameParam);

@@ -90,7 +90,7 @@ namespace LabelPrinter.ViewModel
                         Label label = storage.GetLabel(job.LabelName);
                         if(label != null)
                         {
-                            PhysicalPrinter.Instance.Print(label, job.NoOfCopy);
+                            PhysicalPrinter.Instance.PrintJob(label, job.NoOfCopy);
                         }                        
                     }                    
                 }
