@@ -103,8 +103,14 @@ namespace LabelPrinter.DatabaseWatcher
                                 {
                                     labels.Id = Convert.ToInt32(reader["ID"]);
                                     labels.Name = reader["Name"].ToString();
-                                    labels.Weight = Convert.ToDecimal(reader["WEIGHT"]);
-                                    labels.Date = Convert.ToDateTime(reader["Date"]);
+                                    if (reader["WEIGHT"] != DBNull.Value)
+                                    {
+                                        labels.Weight = Convert.ToDecimal(reader["WEIGHT"]);
+                                    }
+                                    if (reader["Date"] != DBNull.Value)
+                                    {
+                                        labels.Date = Convert.ToDateTime(reader["Date"]);
+                                    }
                                     labels.Line1 = reader["Line1"].ToString();
                                     labels.Line2 = reader["Line2"].ToString();
                                     labels.Line3 = reader["Line3"].ToString();
@@ -126,7 +132,7 @@ namespace LabelPrinter.DatabaseWatcher
                                         Label label = GetLabel(labels); // JsonConvert.DeserializeObject<Label>(labels.Label);
                                         label.Weight = labels.Weight;
                                         PhysicalPrinter.Instance.Print(label);
-                                        var storage = new MsSqlStorage(); 
+                                        var storage = new MsSqlStorage();
                                         storage.SaveLabel(label);
                                         IDList.Add(labels.Id.ToString());
                                     }

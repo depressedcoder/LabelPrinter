@@ -66,7 +66,10 @@ namespace LabelPrinter
                 barcode = barcode.Replace("<BAR", "").Replace(">", "").Replace("++", "");
             }
             var weight = GetWeight();
-            ExportReport(barcode, noOfCopy);
+            if (con.IsCreateOrExport)
+            {
+                ExportReport(barcode, noOfCopy);
+            }
 
             //Print
             _printer.Command.Start();
@@ -104,50 +107,61 @@ namespace LabelPrinter
 
         public void Print(Label label)
         {
-            var con = StorageSelector.GetConfig();
-            _printer = new GodexPrinter();
-            _storageSelector = new StorageSelector();
-           
-            SetupPrinter(con, label, label.HowManyCoppies);
-            var barcode = label.Rows.Where(a => a.Text.Contains("BAR")).FirstOrDefault()?.Text;
-            if (!string.IsNullOrEmpty(barcode))
+            try
             {
-                barcode = barcode.Replace("<BAR", "").Replace(">", "").Replace("++", "");
-            }
-            var weight = GetWeight();
-            ExportReport(barcode, label.HowManyCoppies);
-            //Print
-            _printer.Command.Start();
 
-            var posY = 10;
-            var rowHeight = 10;
-            var storage = _storageSelector.GetStorage();
+                var con = StorageSelector.GetConfig();
+                _printer = new GodexPrinter();
+                _storageSelector = new StorageSelector();
 
-            foreach (var labelRow in label.Rows)
-            {
-                var posX = 10;
-                var placeholers = GetPlaceholders(labelRow.Text);
-               
-                var strategySelector = new DrawingSelector
+                SetupPrinter(con, label, label.HowManyCoppies);
+                var barcode = label.Rows.Where(a => a.Text.Contains("BAR")).FirstOrDefault()?.Text;
+                if (!string.IsNullOrEmpty(barcode))
                 {
-                    Graphics = Graphics.FromImage(new Bitmap(label.LabelWidth, label.LabelHeight)),
-                    Barcode = label.Barcode,
-                    Weight = storage.GetLabels(label.SelectedLabelName)?.Wieght ?? Convert.ToDecimal(string.IsNullOrEmpty(weight) ? "0" : weight),
-                    Row = labelRow
-                };
-
-                foreach (var placeholer in placeholers)
+                    barcode = barcode.Replace("<BAR", "").Replace(">", "").Replace("++", "");
+                }
+                var weight = GetWeight();
+                if (con.IsCreateOrExport)
                 {
-                    var drawingStrategy = strategySelector.GetStrategy(placeholer);
+                    ExportReport(barcode, label.HowManyCoppies);
+                }
+                //Print
+                _printer.Command.Start();
 
-                    drawingStrategy.Print(_printer, ref rowHeight, ref posX, posY);
+                var posY = 10;
+                var rowHeight = 10;
+                var storage = _storageSelector.GetStorage();
+
+                foreach (var labelRow in label.Rows)
+                {
+                    var posX = 10;
+                    var placeholers = GetPlaceholders(labelRow.Text);
+
+                    var strategySelector = new DrawingSelector
+                    {
+                        Graphics = Graphics.FromImage(new Bitmap(label.LabelWidth, label.LabelHeight)),
+                        Barcode = label.Barcode,
+                        Weight = storage.GetLabels(label.SelectedLabelName)?.Wieght ?? Convert.ToDecimal(string.IsNullOrEmpty(weight) ? "0" : weight),
+                        Row = labelRow
+                    };
+
+                    foreach (var placeholer in placeholers)
+                    {
+                        var drawingStrategy = strategySelector.GetStrategy(placeholer);
+
+                        drawingStrategy.Print(_printer, ref rowHeight, ref posX, posY);
+                    }
+
+                    posY += rowHeight;
                 }
 
-                posY += rowHeight;
+                _printer.Command.End();
+                _printer.Close();
             }
-
-            _printer.Command.End();
-            _printer.Close();
+            catch (Exception ex)
+            {
+                MessageView.Instance.ShowError(ex.Message);
+            }
         }
 
         public void PrintJob(Label label, int noOfCopy)
@@ -168,7 +182,10 @@ namespace LabelPrinter
                         barcode = barcode.Replace("<BAR", "").Replace(">", "").Replace("++", "");
                     }
                     var weight = GetWeight();
-                    ExportReport(barcode, label.HowManyCoppies);
+                    if (con.IsCreateOrExport)
+                    {
+                        ExportReport(barcode, label.HowManyCoppies);
+                    }
 
                     //Print
                     _printer.Command.Start();
@@ -208,7 +225,7 @@ namespace LabelPrinter
             else
             {
                 Print(label, noOfCopy);
-            } 
+            }
         }
 
         public List<string> GetPlaceholders(string input)
@@ -331,7 +348,7 @@ namespace LabelPrinter
                 string prevData = "";
                 using (StreamReader sr = new StreamReader(filePath))
                 {
-                    prevData = sr.ReadToEnd(); 
+                    prevData = sr.ReadToEnd();
                 }
                 st.Append(prevData);
                 st.AppendLine();
@@ -349,7 +366,7 @@ namespace LabelPrinter
                 sw.Dispose();
             }
         }
-       
+
         #endregion
     }
 }

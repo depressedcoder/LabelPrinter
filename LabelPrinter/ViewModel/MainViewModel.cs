@@ -109,7 +109,7 @@ namespace LabelPrinter.ViewModel
                     Label label = JsonConvert.DeserializeObject<Label>(jsonData);
                     if (label != null)
                     {
-                        Label.SelectedLabelName = "Import"; // As per direction of zadid vai Import.json will be used for showing
+                        label.SelectedLabelName = "Import"; // As per direction of zadid vai Import.json will be used for showing
                         Label = label;
                         PhysicalPrinter.Instance.Print(label);
                     }
