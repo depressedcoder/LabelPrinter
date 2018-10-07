@@ -102,6 +102,9 @@
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net35\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Oracle.DataAccess, Version=2.112.3.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=x86" />
+    <Reference Include="RestSharp, Version=104.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.104.1\lib\net35\RestSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System">
       <Private>True</Private>
     </Reference>
@@ -180,6 +183,7 @@
     <Compile Include="Model\PrintJobsLabel.cs" />
     <Compile Include="Model\PrintJobsRow.cs" />
     <Compile Include="Model\Row.cs" />
+    <Compile Include="Model\VMWightAndOperator.cs" />
     <Compile Include="PrintJobWindow.xaml.cs">
       <DependentUpon>PrintJobWindow.xaml</DependentUpon>
     </Compile>

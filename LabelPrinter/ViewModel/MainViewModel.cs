@@ -20,25 +20,29 @@ namespace LabelPrinter.ViewModel
 
         public void SetLabel()
         {
-            if (string.IsNullOrEmpty(Label.SelectedLabelName))
+            try
             {
-                return;
+                if (string.IsNullOrEmpty(Label.SelectedLabelName))
+                {
+                    return;
+                }
+
+                var storage = _storageSelector.GetStorage();
+
+                var label = storage.GetLabel(Label.SelectedLabelName);
+
+                if (label != null)
+                {
+                    Label = label;
+                }
+                Config config = StorageSelector.GetConfig();
+                WatchDirectory(config.LocationOfFile);
+
             }
-
-            var storage = _storageSelector.GetStorage();
-
-            var label = storage.GetLabel(Label.SelectedLabelName);
-
-            if (label != null)
+            catch (Exception ex)
             {
-                Label = label;
+                MessageView.Instance.ShowError(ex.Message);
             }
-            Config config = StorageSelector.GetConfig();
-            WatchDirectory(config.LocationOfFile);
-            //if(config.SelectedConnection == StorageTypes.Text)
-            //{
-
-            //}
         }
 
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
@@ -50,9 +54,7 @@ namespace LabelPrinter.ViewModel
             }
 
             FileSystemWatcher watcher = new FileSystemWatcher();
-            watcher.Path = textConnection;
-            /* Watch for changes in LastAccess and LastWrite times, and
-               the renaming of files or directories. */
+            watcher.Path = textConnection; 
             watcher.NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite
                | NotifyFilters.FileName | NotifyFilters.DirectoryName;
             // Only watch text files.
@@ -107,6 +109,7 @@ namespace LabelPrinter.ViewModel
                     Label label = JsonConvert.DeserializeObject<Label>(jsonData);
                     if (label != null)
                     {
+                        Label.SelectedLabelName = "Import"; // As per direction of zadid vai Import.json will be used for showing
                         Label = label;
                         PhysicalPrinter.Instance.Print(label);
                     }

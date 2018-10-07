@@ -3,10 +3,15 @@
 using LabelPrinter.Drawing;
 using LabelPrinter.Model;
 using LabelPrinter.Storage;
+using Newtonsoft.Json;
+using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace LabelPrinter
@@ -19,6 +24,7 @@ namespace LabelPrinter
         private static StorageSelector _storageSelector;
         private readonly static object _padLoack = new object();
         private static PhysicalPrinter _physicalPrinter;
+        private string operatorName = string.Empty;
 
         #endregion
 
@@ -54,6 +60,13 @@ namespace LabelPrinter
             _storageSelector = new StorageSelector();
 
             SetupPrinter(con, label, noOfCopy);
+            var barcode = label.Rows.Where(a => a.Text.Contains("BAR")).FirstOrDefault()?.Text;
+            if (!string.IsNullOrEmpty(barcode))
+            {
+                barcode = barcode.Replace("<BAR", "").Replace(">", "").Replace("++", "");
+            }
+            var weight = GetWeight();
+            ExportReport(barcode, noOfCopy);
 
             //Print
             _printer.Command.Start();
@@ -94,9 +107,15 @@ namespace LabelPrinter
             var con = StorageSelector.GetConfig();
             _printer = new GodexPrinter();
             _storageSelector = new StorageSelector();
-
+           
             SetupPrinter(con, label, label.HowManyCoppies);
-
+            var barcode = label.Rows.Where(a => a.Text.Contains("BAR")).FirstOrDefault()?.Text;
+            if (!string.IsNullOrEmpty(barcode))
+            {
+                barcode = barcode.Replace("<BAR", "").Replace(">", "").Replace("++", "");
+            }
+            var weight = GetWeight();
+            ExportReport(barcode, label.HowManyCoppies);
             //Print
             _printer.Command.Start();
 
@@ -108,12 +127,12 @@ namespace LabelPrinter
             {
                 var posX = 10;
                 var placeholers = GetPlaceholders(labelRow.Text);
-
+               
                 var strategySelector = new DrawingSelector
                 {
                     Graphics = Graphics.FromImage(new Bitmap(label.LabelWidth, label.LabelHeight)),
                     Barcode = label.Barcode,
-                    Weight = storage.GetLabels(label.SelectedLabelName)?.Wieght ?? 0,
+                    Weight = storage.GetLabels(label.SelectedLabelName)?.Wieght ?? Convert.ToDecimal(string.IsNullOrEmpty(weight) ? "0" : weight),
                     Row = labelRow
                 };
 
@@ -143,6 +162,13 @@ namespace LabelPrinter
                     _storageSelector = new StorageSelector();
 
                     SetupPrinter(con, label, noOfCopy);
+                    var barcode = label.Rows.Where(a => a.Text.Contains("BAR")).FirstOrDefault()?.Text;
+                    if (!string.IsNullOrEmpty(barcode))
+                    {
+                        barcode = barcode.Replace("<BAR", "").Replace(">", "").Replace("++", "");
+                    }
+                    var weight = GetWeight();
+                    ExportReport(barcode, label.HowManyCoppies);
 
                     //Print
                     _printer.Command.Start();
@@ -182,8 +208,7 @@ namespace LabelPrinter
             else
             {
                 Print(label, noOfCopy);
-            }
-
+            } 
         }
 
         public List<string> GetPlaceholders(string input)
@@ -250,6 +275,7 @@ namespace LabelPrinter
             _printer.Config.Speed(con.Speed); //con.Speed
             _printer.Config.PageNo(1);
             _printer.Config.CopyNo(numberOfCopy);
+            //_printer.Config.SendCommand("^B2"); //Backward of printing mode
             if (label.SelectedPrinterType == EnumsConverter.GetDescription(PrinterType.DirectThermal))
             {
                 _printer.Config.SetPrinterType("D"); // direct tharmul
@@ -272,6 +298,58 @@ namespace LabelPrinter
             _printer.Config.SetLeftMargin(label.DistanceFromLeft * 8); //8 dot = 1 mm
         }
 
+        private string GetWeight()
+        {
+            VMWightAndOperator vm = null;
+
+            try
+            {
+                var client = new RestClient();
+                // client.Authenticator = new HttpBasicAuthenticator(username, password);
+                string api = ConfigurationManager.AppSettings.Get("api");
+                var request = new RestRequest(api, Method.GET);
+
+                IRestResponse response = client.Execute(request);
+                var content = response.Content; // raw content as string
+                vm = JsonConvert.DeserializeObject<VMWightAndOperator>(content);
+
+            }
+            catch (Exception)
+            {
+                vm = new VMWightAndOperator();
+            }
+            operatorName = vm.Operator;
+            return string.IsNullOrEmpty(vm.Weight) ? "0" : vm.Weight;
+        }
+
+        private void ExportReport(string barcode, int noOfCopy)
+        {
+            StringBuilder st = new StringBuilder();
+            string filePath = AppDomain.CurrentDomain.BaseDirectory + "PrintringReport.csv";
+            if (File.Exists(filePath))
+            {
+                string prevData = "";
+                using (StreamReader sr = new StreamReader(filePath))
+                {
+                    prevData = sr.ReadToEnd(); 
+                }
+                st.Append(prevData);
+                st.AppendLine();
+            }
+            else
+            {
+                st.Append(string.Format("{0} ,{1} ,{2} ,{3}", "Barcode", "Printing Time", "Number of Copy", "Operator"));
+                st.AppendLine();
+            }
+
+            st.Append(string.Format("{0} ,{1} ,{2} ,{3}", barcode, DateTime.Now, noOfCopy, operatorName));
+            using (StreamWriter sw = new StreamWriter(filePath))
+            {
+                sw.Write(st.ToString());
+                sw.Dispose();
+            }
+        }
+       
         #endregion
     }
 }
