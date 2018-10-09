@@ -55,54 +55,64 @@ namespace LabelPrinter
 
         public void Print(Label label, int noOfCopy)
         {
-            var con = StorageSelector.GetConfig();
-            _printer = new GodexPrinter();
-            _storageSelector = new StorageSelector();
-
-            SetupPrinter(con, label, noOfCopy);
-            var barcode = label.Rows.Where(a => a.Text.Contains("BAR")).FirstOrDefault()?.Text;
-            if (!string.IsNullOrEmpty(barcode))
+            try
             {
-                barcode = barcode.Replace("<BAR", "").Replace(">", "").Replace("++", "");
-            }
-            var weight = GetWeight();
-            if (con.IsCreateOrExport)
-            {
-                ExportReport(barcode, noOfCopy);
-            }
+                var con = StorageSelector.GetConfig();
+                _printer = new GodexPrinter();
+                _storageSelector = new StorageSelector();
 
-            //Print
-            _printer.Command.Start();
-
-            var posY = 10;
-            var rowHeight = 10;
-            var storage = _storageSelector.GetStorage();
-
-            foreach (var labelRow in label.Rows)
-            {
-                var posX = 10;
-                var placeholers = GetPlaceholders(labelRow.Text);
-
-                var strategySelector = new DrawingSelector
+                SetupPrinter(con, label, noOfCopy);
+                var barcode = label.Rows.Where(a => a.Text.Contains("BAR")).FirstOrDefault()?.Text;
+                if (!string.IsNullOrEmpty(barcode))
                 {
-                    Graphics = Graphics.FromImage(new Bitmap(label.LabelWidth, label.LabelHeight)),
-                    Barcode = label.Barcode,
-                    Weight = storage.GetLabels(label.SelectedLabelName)?.Wieght ?? 0,
-                    Row = labelRow
-                };
-
-                foreach (var placeholer in placeholers)
+                    barcode = barcode.Replace("<BAR", "").Replace(">", "").Replace("++", "");
+                }
+                var weight = GetWeight();
+                if (con.IsCreateOrExport)
                 {
-                    var drawingStrategy = strategySelector.GetStrategy(placeholer);
-
-                    drawingStrategy.Print(_printer, ref rowHeight, ref posX, posY);
+                    ExportReport(barcode, noOfCopy);
                 }
 
-                posY += rowHeight;
-            }
+                //Print
+                _printer.Command.Start();
 
-            _printer.Command.End();
-            _printer.Close();
+                var posY = 10;
+                var rowHeight = 10;
+                var storage = _storageSelector.GetStorage();
+
+                foreach (var labelRow in label.Rows)
+                {
+                    var posX = 10;
+                    var placeholers = GetPlaceholders(labelRow.Text);
+
+                    var strategySelector = new DrawingSelector
+                    {
+                        Graphics = Graphics.FromImage(new Bitmap(label.LabelWidth, label.LabelHeight)),
+                        Barcode = label.Barcode,
+                        Weight = storage.GetLabels(label.SelectedLabelName)?.Wieght ?? 0,
+                        Row = labelRow
+                    };
+
+                    foreach (var placeholer in placeholers)
+                    {
+                        var drawingStrategy = strategySelector.GetStrategy(placeholer);
+
+                        drawingStrategy.Print(_printer, ref rowHeight, ref posX, posY);
+                    }
+
+                    posY += rowHeight;
+                }
+
+                _printer.Command.End();
+                _printer.Close();
+
+            }
+            catch (Exception ex)
+            {
+                _printer.Command.End();
+                _printer.Close();
+                MessageView.Instance.ShowError(ex.Message);
+            }
         }
 
         public void Print(Label label)
@@ -160,6 +170,8 @@ namespace LabelPrinter
             }
             catch (Exception ex)
             {
+                _printer.Command.End();
+                _printer.Close();
                 MessageView.Instance.ShowError(ex.Message);
             }
         }
@@ -169,57 +181,67 @@ namespace LabelPrinter
             Row row = label.Rows.Where(r => r.Text.Contains("++")).FirstOrDefault();
             if (row != null)
             {
-                var con = StorageSelector.GetConfig();
-                for (int i = 0; i < noOfCopy; i++)
+                try
                 {
-                    _printer = new GodexPrinter();
-                    _storageSelector = new StorageSelector();
 
-                    SetupPrinter(con, label, noOfCopy);
-                    var barcode = label.Rows.Where(a => a.Text.Contains("BAR")).FirstOrDefault()?.Text;
-                    if (!string.IsNullOrEmpty(barcode))
+                    var con = StorageSelector.GetConfig();
+                    for (int i = 0; i < noOfCopy; i++)
                     {
-                        barcode = barcode.Replace("<BAR", "").Replace(">", "").Replace("++", "");
-                    }
-                    var weight = GetWeight();
-                    if (con.IsCreateOrExport)
-                    {
-                        ExportReport(barcode, label.HowManyCoppies);
-                    }
+                        _printer = new GodexPrinter();
+                        _storageSelector = new StorageSelector();
 
-                    //Print
-                    _printer.Command.Start();
-
-                    var posY = 10;
-                    var rowHeight = 10;
-                    var storage = _storageSelector.GetStorage();
-
-                    foreach (var labelRow in label.Rows)
-                    {
-                        var posX = 10;
-                        var placeholers = GetPlaceholders(labelRow.Text);
-
-                        var strategySelector = new DrawingSelector
+                        SetupPrinter(con, label, noOfCopy);
+                        var barcode = label.Rows.Where(a => a.Text.Contains("BAR")).FirstOrDefault()?.Text;
+                        if (!string.IsNullOrEmpty(barcode))
                         {
-                            Graphics = Graphics.FromImage(new Bitmap(label.LabelWidth, label.LabelHeight)),
-                            Barcode = label.Barcode,
-                            Weight = storage.GetLabels(label.SelectedLabelName)?.Wieght ?? 0,
-                            Row = labelRow
-                        };
-
-                        foreach (var placeholer in placeholers)
+                            barcode = barcode.Replace("<BAR", "").Replace(">", "").Replace("++", "");
+                        }
+                        var weight = GetWeight();
+                        if (con.IsCreateOrExport)
                         {
-                            var drawingStrategy = strategySelector.GetStrategy(placeholer);
-
-                            drawingStrategy.Increment = i;
-                            drawingStrategy.Print(_printer, ref rowHeight, ref posX, posY);
+                            ExportReport(barcode, label.HowManyCoppies);
                         }
 
-                        posY += rowHeight;
-                    }
+                        //Print
+                        _printer.Command.Start();
 
+                        var posY = 10;
+                        var rowHeight = 10;
+                        var storage = _storageSelector.GetStorage();
+
+                        foreach (var labelRow in label.Rows)
+                        {
+                            var posX = 10;
+                            var placeholers = GetPlaceholders(labelRow.Text);
+
+                            var strategySelector = new DrawingSelector
+                            {
+                                Graphics = Graphics.FromImage(new Bitmap(label.LabelWidth, label.LabelHeight)),
+                                Barcode = label.Barcode,
+                                Weight = storage.GetLabels(label.SelectedLabelName)?.Wieght ?? 0,
+                                Row = labelRow
+                            };
+
+                            foreach (var placeholer in placeholers)
+                            {
+                                var drawingStrategy = strategySelector.GetStrategy(placeholer);
+
+                                drawingStrategy.Increment = i;
+                                drawingStrategy.Print(_printer, ref rowHeight, ref posX, posY);
+                            }
+
+                            posY += rowHeight;
+                        }
+
+                        _printer.Command.End();
+                        _printer.Close();
+                    }
+                }
+                catch (Exception ex)
+                {
                     _printer.Command.End();
                     _printer.Close();
+                    MessageView.Instance.ShowError(ex.Message);
                 }
             }
             else
